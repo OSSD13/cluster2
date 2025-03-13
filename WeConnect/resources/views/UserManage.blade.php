@@ -18,7 +18,9 @@
 
 
     <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md mt-6">
-        <h2 class="font-bold text-6xl">User Manage</h2>
+        <img src="https://cdn.discordapp.com/attachments/1349637921669648405/1349639567506014299/image.png?ex=67d3d54b&is=67d283cb&hm=e0fb078ee13b477f2c3545e74d8c286d70a18a2be8446243d0892fd62651b592& " alt="UserIcon">
+        <h2 class="font-bold text-3xl ">User Manage</h2>
+
         <p class="text-2xl mb-4">เพิ่มผู้ใช้งาน</p>
 
         <form class="space-y-3">
@@ -36,45 +38,11 @@
             <h3>วันที่เพิ่มข้อมูล</h3>
             <input type="date" class="w-full p-2 border rounded-md">
 
-            <button class="w-full bg-green-500 text-white p-2 rounded-md">เพิ่มผู้ใช้</button>
+            <button class="w-full bg-green-500 text-white p-2 ">เพิ่มผู้ใช้</button>
         </form>
     </div>
 
-    <!-- Table -->
-    <div class="max-w-lg mx-auto bg-white p-4 mt-6 rounded-lg shadow-md">
-        <table class="w-full border-collapse border">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="p-2 border">ผู้ใช้งาน</th>
-                    <th class="p-2 border">ตำแหน่ง</th>
-                    <th class="p-2 border">การจัดการ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="p-2 border">Pawana Namaste</td>
-                    <td class="p-2 border">User</td>
-                    <td class="p-2 border text-center">
-                        <button class="text-red-500">🗑️</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="p-2 border">Mario Balotelli</td>
-                    <td class="p-2 border">Manager</td>
-                    <td class="p-2 border text-center">
-                        <button class="text-red-500">🗑️</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="p-2 border">Cistopher Columbia</td>
-                    <td class="p-2 border">Admin</td>
-                    <td class="p-2 border text-center">
-                        <button class="text-red-500">🗑️</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+
 
 </body>
 </html>

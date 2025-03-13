@@ -32,9 +32,5 @@
                 <button type="submit" class="bg-lime-300 rounded-lg size-auto" >ยืนยันข้อมูล</button>
             </form>
     </div>
-
-
-
-
 </body>
 </html>
