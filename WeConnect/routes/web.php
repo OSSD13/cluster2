@@ -1,14 +1,11 @@
 <?php
 
-<<<<<<< HEAD
 
-=======
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
->>>>>>> eb532cc02114d2622d68e0ee1dd1ecead4a868de
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\HomeController;
 
+use Illuminate\Support\Facades\Route;
 
 // Route::get('/login', function () {
 //     return view('login');
@@ -20,16 +17,34 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/adduser', [UserController::class, 'index']);
 Route::post('/adduser', [UserController::class, 'addUser']);
 
+// Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/home', [HomeController::class, 'home']);
+
 Route::get('/welcome', function () {
     return view('welcome');
-<<<<<<< HEAD
+});
+Route::get('/problemdetail', function () {
+    return view('problemdetail');
+});
+Route::get('/addData',function (){
+    return view('AddData');
 });
 
-Route::get('/login',
-[LoginController::class, 'index']);
-
-Route::post('/login',
-[LoginController::class, 'login']);
-=======
+Route::get('/editData',function (){
+    return view('EditData');
 });
->>>>>>> eb532cc02114d2622d68e0ee1dd1ecead4a868de
+
+Route::get('/address',function (){
+    return view('Address');
+});
+
+Route::get('/editAddress',function (){
+    return view('EditAddress');
+});
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Route::get('/problems/create', function () {
+//     return "หน้าเพิ่มข้อมูล"; // เปลี่ยนเป็น view ตามจริง
+// })->name('problems.create');
+
+?>
