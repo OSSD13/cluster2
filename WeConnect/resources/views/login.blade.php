@@ -153,12 +153,14 @@
             </tr>
         </table>
 
-        <form>
+        <form action="{{ url('/login') }}" onsubmit="return login()" method="post">
+            @csrf
+            
             <label>Email</label>
-            <input type="email">
+            <input type="email" name="email" placeholder="Email" required>
 
             <label>Password</label>
-            <input type="password">
+            <input type="password" name="password" placeholder="Password" required>
 
             <button class="login-btn" type="submit">Login</button>
         </form>

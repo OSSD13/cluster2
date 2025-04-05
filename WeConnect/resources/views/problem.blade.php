@@ -276,7 +276,6 @@
 
         <!-- THAILAND AUTOCOMPLETE เลือกพื้นที่ -->
         <div class="container">
-            <h2>Thailand.js</h2>
             <div class="form-control">
                 <span>ตำบล/แขวง</span>
                 <input id="sub_district" name="sub_district" type="text" class="txt" placeholder="ตำบล">
