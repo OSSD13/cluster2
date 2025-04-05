@@ -9,9 +9,9 @@
         <script src="https://cdn.tailwindcss.com"></script>
 
         <!-- Google Fonts: Kanit (TH) & Outfit (EN) -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -32,7 +32,7 @@
       
 <body class="bg-gray-100">
     <!-- Header -->
-    <nav class="bg-orange-500 text-white p-5 flex items-center">
+    <nav class="text-white p-5 flex items-center" style="background-color: #FF9500;">
         <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
             <span class="mr-2">☰</span>
             <h1 class="text-xl font-bold">WeConnect</h1>

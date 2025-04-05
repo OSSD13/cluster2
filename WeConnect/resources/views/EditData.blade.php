@@ -27,12 +27,12 @@
 
       :lang(en) {
         font-family: 'Outfit', sans-serif;
-      }
+      }*/
     </style>
   </head>
 <body class="bg-gray-100">
     <!-- Header -->
-    <nav class="bg-orange-500 text-white p-5 flex items-center">
+    <nav class="text-white p-5 flex items-center" style="background-color: #FF9500;">
         <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
             <span class="mr-2">☰</span>
             <h1 class="text-xl font-bold">WeConnect</h1>
