@@ -17,3 +17,23 @@ Route::post('/adduser', [UserController::class, 'addUser']);
 Route::get('/welcome', function () {
     return view('welcome');
 });
+
+Route::get('/ProblemDetail',function (){
+    return view('ProblemDetail');
+});
+
+Route::get('/AddData',function (){
+    return view('AddData');
+});
+
+Route::get('/EditData',function (){
+    return view('EditData');
+});
+
+Route::get('/Address',function (){
+    return view('Address');
+});
+
+Route::get('/EditAddress',function (){
+    return view('EditAddress');
+});
