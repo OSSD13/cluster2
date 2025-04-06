@@ -15,7 +15,7 @@ Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/adduser', [UserController::class, 'index']);
 Route::post('/adduser', [UserController::class, 'addUser']);
-
+Route::get('/users', [UserController::class, 'UserController']);
 Route::get('/problem', function() {
     return view('problem');
 });
@@ -53,3 +53,5 @@ Route::get('/EditAddress',function (){
 Route::get('/confirmDelete',function (){
     return view('Delete');
 });
+
+
