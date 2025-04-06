@@ -60,8 +60,3 @@ Route::get('/editAddress',function (){
 Route::get('/confirmDelete',function (){
     return view('Delete');
 });
-
-Route::get('/home',
-[HomeController::class, 'index']);
-
-Route::resource('/users', UserController::class);
