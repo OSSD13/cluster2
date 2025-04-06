@@ -19,7 +19,7 @@
 
   <!-- Google Maps API -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     body {
@@ -37,7 +37,7 @@
   <nav class="bg-orange-500 text-white p-5 flex items-center">
     <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
       <span class="mr-2">☰</span>
-      <h1 class="text-xl font-bold">WeConnect</h1>
+      <h1 class="text-xl ">WeConnect</h1>
     </button>
   </nav>
 
@@ -81,9 +81,12 @@
       <button class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
         <i class="fa-solid fa-pen-to-square" style="color: black"></i>
       </button>
-      <button class="p-2 px-5 bg-red-500 text-white rounded">
+
+    <!-- ปุ่มลบ -->
+    <button onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
         <i class="fa-solid fa-trash"></i>
-      </button>
+    </button>
+
     </div>
   </div>
 
@@ -128,6 +131,36 @@
         reader.readAsDataURL(file);
       });
     });
+  </script>
+
+<script>
+    function confirmDelete() {
+      Swal.fire({
+        icon: 'error',
+        title: 'ลบรายการนี้หรือไม่',
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#22c55e',   // เขียว
+        cancelButtonColor: '#9ca3af',    // เทา
+        customClass: {
+          title: 'text-red-500 text-lg'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // แสดงแจ้งเตือนว่าลบเรียบร้อย
+          Swal.fire({
+            icon: 'success',
+            title: 'ข้อมูลของคุณถูกลบแล้ว',
+            confirmButtonText: 'กลับหน้าหลัก',
+            confirmButtonColor: '#0ea5e9',
+          }).then(() => {
+            // กลับหน้าหลักหรือรีโหลดก็ได้
+            window.location.href = 'index.html'; // เปลี่ยนตามที่ต้องการ
+          });
+        }
+      });
+    }
   </script>
 
 </body>

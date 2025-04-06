@@ -14,11 +14,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome --> 
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_REAL_API_KEY&libraries=places"></script>
 
     <style>
       body {
@@ -30,21 +30,21 @@
       }*/
     </style>
   </head>
+
 <body class="bg-gray-100">
     <!-- Header -->
     <nav class="text-white p-5 flex items-center" style="background-color: #FF9500;">
         <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
             <span class="mr-2">☰</span>
-            <h1 class="text-xl font-bold">WeConnect</h1>
+            <h1 class="text-xl font-bold">WeeeConnect</h1>
         </button>
     </nav>
-
- <!-- เมนูซ่อน -->
     <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-        {{-- <div id="menu" class="hidden bg-white shadow-md absolute h-screen top-15 left-0 w-64 p-4"> --}}
+        <form action="{{ url('ProblemDetail') }}" method="POST" class="p-4">
+            @csrf
             <ul class="space-y-2">
                 <li><a href="#" class="block text-gray-700"> Home</a></li>
-                <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
+                <li><a href="#" class="block text-gray-700"> Map</a></li>
                 <li><a href="#" class="block text-gray-700"> Form</a></li>
                 <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
             </ul>
@@ -55,31 +55,32 @@
     <div class="p-4">
         <!-- ชื่อชุมชน -->
         <label class="block mt-2 text-sm">ชื่อของชุมชน</label>
-        <input type="text" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
+        <input type="text" name= "community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
 
         <!-- ที่อยู่ -->
         <label class="block mt-4 mt-2 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
         <div class="flex items-center border p-2 rounded">
-            <input type="text" id="location" class="w-full border-none focus:ring-0">
-            <button onclick="openGoogleMaps()" class="ml-2">➤</button>
+            <input type="text" name ="location" id="location" class="w-full border-none focus:ring-0">
+            <button class="ml-2">➤</button>
         </div>
 
         <!-- ปัญหาที่พบ -->
         <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
-        <input type="text" class="w-full p-2 border rounded bg-gray-100" value="#ไฟฟ้า">
+        <input type="text" name ="issues" class="w-full p-2 border rounded bg-gray-100" value="#ไฟฟ้า">
 
         <!-- รายละเอียดเพิ่มเติม -->
         <label class="block mt-4 mt-2 text-sm">รายละเอียดเพิ่มเติม</label>
-        <textarea class="w-full p-2 border rounded"></textarea>
+        <textarea name ="description" class="w-full p-2 border rounded"></textarea>
+
 
         <!-- ปุ่ม ยืนยัน -->
         <div class="flex justify-center mt-6">
-            <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+            <button type ="submit" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
                  ยืนยันข้อมูล
             </button>
         </div>
     </div>
-
+</form>
     <script>
         function openGoogleMaps() {
             let address = document.getElementById("location").value;
@@ -118,7 +119,5 @@
             });
         });
     </script>
-
 </body>
-
 </html>
