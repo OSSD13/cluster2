@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\User;
 
 class UserController extends Controller
 {
-    function index() {
-        return view('adduser');
-    }
 
     function addUser(Request $req) {
         $muser = new User();
@@ -19,6 +17,18 @@ class UserController extends Controller
         $muser->role = $req->role;
         $muser->save();
 
-        return view('adduser');
+        $users = User::all();
+        return view('usersManager', compact('users'));
     }
+
+    function viewAddUser() {
+        return view('/adduser');
+    }
+
+    public function index() {
+        $users = User::all();
+        return view('usersManager', compact('users'));
+    }
+
 }
+
