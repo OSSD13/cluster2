@@ -51,5 +51,5 @@ Route::get('/EditAddress',function (){
 });
 
 Route::get('/confirmDelete',function (){
-    return view('Delete');
+    return view('confirmDelete');
 });
