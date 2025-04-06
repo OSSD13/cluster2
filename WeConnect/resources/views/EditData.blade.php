@@ -35,7 +35,7 @@
     <nav class="text-white p-5 flex items-center" style="background-color: #FF9500;">
         <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
             <span class="mr-2">☰</span>
-            <h1 class="text-xl font-bold">WeeeConnect</h1>
+            <h1 class="text-xl font-bold">WeConnect</h1>
         </button>
     </nav>
 
