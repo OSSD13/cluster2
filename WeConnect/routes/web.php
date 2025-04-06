@@ -15,7 +15,8 @@ Route::get('/', [LoginController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/adduser', [UserController::class, 'index']);
+Route::get('/usermanage', [UserController::class, 'index']);
+Route::get('/adduser', [UserController::class, 'viewAddUser']);
 Route::post('/adduser', [UserController::class, 'addUser']);
 
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
@@ -38,6 +39,14 @@ Route::get('/editData',function (){
 
 Route::get('/address',function (){
     return view('Address');
+});
+
+Route::get('/problem',function (){
+    return view('problem');
+});
+
+Route::get('/dashboard',function (){
+    return view('dashboard');
 });
 
 Route::get('/editAddress',function (){

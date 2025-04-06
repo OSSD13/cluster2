@@ -35,8 +35,8 @@
                             <td class="text-nowrap">{{ $user->email }}</td>
                             <td>
                                 <div class="d-flex flex-wrap gap-1 justify-content-center">
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                    <a href="{{ url('/adduser') }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <form action="{{  url('/adduser') }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -50,9 +50,9 @@
             </div>
 
             {{-- Add User Button --}}
-            <div class="text-center mt-4">
-                <a href="{{ route('users.create') }}" class="btn btn-lg fw-bold rounded-pill text-white" style="background-color: #28a745;">เพิ่มบัญชีผู้ใช้</a>
-            </div>
+            <form action="{{  url('/adduser') }}" method="get">
+                <button class="btn btn-lg fw-bold rounded-pill text-white" style="background-color: #28a745;">เพิ่มบัญชีผู้ใช้</a>
+            </form>
         </div>
     </div>
 </div>

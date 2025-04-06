@@ -17,7 +17,12 @@ class UserController extends Controller
         $muser->role = $req->role;
         $muser->save();
 
-        return view('adduser');
+        $users = User::all();
+        return view('usersManager', compact('users'));
+    }
+
+    function viewAddUser() {
+        return view('/adduser');
     }
 
     public function index() {
