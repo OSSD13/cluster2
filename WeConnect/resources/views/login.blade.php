@@ -155,7 +155,7 @@
 
         <form action="{{ url('/login') }}" onsubmit="return login()" method="post">
             @csrf
-            
+
             <label>Email</label>
             <input type="email" name="email" placeholder="Email" required>
 
