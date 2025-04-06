@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\EditDataController;
+use App\Http\Controllers\HomeController;
 
 use Illuminate\Support\Facades\Route;
 

@@ -43,12 +43,6 @@
                     .bindPopup(`<b>${problem.community_name}</b><br>${problem.detail}`);
             }
         });
-        .bindPopup(`
-    <b>${problem.community_name}</b><br>
-    จ.${problem.province}, อ.${problem.district}, ต.${problem.sub_district}<br>
-    รหัสไปรษณีย์: ${problem.post_code}<br><br>
-    <i>${problem.detail}</i>
-`)
 
 
 
