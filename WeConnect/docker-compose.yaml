@@ -3,9 +3,8 @@ version: '3.8'
 services:
   app:
     build: .
-    container_name: laravel-ossd-${CLUSTER_2}
+    container_name: laravel-ossd-${CLUSTER_NAME}
     ports:
       - "1302:80"
     env_file:
       - .env
-
