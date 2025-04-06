@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
@@ -7,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 <style>
     body{
@@ -15,53 +17,44 @@
 
 </style>
 <body>
-    <header class="fixed w-full bg-orange-500 p-4 flex items-center">
-        <button id="menu-btn" class="text-white text-2xl mr-2 ml-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
-                <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
-            </svg>
-        </button>
-        <h1 class="text-white text-2xl ml-2">WeConnect</h1>
-    </header>
+    @extends('layouts.empmenu')
+    @section('content')
 
-    <!-- Sidebar -->
-    <div id="sidebar" class="fixed top-16 w-64 h-full bg-gray-100 transform -translate-x-full transition-transform duration-300 z-30">
-        <div class="p-4 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
-            </svg>
-            <div class="ml-3">
-                <p class="font-medium">K. Udomsak</p>
-                <p class="text-gray-500 text-sm">K.udomsak@gmail.com</p>
-            </div>
-        </div>
-        <!-- Menu Items -->
-        <nav class="p-4">
-            <ul>
-                <li class="mb-2">
-                    <a href="#" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
-                        <span class="mr-2">👤</span> User Manage
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <div class="border h-px w-5/6 ml-4 border-black">
-            <hr class="mb-4 flex  justify-between " />
-            <button class="w-36 ml-8 flex items-center justify-center p-2 text-red-500 border border-red-500 rounded hover:bg-red-500 hover:text-white transition">
-                <span class="mr-2">↩</span> Logout
-            </button>
-        </div>
+
+    <div id="map" class="w-full h-screen fixed">
+       
 
     </div>
 
-    <div class="">
-        <iframe class="w-full h-screen pt-16"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=100.91890811920167%2C13.282948680839437%2C100.93223333358765%2C13.289798411948283&amp;layer=mapnik"
-            style="border: 1px solid black">
-        </iframe>
-    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
 
-    <!-- Fixed accordion box for position -->
+       var map = L.map('map').setView(["13.283361132009668", "100.92358591147209"], 13); // กรุงเทพฯ
+       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+    var problems = @json($problems);
+
+    problems.forEach(problem => {
+            if (problem.latitude && problem.longitude) {
+                L.marker([problem.latitude, problem.longitude])
+                    .addTo(map)
+                    .bindPopup(`<b>${problem.community_name}</b><br>${problem.detail}`);
+            }
+        });
+        .bindPopup(`
+    <b>${problem.community_name}</b><br>
+    จ.${problem.province}, อ.${problem.district}, ต.${problem.sub_district}<br>
+    รหัสไปรษณีย์: ${problem.post_code}<br><br>
+    <i>${problem.detail}</i>
+`)
+
+
+
+
+    </script>
+
     <div class="fixed bottom-0 right-0 w-full max-w-xs mx-auto p-4 rounded-2xl z-40">
         <div id="accordionBtn" class="flex justify-between p-2 rounded-t-2xl cursor-pointer shadow-lg bg-white">
             <span class="font-bold text-lg">ตำแหน่ง</span>
@@ -120,5 +113,6 @@
         }
     });
 </script>
+@endsection
 </body>
 </html>
