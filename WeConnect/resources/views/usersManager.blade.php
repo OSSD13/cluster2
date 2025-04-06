@@ -3,19 +3,9 @@
 @section('admin_content')
 
 
-<div class="container py-4">
-    <div class="card shadow rounded-6">
-        {{-- Header --}}
-        <div class="card-header text-white d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f97316;">
-            <h4 class="mb-0 fw-bold">WeConnect</h4>
-            <button class="btn btn-light d-md-none"><i class="fas fa-bars"></i></button>
-        </div>
-
-        {{-- Body --}}
-        <div class="card-body">
+<div class="container">
             <div class="text-center mb-4">
-                <h2 class="fw-bold">User Manage <i class="fas fa-user-edit"></i></h2>
-                <h5 class="text-muted">User Tables</h5>
+                <h1 class="text-2xl font-semibold mt-4 text-center px-6">User Manage<i class="fas fa-user-edit"></i></h1>
             </div>
 
             {{-- Table --}}
@@ -51,7 +41,11 @@
 
             {{-- Add User Button --}}
             <form action="{{  url('/adduser') }}" method="get">
-                <button class="btn btn-lg fw-bold rounded-pill text-white" style="background-color: #28a745;">เพิ่มบัญชีผู้ใช้</a>
+                <div class="flex justify-center mt-6">
+                    <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+                         เพิ่มบัญชีผู้ใช้
+                    </button>
+                </div>
             </form>
         </div>
     </div>
