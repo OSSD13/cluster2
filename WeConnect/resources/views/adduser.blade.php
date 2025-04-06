@@ -33,6 +33,7 @@ body {
         content: " *";
         color: red;
     }
+
 </style>
 <body>
     <!-- แถบด้านบน -->
@@ -62,7 +63,11 @@ body {
             </div>
             <div class="mb-3">
                 <label for="position" class="form-label required">ตำแหน่ง</label>
-                <input type="text" class="form-control" id="position" required >
+                <select id="position" class="form-control" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="manager">Manager</option>
+                </select>
             </div>
             <div class="flex justify-center mt-6">
                 <button class="bg-green-500 text-white px-8 py-3 rounded-full text-lg hover:bg-green-600">
