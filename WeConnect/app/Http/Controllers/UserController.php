@@ -21,4 +21,5 @@ class UserController extends Controller
 
         return view('adduser');
     }
+
 }

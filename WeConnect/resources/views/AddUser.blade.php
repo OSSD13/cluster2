@@ -24,9 +24,9 @@ body {
 }
 
     .form-control {
-    border-radius: 10px; /* เพิ่มความมนให้กับกล่องกรอกข้อความ */
-    padding: 5px 10px; /* เพิ่ม อ้วน-ผอม ของกล่อง */
-    border: 1px solid #ccc; /* ขอบเทา */
+    border-radius: 10px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
     width: 100%;
 }
     .form-label.required::after {

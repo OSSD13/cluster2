@@ -53,3 +53,7 @@ Route::get('/EditAddress',function (){
 Route::get('/confirmDelete',function (){
     return view('Delete');
 });
+
+Route::get('/UserManage',function (){
+    return view('UserManage');
+});
