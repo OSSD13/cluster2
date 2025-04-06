@@ -13,7 +13,7 @@ class UserController extends Controller
         $muser = new User();
         $muser->name = $req->name;
         $muser->email = $req->email;
-        $muser->password = "None";
+        $muser->password = $req->password;
         $muser->role = $req->role;
         $muser->save();
 

@@ -19,6 +19,10 @@ Route::get('/usermanage', [UserController::class, 'index']);
 Route::get('/adduser', [UserController::class, 'viewAddUser']);
 Route::post('/adduser', [UserController::class, 'addUser']);
 
+Route::get('/useraccount', function () {
+    return view('useraccount');
+});
+
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/home', [HomeController::class, 'home']);
