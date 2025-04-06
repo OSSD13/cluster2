@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProblemController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/login', function () {
@@ -18,6 +19,8 @@ Route::post('/adduser', [UserController::class, 'addUser']);
 Route::get('/problem', function() {
     return view('problem');
 });
+
+Route::post('/addproblem', [ProblemController::class, 'addForm']);
 
 Route::get('/dashboard', function() {
     return view('dashboard');
@@ -48,5 +51,5 @@ Route::get('/EditAddress',function (){
 });
 
 Route::get('/confirmDelete',function (){
-    return view('confirmDelete');
+    return view('Delete');
 });

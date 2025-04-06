@@ -216,7 +216,7 @@
 
 <body>
 
-    <!-- <div class="container">
+    <div class="container">
         <h2>Thailand.js</h2>
         <div class="form-control">
             <span>ตำบล/แขวง</span>
@@ -239,64 +239,6 @@
             $province: $("#province"), // input ของจังหวัด
             $zipcode: $("#postcode") // input ของรหัสไปรษณีย์
         });
-    </script>
-</body> -->
-
-</html>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Leaflet - หมุดกลางหน้าจอ</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <style>
-        #map {
-            height: 500px;
-            position: relative;
-        }
-
-        /* สร้างหมุดที่อยู่ตรงกลางหน้าจอ */
-        .center-marker {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            margin-left: -16px;
-            margin-top: -32px;
-            background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            pointer-events: none;
-            z-index: 999;
-        }
-    </style>
-</head>
-<body>
-    <h2>เลื่อนแผนที่เพื่อเลือกตำแหน่ง</h2>
-    <div id="map">
-        <div class="center-marker"></div>
-    </div>
-    <p id="info">พิกัด: -</p>
-
-    <script>
-        var map = L.map('map').setView([13.7563, 100.5018], 13); // กรุงเทพฯ
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-        var marker;
-        function updateCenterCoordinates() {
-            var center = map.getCenter();
-            var lat = center.lat;
-            var lng = center.lng;
-            marker = L.marker([lat, lng]).addTo(map).bindPopup(`<b>พิกัด:</b> ${lat}, ${lng}`).openPopup();
-            document.getElementById('info').innerHTML = `พิกัด: ${lat}, ${lng}`;
-        }
-
-        updateCenterCoordinates();
-
-        map.on('moveend', updateCenterCoordinates);
     </script>
 </body>
 </html>

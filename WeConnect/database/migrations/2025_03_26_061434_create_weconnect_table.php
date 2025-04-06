@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('district');
             $table->string('sub_district');
             $table->string('post_code');
-            $table->double('latitude');
-            $table->double('longitude');
+            $table->float('latitude');
+            $table->float('longitude');
             $table->timestamps();
 
             $table->unsignedBigInteger('usr_id')->nullable();
