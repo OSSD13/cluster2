@@ -4,6 +4,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+
 
 // Route::get('/login', function () {
 //     return view('login');
@@ -53,5 +55,7 @@ Route::get('/EditAddress',function (){
 Route::get('/confirmDelete',function (){
     return view('Delete');
 });
+Route::get('/home',
+[HomeController::class, 'index']);
 
-
+Route::resource('/users', UserController::class);
