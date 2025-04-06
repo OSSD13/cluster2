@@ -34,7 +34,7 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-    var problems = @json($problems);
+    var problems = json($problems);
 
     problems.forEach(problem => {
             if (problem.latitude && problem.longitude) {
