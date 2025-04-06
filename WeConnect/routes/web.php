@@ -64,3 +64,8 @@ Route::get('/editAddress',function (){
 Route::get('/confirmDelete',function (){
     return view('Delete');
 });
+
+Route::get('/Maps',function(){
+    return view('Maps');
+});
+

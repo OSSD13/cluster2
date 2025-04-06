@@ -39,7 +39,7 @@
 
         main {
         height: calc(100vh - 4rem);
-        overflow-y: auto;
+        overflow-y: auto; 
         }
 
 </style>

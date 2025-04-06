@@ -29,7 +29,6 @@
           }
         </style>
       </head>
-
 <body class="bg-gray-100">
     <!-- Header -->
     <nav class="bg-orange-500 text-white p-5 flex items-center">
