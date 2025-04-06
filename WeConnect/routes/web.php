@@ -50,6 +50,10 @@ Route::get('/EditAddress',function (){
     return view('EditAddress');
 });
 
-Route::get('/confirmDelete',function (){
-    return view('confirmDelete');
+Route::get('/ConfirmDeleteProblem',function (){
+    return view('ConfirmDeleteProblem');
+});
+
+Route::get('/SuccessDeleteProblem',function (){
+    return view('SuccessDeleteProblem');
 });
