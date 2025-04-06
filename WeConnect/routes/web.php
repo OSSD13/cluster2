@@ -3,6 +3,8 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\EditDataController;
+
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/login', function () {
@@ -33,6 +35,9 @@ Route::get('/welcome', function () {
 Route::get('/ProblemDetail',function (){
     return view('ProblemDetail');
 });
+Route::post('/ProblemDetail',function (){
+    return view('ProblemDetail');
+});
 
 Route::get('/AddData',function (){
     return view('AddData');
@@ -41,7 +46,6 @@ Route::get('/AddData',function (){
 Route::get('/EditData',function (){
     return view('EditData');
 });
-
 Route::get('/Address',function (){
     return view('Address');
 });
