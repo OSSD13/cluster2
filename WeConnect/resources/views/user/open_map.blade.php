@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>template</title>
+    <title>WeConnect_Map</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -20,32 +20,45 @@
     @extends('layouts.layout_user')
     @section('content')
 
-
     <div id="map" class="w-full h-screen fixed">
 
-
     </div>
-
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/lib/OpenLayers.js"></script>
     <script>
-        var map = L.map('map').setView(["13.283361132009668", "100.92358591147209"], 13); // กรุงเทพฯ
+        var map = L.map('map', {
+        center: [13.736717, 100.523186], // จุดศูนย์กลาง (กรุงเทพ)
+        zoom: 6 ,
+        minZoom: 3 ,
+        maxBounds: [                     // ขอบเขตของโลก
+        [-90, -180],                // ละติจูดล่าง, ลองจิจูดซ้าย
+        [90, 180]                   // ละติจูดบน, ลองจิจูดขวา
+    ],
+    maxBoundsViscosity: 1.0         // ความแข็งแรงของขอบเขต (1.0 = ห้ามออกเลย)
+});
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        attribution: '&copy; OpenStreetMap contributors'
+       }).addTo(map);
 
-        var problems = json($problems);
 
-        problems.forEach(problem => {
-            if (problem.latitude && problem.longitude) {
-                L.marker([problem.latitude, problem.longitude])
-                    .addTo(map)
-                    .bindPopup(`<b>${problem.community_name}</b><br>${problem.detail}`);
-            }
-        });
-    </script>
+       @foreach ($locations as $loc)
+        L.marker([{{ $loc->latitude }}, {{ $loc->longitude }}]).addTo(map)
+        .bindPopup(`
+        <strong>{{ $loc->community_name }}</strong><br>
+        <strong>ตำแหน่ง :</strong> {{ $loc->province }} , {{ $loc->district }} , {{ $loc->sub_district }} ,{{ $loc->post_code }} <br>
+        <strong>รายละเอียด:</strong> {{ $loc->detail ?? 'ไม่มีรายละเอียด' }}<br>
+
+        <strong>พิกัด:</strong> {{ $loc->latitude }}, {{ $loc->longitude }}
+    `)
+
+        @endforeach
+     </script>
+
 
     <div class="fixed bottom-0 right-0 w-full max-w-xs mx-auto p-4 rounded-2xl z-40">
-        <div id="accordionBtn" class="flex justify-between p-2 rounded-t-2xl cursor-pointer shadow-lg bg-white">
+        <div id="accordionBtn" class="flex justify-between p-2 rounded-t-2xl cursor-pointer shadow-lg bg-white ">
             <span class="font-bold text-lg">ตำแหน่ง</span>
             <span id="arrow" class="w-8 h-8 flex items-center justify-center transition-transform rounded-full bg-gray-200">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -61,6 +74,7 @@
                         <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
                     </svg>
                     ที่อยู่
+
                 </p>
                 <p class="flex text-gray-700 mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 mr-2">

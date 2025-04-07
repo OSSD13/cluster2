@@ -59,9 +59,7 @@ Route::get('/editaddress',function (){
     return view('user.edit_address');
 });
 
-Route::get('/maps',function(){
-    return view('user.open_map');
-});
+Route::get('/maps', [ProblemController::class, 'showMap'])->name('user.open_map.view');
 
 Route::get('/edituser',function(){
     return view('admin.edit_user');

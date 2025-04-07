@@ -28,10 +28,21 @@
 
     <!-- ที่อยู่ -->
     <label class="block mt-4 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
-    <div class="flex items-center border p-2 rounded">
-        <input type="text" class="w-full border-none focus:ring-0">
-        <button class="ml-2">➤</button>
+    <div class="relative">
+        {{-- <div class="flex items-center border p-2 rounded">
+            <input id="community_name" type="text" class="w-full border-none focus:ring-0" placeholder="พิมพ์ชื่อสถานที่...">
+            <button type="button" class="ml-2">➤</button>
+        </div> --}}
+
+        <!-- รายการแนะนำ -->
+        <ul id="suggestion-list" class="absolute z-10 bg-white border mt-1 w-full rounded shadow hidden"></ul>
     </div>
+
+    <!-- ช่องที่อยู่เพิ่มเติม -->
+    <input id="sub_district" name="sub_district" type="text" placeholder="ตำบล" class="mt-2 w-full border p-2 rounded">
+    <input id="district" name="district" type="text" placeholder="อำเภอ" class="mt-2 w-full border p-2 rounded">
+    <input id="province" name="province" type="text" placeholder="จังหวัด" class="mt-2 w-full border p-2 rounded">
+    <input id="postcode" name="postcode" type="text" placeholder="รหัสไปรษณีย์" class="mt-2 w-full border p-2 rounded">
 
     <!-- ปัญหาที่พบ -->
 <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
