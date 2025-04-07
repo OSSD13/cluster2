@@ -1,4 +1,4 @@
-@extends('layouts.empmenu')
+@extends('layouts.layout_user')
 
 @section('content')
 <h1 class="text-2xl font-semibold mt-4 text-left px-6">เพิ่มข้อมูล</h1>

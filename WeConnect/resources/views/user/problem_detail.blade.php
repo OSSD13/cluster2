@@ -1,4 +1,4 @@
-@extends('layouts.empmenu')
+@extends('layouts.layout_user')
 <!DOCTYPE html>
 <html lang="th">
 
@@ -34,7 +34,7 @@
 </head>
 
 <body class="bg-gray-100">
-    @section('content')
+  @section('content')
 
   <!-- ฟอร์มแจ้งปัญหา -->
   <h1 class="text-2xl font-semibold mt-4 text-center">รายละเอียดปัญหา</h1>
@@ -63,20 +63,20 @@
     </div>
 
     <form action="{{url('/EditData')}}" method="POST">
-        @csrf
-    <div class="flex justify-end mt-4 space-x-2">
-      <button type ="submit" class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
-        <i class="fa-solid fa-pen-to-square" style="color: black"></i>
-      </button>
+      @csrf
+      <div class="flex justify-end mt-4 space-x-2">
+        <button type="submit" class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
+          <i class="fa-solid fa-pen-to-square" style="color: black"></i>
+        </button>
     </form>
 
     <form action="{{ url('Home') }}" method="POST" onsubmit="return confirmDelete()">
-    <!-- ปุ่มลบ -->
-    <button type ="submit" onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
+      <!-- ปุ่มลบ -->
+      <button type="submit" onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
         <i class="fa-solid fa-trash"></i>
-    </button>
+      </button>
 
-    </div>
+  </div>
   </div>
 
   <script>
@@ -105,13 +105,13 @@
   </script>
 
   <script>
-    document.getElementById('imageInput').addEventListener('change', function (event) {
+    document.getElementById('imageInput').addEventListener('change', function(event) {
       const preview = document.getElementById('preview');
       preview.innerHTML = ''; // เคลียร์ก่อน
 
       Array.from(event.target.files).forEach(file => {
         const reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function(e) {
           const img = document.createElement('img');
           img.src = e.target.result;
           img.className = "w-16 h-16 object-cover rounded-md";
@@ -122,7 +122,7 @@
     });
   </script>
 
-<script>
+  <script>
     function confirmDelete() {
       Swal.fire({
         icon: 'error',
@@ -130,8 +130,8 @@
         showCancelButton: true,
         confirmButtonText: 'ตกลง',
         cancelButtonText: 'ยกเลิก',
-        confirmButtonColor: '#22c55e',   // เขียว
-        cancelButtonColor: '#9ca3af',    // เทา
+        confirmButtonColor: '#22c55e', // เขียว
+        cancelButtonColor: '#9ca3af', // เทา
         customClass: {
           title: 'text-red-500 text-lg'
         }
@@ -151,6 +151,7 @@
       });
     }
   </script>
-@endsection
+  @endsection
 </body>
+
 </html>

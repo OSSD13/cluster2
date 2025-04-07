@@ -1,5 +1,5 @@
-
 <!DOCTYPE html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,42 +11,37 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 <style>
-    body{
-        font-family: 'Kanit' , sans-serif;
+    body {
+        font-family: 'Kanit', sans-serif;
     }
-
 </style>
+
 <body>
-    @extends('layouts.empmenu')
+    @extends('layouts.layout_user')
     @section('content')
 
 
     <div id="map" class="w-full h-screen fixed">
-       
+
 
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-
-       var map = L.map('map').setView(["13.283361132009668", "100.92358591147209"], 13); // กรุงเทพฯ
-       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        var map = L.map('map').setView(["13.283361132009668", "100.92358591147209"], 13); // กรุงเทพฯ
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-    var problems = json($problems);
+        var problems = json($problems);
 
-    problems.forEach(problem => {
+        problems.forEach(problem => {
             if (problem.latitude && problem.longitude) {
                 L.marker([problem.latitude, problem.longitude])
                     .addTo(map)
                     .bindPopup(`<b>${problem.community_name}</b><br>${problem.detail}`);
             }
         });
-
-
-
-
     </script>
 
     <div class="fixed bottom-0 right-0 w-full max-w-xs mx-auto p-4 rounded-2xl z-40">
@@ -84,29 +79,30 @@
         </div>
     </div>
 
-<script>
-    const btn = document.getElementById("accordionBtn");
-    const content = document.getElementById("accordionContent");
-    const arrow = document.getElementById("arrow");
+    <script>
+        const btn = document.getElementById("accordionBtn");
+        const content = document.getElementById("accordionContent");
+        const arrow = document.getElementById("arrow");
 
-    btn.addEventListener("click", function() {
-        content.classList.toggle("max-h-60");
-        content.classList.toggle("overflow-hidden");
-        arrow.classList.toggle("rotate-180");
-    });
+        btn.addEventListener("click", function() {
+            content.classList.toggle("max-h-60");
+            content.classList.toggle("overflow-hidden");
+            arrow.classList.toggle("rotate-180");
+        });
 
-    const menuBtn = document.getElementById("menu-btn");
-    const sidebar = document.getElementById("sidebar");
+        const menuBtn = document.getElementById("menu-btn");
+        const sidebar = document.getElementById("sidebar");
 
-    menuBtn.addEventListener("click", function () {
-        sidebar.classList.toggle("-translate-x-full");
-        if (!sidebar.classList.contains("-translate-x-full")) {
-            btn.style.display = "none";
-        } else {
-            btn.style.display = "flex";
-        }
-    });
-</script>
-@endsection
+        menuBtn.addEventListener("click", function() {
+            sidebar.classList.toggle("-translate-x-full");
+            if (!sidebar.classList.contains("-translate-x-full")) {
+                btn.style.display = "none";
+            } else {
+                btn.style.display = "flex";
+            }
+        });
+    </script>
+    @endsection
 </body>
+
 </html>

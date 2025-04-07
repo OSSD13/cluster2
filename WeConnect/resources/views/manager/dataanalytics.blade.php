@@ -1,4 +1,4 @@
-@extends('layouts.managermenu')
+@extends('layouts.layout_manager')
 
 @section('content')
 <div class="container mx-auto px-4">

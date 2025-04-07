@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,9 +14,11 @@
         body {
             font-family: 'Kanit', sans-serif;
         }
+
         .menu {
             margin-left: 10px;
         }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -26,25 +29,25 @@
             display: none;
             z-index: 30;
         }
+
         .overlay.active {
             display: block;
         }
 
-        html, body {
-        height: 100%;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
 
         main {
-        height: calc(100vh - 4rem);
-        overflow-y: auto; 
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
         }
-
-</style>
-
     </style>
+
     @yield('styles')
 </head>
 
@@ -113,12 +116,12 @@
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("overlay");
 
-        menuBtn.addEventListener("click", function () {
+        menuBtn.addEventListener("click", function() {
             sidebar.classList.toggle("-translate-x-full");
             overlay.classList.toggle("active");
         });
 
-        overlay.addEventListener("click", function () {
+        overlay.addEventListener("click", function() {
             sidebar.classList.add("-translate-x-full");
             overlay.classList.remove("active");
         });
@@ -126,4 +129,5 @@
 
     @yield('scripts')
 </body>
+
 </html>

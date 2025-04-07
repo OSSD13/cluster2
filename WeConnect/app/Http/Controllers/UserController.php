@@ -17,16 +17,16 @@ class UserController extends Controller
         $muser->save();
 
         $users = User::all();
-        return view('usersManager', compact('users'));
+        return view('admin.manage_user', compact('users'));
     }
 
     function viewAddUser() {
-        return view('/adduser');
+        return view('/admin.add_user');
     }
 
     public function index() {
         $users = User::all();
-        return view('usersManager', compact('users'));
+        return view('admin.manage_user', compact('users'));
     }
 
 }
