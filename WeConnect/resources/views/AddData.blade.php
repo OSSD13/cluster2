@@ -84,20 +84,16 @@
             <button class="ml-2">➤</button>
         </div>
 
-        <!-- ปัญหาที่พบ -->
         <label class="block mt-4 mt-2 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
         <input type="text" class="w-full p-2 border rounded bg-gray-100" value="#ไฟฟ้า" readonly>
 
-        <!-- รายละเอียดเพิ่มเติม -->
         <label class="block mt-4 mt-2 text-sm">รายละเอียดเพิ่มเติม</label>
         <textarea class="w-full p-2 border rounded"></textarea>
 
-        <!-- อัปโหลดรูปภาพ -->
         <label class="block mt-4 mt-2 text-sm">รูปภาพเพิ่มเติม :</label>
-        <input type="file" id="imageInput" accept="image/*" class="border p-2 rounded w-full">
+        <input type="file" id="imageInput" accept="image/*" multiple class="border p-2 rounded w-full">
         <div id="preview" class="flex gap-2 mt-2"></div>
 
-        <!-- ปุ่ม ยืนยัน -->
         <div class="flex justify-center mt-6">
             <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
                  ยืนยันข้อมูล
@@ -129,9 +125,15 @@
 
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const preview = document.getElementById('preview');
-            preview.innerHTML = '';
+            const currentImages = preview.querySelectorAll('img').length;
+            const newFiles = Array.from(event.target.files);
 
-            Array.from(event.target.files).forEach(file => {
+            const allowed = 2 - currentImages;
+            if (newFiles.length > allowed) {
+                alert("สามารถอัปโหลดได้สูงสุด 2 รูปเท่านั้น");
+            }
+
+            newFiles.slice(0, allowed).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = document.createElement('img');
@@ -141,9 +143,9 @@
                 };
                 reader.readAsDataURL(file);
             });
+            event.target.value = '';
         });
     </script>
-
 </body>
 
 </html>

@@ -6,10 +6,8 @@ use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\EditDataController;
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
-// Route::get('/login', function () {
-//     return view('login');
-// });
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index']);
@@ -46,6 +44,10 @@ Route::get('/AddData',function (){
 Route::get('/EditData',function (){
     return view('EditData');
 });
+Route::post('/EditData',function (){
+    return view('EditData');
+});
+
 Route::get('/Address',function (){
     return view('Address');
 });
@@ -56,4 +58,14 @@ Route::get('/EditAddress',function (){
 
 Route::get('/confirmDelete',function (){
     return view('Delete');
+});
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::post('/home', [HomeController::class, 'home']);
+
+Route::get('/adduser',function (){
+    return view('adduser');
+});
+Route::post('/adduser',function (){
+    return view('adduser');
 });

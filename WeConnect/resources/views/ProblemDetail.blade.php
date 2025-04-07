@@ -1,3 +1,4 @@
+@extends('layouts.empmenu')
 <!DOCTYPE html>
 <html lang="th">
 
@@ -33,23 +34,7 @@
 </head>
 
 <body class="bg-gray-100">
-
-  <nav class="bg-orange-500 text-white p-5 flex items-center">
-    <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
-      <span class="mr-2">☰</span>
-      <h1 class="text-xl ">WeConnect</h1>
-    </button>
-  </nav>
-
-  <!-- เมนูซ่อน -->
-  <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg">
-    <ul class="space-y-2">
-      <li><a href="#" class="block text-gray-700"> Home</a></li>
-      <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
-      <li><a href="#" class="block text-gray-700"> Form</a></li>
-      <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-    </ul>
-  </div>
+    @section('content')
 
   <!-- ฟอร์มแจ้งปัญหา -->
   <h1 class="text-2xl font-semibold mt-4 text-center">รายละเอียดปัญหา</h1>
@@ -77,13 +62,17 @@
       <div id="preview" class="flex gap-2"></div>
     </div>
 
+    <form action="{{url('/EditData')}}" method="POST">
+        @csrf
     <div class="flex justify-end mt-4 space-x-2">
-      <button class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
+      <button type ="submit" class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
         <i class="fa-solid fa-pen-to-square" style="color: black"></i>
       </button>
+    </form>
 
+    <form action="{{ url('Home') }}" method="POST" onsubmit="return confirmDelete()">
     <!-- ปุ่มลบ -->
-    <button onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
+    <button type ="submit" onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
         <i class="fa-solid fa-trash"></i>
     </button>
 
@@ -162,7 +151,6 @@
       });
     }
   </script>
-
+@endsection
 </body>
-
 </html>

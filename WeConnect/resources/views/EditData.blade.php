@@ -1,3 +1,4 @@
+@extends('layouts.empmenu')
 <!DOCTYPE html>
 <html lang="th">
 
@@ -8,7 +9,7 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-
+ 
     <!-- Google Fonts: Kanit (TH) & Outfit (EN) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -31,25 +32,11 @@
     </style>
   </head>
 
-<body class="bg-gray-100">
-    <!-- Header -->
-    <nav class="bg-orange-500 text-white p-5 flex items-center">
-        <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
-            <span class="mr-2">☰</span>
-            <h1 class="text-xl font-bold">WeConnect</h1>
-        </button>
-    </nav>
-    <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-        <form action="{{ url('ProblemDetail') }}" method="POST" class="p-4">
-            @csrf
-            <ul class="space-y-2">
-                <li><a href="#" class="block text-gray-700"> Home</a></li>
-                <li><a href="#" class="block text-gray-700"> Map</a></li>
-                <li><a href="#" class="block text-gray-700"> Form</a></li>
-                <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-            </ul>
-        </div>
 
+<body class="bg-gray-100">
+    @section('content')
+<form action="{{url('/ProblemDetail')}}" method="POST">
+            @csrf
     <!-- ฟอร์มแจ้งปัญหา -->
     <h1 class="text-2xl font-semibold mt-4 text-left px-6">แก้ไขข้อมูล</h1>
     <div class="p-4">
@@ -73,14 +60,16 @@
         <textarea name ="description" class="w-full p-2 border rounded"></textarea>
 
 
+
         <!-- ปุ่ม ยืนยัน -->
         <div class="flex justify-center mt-6">
             <button type ="submit" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
                  ยืนยันข้อมูล
             </button>
         </div>
+    </form>
     </div>
-</form>
+
     <script>
         function openGoogleMaps() {
             let address = document.getElementById("location").value;
@@ -119,5 +108,6 @@
             });
         });
     </script>
+    @endsection
 </body>
 </html>
