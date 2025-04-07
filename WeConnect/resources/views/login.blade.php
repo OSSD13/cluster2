@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -155,7 +156,7 @@
 
         <form action="{{ url('/login') }}" onsubmit="return login()" method="post">
             @csrf
-            
+
             <label>Email</label>
             <input type="email" name="email" placeholder="Email" required>
 
@@ -165,6 +166,8 @@
             <button class="login-btn" type="submit">Login</button>
         </form>
     </div>
+
+</body>
 
     <svg class="wave wave-bottom" viewBox="0 0 1440 320">
         <path fill="#ff9800" fill-opacity="1"
@@ -179,3 +182,4 @@
 </body>
 
 </html>
+
