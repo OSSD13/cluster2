@@ -2,7 +2,7 @@
 
 @section('admin_content')
     <!-- ฟอร์มกรอกข้อมูลจั้ฟฟ -->
-    <main class="pt-4">
+    <main>
         <div class="container">
             <h2 class="text-black text-2xl font-semibold">เพิ่มบัญชีผู้ใช้</h2>
             <form action="{{ url('/adduser') }}" method="post">
