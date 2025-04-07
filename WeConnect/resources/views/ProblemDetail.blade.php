@@ -1,3 +1,4 @@
+@extends('layouts.empmenu')
 <!DOCTYPE html>
 <html lang="th">
 
@@ -19,7 +20,7 @@
 
   <!-- Google Maps API -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     body {
@@ -31,25 +32,10 @@
     }
   </style>
 </head>
-
+<form action="{{url('/editdata')}}" method="POST">
+    @csrf
 <body class="bg-gray-100">
-
-  <nav class="bg-orange-500 text-white p-5 flex items-center">
-    <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
-      <span class="mr-2">☰</span>
-      <h1 class="text-xl font-bold">WeConnect</h1>
-    </button>
-  </nav>
-
-  <!-- เมนูซ่อน -->
-  <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg">
-    <ul class="space-y-2">
-      <li><a href="#" class="block text-gray-700"> Home</a></li>
-      <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
-      <li><a href="#" class="block text-gray-700"> Form</a></li>
-      <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-    </ul>
-  </div>
+    @section('content')
 
   <!-- ฟอร์มแจ้งปัญหา -->
   <h1 class="text-2xl font-semibold mt-4 text-center">รายละเอียดปัญหา</h1>
@@ -77,13 +63,18 @@
       <div id="preview" class="flex gap-2"></div>
     </div>
 
+
     <div class="flex justify-end mt-4 space-x-2">
-      <button class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
+      <button type ="submit" class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
         <i class="fa-solid fa-pen-to-square" style="color: black"></i>
       </button>
-      <button class="p-2 px-5 bg-red-500 text-white rounded">
+    </form>
+
+    <!-- ปุ่มลบ -->
+    <button onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
         <i class="fa-solid fa-trash"></i>
-      </button>
+    </button>
+</form>
     </div>
   </div>
 
@@ -130,6 +121,35 @@
     });
   </script>
 
+<script>
+    function confirmDelete() {
+      Swal.fire({
+        icon: 'error',
+        title: 'ลบรายการนี้หรือไม่',
+        showCancelButton: true,
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#22c55e',   // เขียว
+        cancelButtonColor: '#9ca3af',    // เทา
+        customClass: {
+          title: 'text-red-500 text-lg'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // แสดงแจ้งเตือนว่าลบเรียบร้อย
+          Swal.fire({
+            icon: 'success',
+            title: 'ข้อมูลของคุณถูกลบแล้ว',
+            confirmButtonText: 'กลับหน้าหลัก',
+            confirmButtonColor: '#0ea5e9',
+          }).then(() => {
+            // กลับหน้าหลักหรือรีโหลดก็ได้
+            window.location.href = 'index.html'; // เปลี่ยนตามที่ต้องการ
+          });
+        }
+      });
+    }
+  </script>
+@endsection
 </body>
-
 </html>

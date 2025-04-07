@@ -1,3 +1,5 @@
+@extends('layouts.empmenu')
+
 <!DOCTYPE html>
 <html lang="th">
 
@@ -33,24 +35,10 @@
 
 <body class="bg-gray-100">
     <!-- Header -->
-    <nav class="bg-orange-500 text-white p-5 flex items-center">
-        <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
-            <span class="mr-2">☰</span>
-            <h1 class="text-xl font-bold">WeConnect</h1>
-        </button>
-    </nav>
+    @section('content')
 
- <!-- เมนูซ่อน -->
-    <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-        {{-- <div id="menu" class="hidden bg-white shadow-md absolute h-screen top-15 left-0 w-64 p-4"> --}}
-            <ul class="space-y-2">
-                <li><a href="#" class="block text-gray-700"> Home</a></li>
-                <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
-                <li><a href="#" class="block text-gray-700"> Form</a></li>
-                <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-            </ul>
-        </div>
-
+        <form action=" {{url('/adddaata') }}" method="post">
+            @csrf
     <!-- ฟอร์มแจ้งปัญหา -->
     <h1 class="text-2xl font-semibold mt-4 text-left px-6">เพิ่มข้อมูล</h1>
     <div class="p-4">
@@ -97,12 +85,18 @@
         <input type="file" id="imageInput" accept="image/*" class="border p-2 rounded w-full">
         <div id="preview" class="flex gap-2 mt-2"></div>
 
-        <!-- ปุ่ม ยืนยัน -->
         <div class="flex justify-center mt-6">
+            <a href="{{ url('home') }}" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+                เพิ่มข้อมูล
+            </a>
+        </div>
+    </form>
+        <!-- ปุ่ม ยืนยัน -->
+        {{-- <div class="flex justify-center mt-6">
             <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
                  ยืนยันข้อมูล
             </button>
-        </div>
+        </div> --}}
     </div>
 
     <script>
@@ -143,7 +137,7 @@
             });
         });
     </script>
-
+@endsection
 </body>
 
 </html>

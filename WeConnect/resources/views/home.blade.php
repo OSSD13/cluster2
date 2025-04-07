@@ -1,3 +1,6 @@
+@extends('layouts.empmenu')
+
+
 <!DOCTYPE html>
 <html lang="th">
 
@@ -11,29 +14,10 @@
 </head>
 
 <body class="bg-gray-100">
+    @section('content')
 
-    <nav class="bg-orange-500 text-white p-5 flex items-center">
-        <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
-            <span class="mr-2">≡</span>
-            <h1 class="text-xl font-bold">WeConnect</h1>
-        </button>
-    </nav>
-
-    <!-- เมนูซ่อน -->
-    <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-    {{-- <div id="menu" class="hidden bg-white shadow-md absolute h-screen top-15 left-0 w-64 p-4"> --}}
-        <ul class="space-y-2">
-            <li><a href="#" class="block text-gray-700"> Home</a></li>
-            <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
-            <li><a href="#" class="block text-gray-700"> Form</a></li>
-            <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-        </ul>
-    </div>
-
-
-
-
-
+    <form action="{{ url('/login') }}" method="post">
+        @csrf
 
 
     <!-- ฟอร์มแจ้งปัญหา -->
@@ -46,9 +30,16 @@
             <input type="text" placeholder="🔍 ค้นหา" class="border px-3 py-1 rounded w-60" />
         </div>
 
-
   <!-- Section แสดงปัญหา -->
   <div id="problem-section" class="max-w-md mx-auto px-4 mt-4 space-y-4"></div>
+
+  <div class="fixed bottom-6 right-6">
+    <a href="{{ url('adddata') }}" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+        เพิ่มข้อมูล
+    </a>
+</div>
+</form>
+
 
 
   <!-- ปุ่ม เพิ่มข้อมูล -->
@@ -58,7 +49,7 @@
         เพิ่มข้อมูล
     </button>
 </div>
-
+</form>
 
 
   <script>
@@ -68,20 +59,23 @@
     }
 
     function showProblem() {
-      const section = document.getElementById("problem-section");
+    const section = document.getElementById("problem-section");
 
-      const html = `
-        <div class="bg-white p-4 rounded-xl shadow">
-          <p class="text-sm text-gray-500">01/01/2025</p>
-          <p class="font-semibold mt-1">เพิ่มโดย : นายxxx xxxxxx</p>
-          <p class="mt-1">📍 <strong>สถานที่</strong> : ชุมชนหาดน้ำดำ ตำบล บางพระ อำเภอ ศรีราชา ชลบุรี 20110</p>
-          <p class="mt-1">⚠️ <strong>ปัญหา</strong> : <span class="bg-gray-200 px-2 py-1 rounded">ไฟฟ้า</span></p>
-          <p class="mt-1">ไฟฟ้าเข้าไม่ถึง</p>
-        </div>
-      `;
+    const html = `
+        <a href="http://localhost:1302/problemdetail" class="block">
+            <div class="bg-white p-4 rounded-xl shadow">
+                <p class="text-sm text-gray-500">01/01/2025</p>
+                <p class="font-semibold mt-1">เพิ่มโดย : นายxxx xxxxxx</p>
+                <p class="mt-1">📍 <strong>สถานที่</strong> : ชุมชนหาดน้ำดำ ตำบล บางพระ อำเภอ ศรีราชา ชลบุรี 20110</p>
+                <p class="mt-1">⚠️ <strong>ปัญหา</strong> : <span class="bg-gray-200 px-2 py-1 rounded">ไฟฟ้า</span></p>
+                <p class="mt-1">ไฟฟ้าเข้าไม่ถึง</p>
+            </div>
+        </a>
+    `;
 
-      section.insertAdjacentHTML('beforeend', html);
-    }
+    section.insertAdjacentHTML('beforeend', html);
+}
+
 
     function toggleModal(show) {
         const modal = document.getElementById("popupModal");
@@ -92,18 +86,6 @@
         }
     }
   </script>
-
-
-
-
-
-
-
-
-
-
-
-
+  @endsection
 </body>
-
 </html>
