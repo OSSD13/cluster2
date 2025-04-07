@@ -1,3 +1,4 @@
+@extends('layouts.adminmenu')
 <!DOCTYPE html>
 <html lang="th">
 
@@ -18,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_REAL_API_KEY&libraries=places"></script>
 
     <style>
       body {
@@ -39,46 +40,48 @@
             <h1 class="text-xl font-bold">WeConnect</h1>
         </button>
     </nav>
-
- <!-- เมนูซ่อน -->
     <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-        {{-- <div id="menu" class="hidden bg-white shadow-md absolute h-screen top-15 left-0 w-64 p-4"> --}}
+        <form action="{{ url('ProblemDetail') }}" method="POST" class="p-4">
+            @csrf
             <ul class="space-y-2">
                 <li><a href="#" class="block text-gray-700"> Home</a></li>
-                <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
+                <li><a href="#" class="block text-gray-700"> Map</a></li>
                 <li><a href="#" class="block text-gray-700"> Form</a></li>
                 <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
             </ul>
         </div>
 
     <!-- ฟอร์มแจ้งปัญหา -->
-    <h1 class="text-2xl font-semibold mt-4 text-left px-6">ที่อยู่</h1>
+    <h1 class="text-2xl font-semibold mt-4 text-left px-6">แก้ไขข้อมูล</h1>
     <div class="p-4">
         <!-- ชื่อชุมชน -->
-        <label class="block mt-2 text-sm">ตำบล <i class="fa-solid fa-star-of-life text-red-500 text-[10px]"></i></i></label>
-        <input type="text" class="w-full p-2 border rounded" placeholder="กรอกตำบล">
+        <label class="block mt-2 text-sm">ชื่อของชุมชน</label>
+        <input type="text" name= "community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
 
-        <!-- ชื่อชุมชน -->
-        <label class="block mt-2 text-sm">อำเภอ <i class="fa-solid fa-star-of-life text-red-500 text-[10px]"></i></label>
-        <input type="text" class="w-full p-2 border rounded" placeholder="กรอกอำเภอ">
+        <!-- ที่อยู่ -->
+        <label class="block mt-4 mt-2 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
+        <div class="flex items-center border p-2 rounded">
+            <input type="text" name ="location" id="location" class="w-full border-none focus:ring-0">
+            <button class="ml-2">➤</button>
+        </div>
 
-        <!-- ชื่อชุมชน -->
-        <label class="block mt-2 text-sm">จังหวัด <i class="fa-solid fa-star-of-life text-red-500 text-[10px]"></i></i></label>
-        <input type="text" class="w-full p-2 border rounded" placeholder="กรอกจังหวัด">
+        <!-- ปัญหาที่พบ -->
+        <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
+        <input type="text" name ="issues" class="w-full p-2 border rounded bg-gray-100" value="#ไฟฟ้า">
 
-        <!-- ชื่อชุมชน -->
-        <label class="block mt-2 text-sm">รหัสไปรษณีย์ <i class="fa-solid fa-star-of-life text-red-500 text-[10px]"></i></i></label>
-        <input type="text" class="w-full p-2 border rounded" placeholder="กรอกรหัสไปรษณีย์">
+        <!-- รายละเอียดเพิ่มเติม -->
+        <label class="block mt-4 mt-2 text-sm">รายละเอียดเพิ่มเติม</label>
+        <textarea name ="description" class="w-full p-2 border rounded"></textarea>
 
 
         <!-- ปุ่ม ยืนยัน -->
         <div class="flex justify-center mt-6">
-            <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+            <button type ="submit" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
                  ยืนยันข้อมูล
             </button>
         </div>
     </div>
-
+</form>
     <script>
         function openGoogleMaps() {
             let address = document.getElementById("location").value;
@@ -117,7 +120,5 @@
             });
         });
     </script>
-
 </body>
-
 </html>
