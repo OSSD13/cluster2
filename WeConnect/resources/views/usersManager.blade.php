@@ -1,21 +1,43 @@
-@extends('layouts.app')
+@extends('layouts.adminmenu')
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WeConnect - แจ้งปัญหา</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Kanit (TH) & Outfit (EN) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_REAL_API_KEY&libraries=places"></script>
+
+    <style>
+      body {
+        font-family: 'Kanit', 'Outfit', sans-serif;
+      }
+
+      :lang(en) {
+        font-family: 'Outfit', sans-serif;
+      }
+    </style>
+  </head>
 
 @section('content')
-
-
-<div class="container py-4">
-    <div class="card shadow rounded-6">
-        {{-- Header --}}
-        <div class="card-header text-white d-flex justify-content-between align-items-center px-3 py-2" style="background-color: #f97316;">
-            <h4 class="mb-0 fw-bold">WeConnect</h4>
-            <button class="btn btn-light d-md-none"><i class="fas fa-bars"></i></button>
-        </div>
-
-        {{-- Body --}}
-        <div class="card-body">
+<div class="container">
             <div class="text-center mb-4">
-                <h2 class="fw-bold">User Manage <i class="fas fa-user-edit"></i></h2>
-                <h5 class="text-muted">User Tables</h5>
+                <h1 class="text-2xl font-semibold mt-4 text-left px-6">User Manage<i class="fas fa-user-edit"></i></h1>
+
+                <h2 class="text-muted">User Tables</h2>
             </div>
 
             {{-- Table --}}
@@ -51,7 +73,11 @@
 
             {{-- Add User Button --}}
             <form action="{{  url('/adduser') }}" method="get">
-                <button class="btn btn-lg fw-bold rounded-pill text-white" style="background-color: #28a745;">เพิ่มบัญชีผู้ใช้</a>
+                <div class="flex justify-center mt-6">
+                    <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+                         เพิ่มบัญชีผู้ใช้
+                    </button>
+                </div>
             </form>
         </div>
     </div>
