@@ -22,7 +22,7 @@
 
 
     <div id="map" class="w-full h-screen fixed">
-       
+
 
     </div>
 
@@ -33,22 +33,6 @@
        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-
-    var problems = @json($problems);
-
-    problems.forEach(problem => {
-            if (problem.latitude && problem.longitude) {
-                L.marker([problem.latitude, problem.longitude])
-                    .addTo(map)
-                    .bindPopup(`<b>${problem.community_name}</b><br>${problem.detail}`);
-            }
-        });
-        .bindPopup(`
-    <b>${problem.community_name}</b><br>
-    จ.${problem.province}, อ.${problem.district}, ต.${problem.sub_district}<br>
-    รหัสไปรษณีย์: ${problem.post_code}<br><br>
-    <i>${problem.detail}</i>
-`)
 
 
 
