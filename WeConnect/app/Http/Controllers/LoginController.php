@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-
 class LoginController extends Controller
 {
     function index(){
@@ -23,7 +22,7 @@ class LoginController extends Controller
             } else if ($user->role === 'Manager') {
                 return redirect('/dashboard');
             } else if ($user->role === 'User') {
-                return redirect('/problem');
+                return redirect('/home');
             }
         } else {
             $req->session()->flash('error', 'กรุณาตรวจสอบข้อมูลอีกครั้ง'); //แดงแต่รันได้ intelephense น่าจะรุ่นเก่ากว่า

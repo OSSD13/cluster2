@@ -2,18 +2,21 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProblemController;
 
-
-
 use Illuminate\Support\Facades\Route;
+
+
+// Route::get('/login', function () {
+//     return view('login');
+// });
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/adduser', [UserController::class, 'index']);
+Route::get('/usermanage', [UserController::class, 'index']);
+Route::get('/adduser', [UserController::class, 'viewAddUser']);
 Route::post('/adduser', [UserController::class, 'addUser']);
 
 Route::get('/adddata', [ProblemController::class, 'adddata'])->name('adddata');
@@ -21,32 +24,45 @@ Route::post('/adddata', [ProblemController::class, 'adddata']);
 
 
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::post('/home', [HomeController::class, 'home']);
+Route::get('/home', [ProblemController::class, 'index'])->name('home');
+Route::post('/home', [ProblemController::class, 'home']);
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
 Route::get('/problemdetail', function () {
-    return view('problemdetail');
+    return view('user.problem_detail');
 });
-Route::get('/adddata',function (){
-    return view('adddata');
+Route::post('/problemdetail',function (){
+    return view('user.problem_detail');
 });
 
-Route::get('/editdata',function (){
-    return view('editdata');
+Route::get('/addproblem',function (){
+    return view('user.add_problem');
 });
-Route::post('/editdata',function (){
-    return view('editdata');
+
+Route::get('/editproblem',function (){
+    return view('user.edit_problem');
 });
 
 Route::get('/address',function (){
-    return view('address');
+    return view('user.add_address');
+});
+
+Route::get('/testproblem',function (){
+    return view('test_problem');
+});
+
+Route::get('/dashboard',function (){
+    return view('manager.dashboard');
 });
 
 Route::get('/editaddress',function (){
-    return view('editaddress');
+    return view('user.edit_address');
 });
 
-?>
+Route::get('/maps',function(){
+    return view('user.open_map');
+});
+
+Route::get('/edituser',function(){
+    return view('admin.edit_user');
+});
+
