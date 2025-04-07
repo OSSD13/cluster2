@@ -1,14 +1,13 @@
+
 <!DOCTYPE html>
-<html>
+
+้<html>
 
 <head>
-    <title>WeConnect</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
     <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
+
     <link rel="stylesheet" href="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
     <!-- <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script> -->
     <script>
@@ -105,7 +104,7 @@
                 var n, i, o = {
                     empty: " ",
                     suggestion: function(e) {
-                        return e.zipcode && (e.zipcode = " » " + e.zipcode), "<div>" + e.district + " » " + e.amphoe + " » " + e.province + e.zipcode + "</div>"
+                        return e.zipcode && (e.zipcode = " » " + e.zipcode), "<div>" + e.district + " » " + e.amphoe + " » " + e.province + "</div>"
                     }
                 };
                 for (n in e) n.indexOf("$") > -1 && "$search" !== n && e.hasOwnProperty(n) && e[n] && e[n].typeahead({
@@ -182,30 +181,6 @@
     </script>
 
     <style>
-        #map {
-            height: 500px;
-            width: 500px;
-            position: relative;
-        }
-
-        /* สร้างหมุดที่อยู่ตรงกลางหน้าจอ */
-        .center-marker {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 32px;
-            height: 32px;
-            margin-left: -16px;
-            margin-top: -32px;
-            background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            pointer-events: none;
-            z-index: 999;
-        }
-    </style>
-
-    <style>
         * {
             margin: 0;
             padding: 0;
@@ -242,69 +217,29 @@
 
 <body>
 
-    <form action="{{ url('/addproblem') }}" method="post">
-        @csrf
-        <input id="community_name" name="community_name" type="text" class="txt" placeholder="ชื่อชุมชน">
-        <textarea id="detail" name="detail" placeholder="รายละเอียดเพิ่มเติม"></textarea>
-
-        <!-- หน้าแผนที่ -->
-        <div id="map">
-            <div class="center-marker"></div> <!-- หมุดกลางหน้าจอ -->
+    <div class="container">
+        <h2>Thailand.js</h2>
+        <div class="form-control">
+            <span>ตำบล/แขวง</span>
+            <input id="sub_district" type="text" class="txt" placeholder="ตำบล">
         </div>
-        <input id="latitude" name="latitude" type="text" class="txt" placeholder="ละติจูด">
-        <input id="longitude" name="longitude" type="text" class="txt" placeholder="ลองจิจูด">
-
-        <script>
-            var map = L.map('map').setView(["13.283361132009668", "100.92358591147209"], 13); // กรุงเทพฯ
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-            // ฟังก์ชันอัปเดตพิกัดจากจุดศูนย์กลางของแผนที่
-            function updateMarker() {
-                var center = map.getCenter();
-                var lat = center.lat;
-                var lng = center.lng;
-                document.getElementById('latitude').value = `${lat}`;
-                document.getElementById('longitude').value = `${lng}`;
-            }
-
-            // เรียกใช้งานครั้งแรก
-            updateMarker();
-
-            // เมื่อผู้ใช้เลื่อนแผนที่
-            map.on('moveend', updateMarker);
-        </script>
-
-        <!-- THAILAND AUTOCOMPLETE เลือกพื้นที่ -->
-        <div class="container">
-            <div class="form-control">
-                <span>ตำบล/แขวง</span>
-                <input id="sub_district" name="sub_district" type="text" class="txt" placeholder="ตำบล">
-            </div>
-            <div class="form-control">
-                <span>อำเภอ/เขต</span>
-                <input id="district" name="district" type="text" class="txt" placeholder="อำเภอ">
-            </div>
-            <div class="form-control">
-                <span>จังหวัด</span>
-                <input id="province" name="province" type="text" class="txt" placeholder="จังหวัด">
-            </div>
-            <div class="form-control">
-                <span>รหัสไปรษณีย์</span>
-                <input id="postcode" name="postcode" type="text" class="txt" placeholder="รหัสไปรษณีย์">
-            </div>
+        <div class="form-control">
+            <span>อำเภอ/เขต</span>
+            <input id="district" type="text" class="txt" placeholder="อำเภอ">
         </div>
+        <div class="form-control">
+            <span>จังหวัด</span>
+            <input id="province" type="text" class="txt" placeholder="จังหวัด">
+        </div>
+    </div>
 
-        <script>
-            $.Thailand({
-                $district: $("#sub_district"), // input ของตำบล
-                $amphoe: $("#district"), // input ของอำเภอ
-                $province: $("#province"), // input ของจังหวัด
-                $zipcode: $("#postcode") // input ของรหัสไปรษณีย์
-            });
-        </script>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <script>
+        $.Thailand({
+            $district: $("#sub_district"), // input ของตำบล
+            $amphoe: $("#district"), // input ของอำเภอ
+            $province: $("#province"), // input ของจังหวัด
+            $zipcode: $("#postcode") // input ของรหัสไปรษณีย์
+        });
+    </script>
 </body>
-
 </html>

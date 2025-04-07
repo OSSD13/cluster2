@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\User;
 
 class UserController extends Controller
@@ -13,16 +12,21 @@ class UserController extends Controller
         $muser = new User();
         $muser->name = $req->name;
         $muser->email = $req->email;
-        $muser->password = "None";
+        $muser->password = $req->password;
         $muser->role = $req->role;
         $muser->save();
 
-        return view('adduser');
+        $users = User::all();
+        return view('admin.manage_user', compact('users'));
+    }
+
+    function viewAddUser() {
+        return view('/admin.add_user');
     }
 
     public function index() {
         $users = User::all();
-        return view('usersManager', compact('users'));
+        return view('admin.manage_user', compact('users'));
     }
 
 }

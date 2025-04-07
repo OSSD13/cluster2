@@ -1,71 +1,61 @@
 <?php
 
+
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
-use App\Http\Controllers\EditDataController;
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 
 
 Route::get('/', [LoginController::class, 'index']);
 Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/adduser', [UserController::class, 'index']);
+Route::get('/usermanage', [UserController::class, 'index']);
+Route::get('/adduser', [UserController::class, 'viewAddUser']);
 Route::post('/adduser', [UserController::class, 'addUser']);
 
-Route::get('/problem', function() {
-    return view('problem');
+// Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
+Route::get('/home', [ProblemController::class, 'index'])->name('home');
+Route::post('/home', [ProblemController::class, 'home']);
+
+Route::get('/problemdetail', function () {
+    return view('user.problem_detail');
+});
+Route::post('/problemdetail',function (){
+    return view('user.problem_detail');
 });
 
-Route::post('/addproblem', [ProblemController::class, 'addForm']);
-
-Route::get('/dashboard', function() {
-    return view('dashboard');
+Route::get('/addproblem',function (){
+    return view('user.add_problem');
 });
 
-Route::get('/welcome', function () {
-    return view('welcome');
+Route::get('/editproblem',function (){
+    return view('user.edit_problem');
 });
 
-Route::get('/ProblemDetail',function (){
-    return view('ProblemDetail');
-});
-Route::post('/ProblemDetail',function (){
-    return view('ProblemDetail');
+Route::get('/address',function (){
+    return view('user.add_address');
 });
 
-Route::get('/AddData',function (){
-    return view('AddData');
+Route::get('/testproblem',function (){
+    return view('test_problem');
 });
 
-Route::get('/EditData',function (){
-    return view('EditData');
-});
-Route::post('/EditData',function (){
-    return view('EditData');
+Route::get('/dashboard',function (){
+    return view('manager.dashboard');
 });
 
-Route::get('/Address',function (){
-    return view('Address');
+Route::get('/editaddress',function (){
+    return view('user.edit_address');
 });
 
-Route::get('/EditAddress',function (){
-    return view('EditAddress');
+Route::get('/maps',function(){
+    return view('user.open_map');
 });
 
-Route::get('/confirmDelete',function (){
-    return view('Delete');
+Route::get('/edituser',function(){
+    return view('admin.edit_user');
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::post('/home', [HomeController::class, 'home']);
-
-Route::get('/adduser',function (){
-    return view('adduser');
-});
-Route::post('/adduser',function (){
-    return view('adduser');
-});

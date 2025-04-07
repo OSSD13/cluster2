@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,9 +14,11 @@
         body {
             font-family: 'Kanit', sans-serif;
         }
+
         .menu {
             margin-left: 10px;
         }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -26,30 +29,30 @@
             display: none;
             z-index: 30;
         }
+
         .overlay.active {
             display: block;
         }
 
-        html, body {
-        height: 100%;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
 
         main {
-        height: calc(100vh - 4rem);
-        overflow-y: auto; 
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
         }
-
-</style>
-
     </style>
+
     @yield('styles')
 </head>
 
 <body>
-    <header class="bg-orange-400 p-4 flex items-center z-50 relative">
+    <header class="bg-orange-500 p-4 flex items-center z-50 relative">
         <button id="menu-btn" class="text-white text-2xl mr-2 ml-2">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                 <path fill-rule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
@@ -113,12 +116,12 @@
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("overlay");
 
-        menuBtn.addEventListener("click", function () {
+        menuBtn.addEventListener("click", function() {
             sidebar.classList.toggle("-translate-x-full");
             overlay.classList.toggle("active");
         });
 
-        overlay.addEventListener("click", function () {
+        overlay.addEventListener("click", function() {
             sidebar.classList.add("-translate-x-full");
             overlay.classList.remove("active");
         });
@@ -126,4 +129,5 @@
 
     @yield('scripts')
 </body>
+
 </html>
