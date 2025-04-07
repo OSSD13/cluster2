@@ -37,7 +37,15 @@
 <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
 <div class="tags-input-wrapper w-full p-2 border rounded relative">
     <ul id="tags">
-        <input type="text" id="tag-input" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter">
+        <input type="text" id="tag-input" list="tagSuggestions" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter">
+            <datalist id="tagSuggestions">
+                <option value="น้ำประปาไม่ไหล">
+                <option value="ไฟฟ้าดับ">
+                <option value="ขยะไม่เก็บ">
+                <option value="ถนนพัง">
+                <option value="น้ำท่วม">
+                <option value="เสียงดังรบกวน">
+            </datalist>
     </ul>
     <button onclick="openTagModal()" class="absolute right-2 top-2 bg-blue-500 text-white px-2 py-1 rounded">+</button>
 </div>
