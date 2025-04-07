@@ -58,10 +58,22 @@
     <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม</label>
     <textarea class="w-full p-2 border rounded"></textarea>
 
-    <!-- อัปโหลดรูปภาพ -->
-    <label class="block mt-4 text-sm">รูปภาพเพิ่มเติม :</label>
-    <input type="file" id="imageInput" accept="image/*" class="border p-2 rounded w-full">
-    <div id="preview" class="flex gap-2 mt-2"></div>
+
+    <label class="block mt-2 text-sm">รูปภาพ</label>
+    <div class="flex gap-2 items-center">
+    <button id="uploadButton" class="px-4 py-2 bg-blue-500 text-white rounded">เลือกไฟล์</button>
+    <input type="file" id="imageInput" accept="image/*" class="hidden" />
+    <div id="preview" class="flex gap-2"></div>
+    </div>
+    <p id="warningText" class="text-red-500 text-sm mt-2 hidden">สามารถอัปโหลดได้สูงสุด 2 รูปเท่านั้น</p>
+
+    <!-- Modal Popup -->
+    <div id="popupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-4 rounded shadow-md max-w-sm w-full text-center">
+        <p class="text-red-600 font-semibold">สามารถอัปโหลดได้สูงสุด 2 รูปเท่านั้น</p>
+        <button id="closeModal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">ตกลง</button>
+        </div>
+    </div>
 
     <!-- ปุ่ม ยืนยัน -->
     <div class="flex justify-center mt-6">
@@ -69,6 +81,77 @@
             ยืนยันข้อมูล
         </button>
     </div>
+</div>
+<script>
+    const uploadedImages = [];
+
+    document.getElementById('uploadButton').addEventListener('click', function () {
+      document.getElementById('imageInput').click();
+    });
+
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        const newFiles = Array.from(event.target.files);
+        const warningText = document.getElementById('warningText');
+
+        if (uploadedImages.length + newFiles.length > 2) {
+            showModal();
+            warningText.classList.remove('hidden');
+            event.target.value = '';
+            return;
+        }
+
+        warningText.classList.add('hidden'); // ซ่อนข้อความเตือนถ้าจำนวนรูปไม่เกิน
+        newFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImages.push(e.target.result);
+                renderPreview();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        event.target.value = '';
+    });
+
+    function renderPreview() {
+        const preview = document.getElementById('preview');
+        preview.innerHTML = '';
+
+        uploadedImages.forEach((imgSrc, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = "relative";
+
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = "w-16 h-16 object-cover rounded-md";
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = "✕";
+            removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
+            removeBtn.onclick = () => {
+                uploadedImages.splice(index, 1);
+                renderPreview();
+
+                // ซ่อนข้อความเตือนเมื่อจำนวนรูปน้อยกว่า 2
+                if (uploadedImages.length <= 2) {
+                    document.getElementById('warningText').classList.add('hidden');
+                }
+            };
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(removeBtn);
+            preview.appendChild(wrapper);
+        });
+    }
+
+    function showModal() {
+      document.getElementById('popupModal').classList.remove('hidden');
+    }
+
+    document.getElementById('closeModal').addEventListener('click', function () {
+      document.getElementById('popupModal').classList.add('hidden');
+    });
+    </script>
 </div>
 @endsection
 
@@ -124,17 +207,30 @@
 </style>
 
 <script>
+    window.onload = function () {
+        if (localStorage.getItem('form_data')) {
+            const data = JSON.parse(localStorage.getItem('form_data'));
+            document.getElementById('location').value = `latitude: ${localStorage.getItem('latitude')}, longitude: ${localStorage.getItem('longitude')}` || '';
+        }
+    }
+
+    function saveFormToStorage() {
+        
+    }
+
     function openGoogleMaps() {
         let address = document.getElementById("location").value;
-        let url = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(address);
-        window.open(url, "_blank");
+        let url = "/addmap";
+        window.open(url, "_self");
     }
 
     function initAutocomplete() {
         let input = document.getElementById("location");
         let autocomplete = new google.maps.places.Autocomplete(input, {
             types: ['geocode'],
-            componentRestrictions: { country: "TH" }
+            componentRestrictions: {
+                country: "TH"
+            }
         });
     }
 
@@ -143,7 +239,7 @@
         menu.classList.toggle("hidden");
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const tagInput = document.getElementById('tag-input');
         const tags = document.getElementById('tags');
         const maxTags = 10000;
@@ -162,7 +258,7 @@
             li.textContent = tagValue + ' ';
             li.appendChild(span);
 
-            span.addEventListener('click', function () {
+            span.addEventListener('click', function() {
                 removeTag(li, tagValue);
             });
 
@@ -178,7 +274,7 @@
             element.remove();
         }
 
-        tagInput.addEventListener('keyup', function (e) {
+        tagInput.addEventListener('keyup', function(e) {
             if (e.key === 'Enter') {
                 const tagValue = this.value.trim();
                 if (tagValue && !tagsList.includes('#' + tagValue) && !tagsList.includes(tagValue)) {
@@ -190,6 +286,7 @@
             }
         });
     });
+
     function openTagModal() {
         document.getElementById("tagModal").classList.remove("hidden");
     }

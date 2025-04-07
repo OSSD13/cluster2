@@ -39,6 +39,10 @@ Route::get('/editproblem',function (){
     return view('user.edit_problem');
 });
 
+Route::get('/addmap',function (){
+    return view('user.add_map');
+});
+
 Route::get('/address',function (){
     return view('user.add_address');
 });
