@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\User;
 
 class UserController extends Controller
@@ -18,16 +17,16 @@ class UserController extends Controller
         $muser->save();
 
         $users = User::all();
-        return view('usersManager', compact('users'));
+        return view('admin.manage_user', compact('users'));
     }
 
     function viewAddUser() {
-        return view('/adduser');
+        return view('/admin.add_user');
     }
 
     public function index() {
         $users = User::all();
-        return view('usersManager', compact('users'));
+        return view('admin.manage_user', compact('users'));
     }
 
 }

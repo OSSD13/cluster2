@@ -1,6 +1,6 @@
-@extends('layouts.adminmenu')
+@extends('layouts.layout_admin')
 
-@section('admin_content')
+@section('content')
     <!-- ฟอร์มกรอกข้อมูลจั้ฟฟ -->
     <main>
         <div class="container">
