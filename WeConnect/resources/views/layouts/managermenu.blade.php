@@ -44,8 +44,6 @@
 
 </style>
 
-    </style>
-    @yield('styles')
 </head>
 
 <body>
