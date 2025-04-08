@@ -68,3 +68,18 @@ Route::post('/tags',
 Route::get('/tags/fetch',
 [TagController::class, 'fetch'])->name('tags.fetch');
 
+Route::get('/adminhome',function (){
+    return view('admin.admin_home');
+});
+Route::get('/adminmaps',function (){
+    return view('admin.admin_maps');
+});
+Route::get('/adminform',function (){
+    return view('admin.admin_addproblem');
+});
+Route::get('/admindashboard',function (){
+    return view('admin.admin_dashboard');
+});
+Route::get('/admindataAnalytics',function (){
+    return view('admin.admin_dataAnalytics');
+});
