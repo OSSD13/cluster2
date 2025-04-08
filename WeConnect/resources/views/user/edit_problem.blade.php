@@ -34,8 +34,9 @@
     </style>
   </head>
 
+  <body class="bg-gray-100">
   <h1 class="text-2xl font-semibold mt-4 text-left px-6">แก้ไขข้อมูล</h1>
-  <div class="p-4 bg-white rounded-lg shadow mt-4">
+  <div class="p-4 bg-red rounded-lg mt-4">
     <form action="{{ route('problem.update', $problem->prob_id) }}"
           method="POST"
           enctype="multipart/form-data">
@@ -73,26 +74,40 @@
              value="{{ old('postcode', $problem->post_code) }}">
       @error('postcode') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
     </div>
-{{-- ปัญหาที่พบ --}}
-<label for="tag_id" class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
-<select name="tag_id" id="tag_id" required class="w-full p-2 border rounded bg-gray-100">
-    <option value="">-- เลือกประเภทปัญหา --</option>
-    @foreach($tags as $tag)
-        <option value="{{ $tag->tag_id }}" {{ $tag->tag_id == $problem->tag_id ? 'selected' : '' }}>
-            {{ $tag->tag_name }}
-        </option>
-    @endforeach
-</select>
-@error('tag_id')
-    <p class="text-red-500 text-sm">{{ $message }}</p>
-@enderror
+    {{-- ปัญหาที่พบ --}}
+    <label for="tag_id" class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
+    <select name="tag_id" id="tag_id" required class="w-full p-2 border rounded bg-white-100">
+        <option value="">-- เลือกประเภทปัญหา --</option>
+        @foreach($tags as $tag)
+            <option value="{{ $tag->tag_id }}" {{ $tag->tag_id == $problem->tag_id ? 'selected' : '' }}>
+                {{ $tag->tag_name }}
+            </option>
+        @endforeach
+    </select>
+    @error('tag_id')
+        <p class="text-red-500 text-sm">{{ $message }}</p>
+    @enderror
 
     {{-- รายละเอียดเพิ่มเติม --}}
-    <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม</label>
-    <textarea name="description"
-              class="w-full p-2 border rounded"
-              rows="4">{{ old('description', $problem->detail) }}</textarea>
-    @error('description') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม <span class="text-red-500">*</span></label>
+        <textarea name="description"
+                class="w-full p-2 border rounded"
+                rows="4"
+                oninput="autoResize(this)"
+        >{{ old('description', $problem->detail) }}</textarea>
+        @error('description')
+            <p class="text-red-500 text-sm">{{ $message }}</p>
+        @enderror
+
+        <script>
+            function autoResize(textarea) {
+                // รีเซ็ตความสูงของ textarea ให้เป็นค่าเริ่มต้นก่อน
+                textarea.style.height = 'auto';
+                // ตั้งความสูงให้เท่ากับเนื้อหาภายใน
+                textarea.style.height = (textarea.scrollHeight) + 'px';
+            }
+        </script>
+
 
     {{-- ปุ่มยืนยัน --}}
     <div class="flex justify-center mt-6">
@@ -103,5 +118,6 @@
     </div>
   </form>
 </div>
+  </body>
 @endsection
 </html>

@@ -29,7 +29,8 @@
 
 <h1 class="text-2xl font-semibold mt-4 text-left px-6">รายละเอียดปัญหา</h1>
 
-<div class="p-4">
+<body class="bg-gray-100">
+<div class="p-4 ">
     <!-- ชื่อชุมชน -->
     <label class="block mt-2 text-sm text-gray-700">📍 ชื่อของชุมชน</label>
     <input type="text" class="w-full p-2 border rounded" value="{{ $problem->community_name }}" readonly>
@@ -49,7 +50,21 @@
 
     <!-- รายละเอียดเพิ่มเติม -->
     <label class="block mt-4 text-sm text-gray-700">📝 รายละเอียดเพิ่มเติม</label>
-    <textarea class="w-full p-2 border rounded" readonly>{{ $problem->detail }}</textarea>
+    <textarea id="detail" class="w-full p-2 border rounded" readonly>{{ $problem->detail }}</textarea>
+
+    <script>
+        // ฟังก์ชันสำหรับทำให้ textarea ขยายอัตโนมัติ
+        const textarea = document.getElementById('detail');
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight) + 'px';
+
+        // ฟังก์ชันที่จะเรียกทุกครั้งที่มีการพิมพ์ข้อมูลลงใน textarea
+        textarea.addEventListener('input', function () {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        });
+    </script>
+
 
     <!-- รูปภาพ -->
     <label class="block mt-4 text-sm text-gray-700">🖼️ รูปภาพเพิ่มเติม</label>
@@ -85,6 +100,7 @@
       </button>
     </form>
   </div>
+</body>
 
 
 @endsection

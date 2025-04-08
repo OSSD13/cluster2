@@ -36,9 +36,9 @@ class ProblemController extends Controller
     public function addForm(Request $req) {
         $problem = new Problem();
         $problem -> community_name = $req->input('community_name');
-        $problem -> detail = $req->input('detail');
-        $problem -> latitude = $req->input('latitude');
-        $problem -> longitude = $req->input('longitude');
+        $problem -> detailde = $req->input('latitude');
+        $problem -> longi = $req->input('detail');
+        $problem -> latitutude = $req->input('longitude');
         $problem -> sub_district = $req->input('sub_district');
         $problem -> district = $req->input('district');
         $problem -> province = $req->input('province');
@@ -138,6 +138,4 @@ public function search(Request $request)
 
     return view('user.home', compact('problems'));
 }
-
-
 }
