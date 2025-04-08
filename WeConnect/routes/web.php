@@ -12,16 +12,16 @@ use Illuminate\Support\Facades\Route;
 //     return view('login');
 // });
 
-Route::get('/', [LoginController::class, 'index']);
-Route::get('/login', [LoginController::class, 'index']);
-Route::post('/login', [LoginController::class, 'login']);
+Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::get('/usermanage', [UserController::class, 'index']);
 Route::get('/adduser', [UserController::class, 'viewAddUser']);
 Route::post('/adduser', [UserController::class, 'addUser']);
 
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
-Route::get('/home', [ProblemController::class, 'index'])->name('home');
+Route::get('/home', [ProblemController::class, 'index'])->name('userhome');
 Route::post('/home', [ProblemController::class, 'home']);
 
 Route::get('/problemdetail', function () {
