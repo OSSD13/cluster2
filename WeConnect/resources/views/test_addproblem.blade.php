@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <body>
-    <form action="{{ url('addimage') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ url('/addimage') }}" method="post" enctype="multipart/form-data">
         @csrf
         <label class="block mt-2 text-sm">รูปภาพ</label>
         <div class="flex gap-2 items-center">

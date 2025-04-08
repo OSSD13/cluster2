@@ -69,5 +69,5 @@ Route::get('/edituser',function(){
     return view('admin.edit_user');
 });
 
-Route::post('addimage', [ProblemController::class, 'addimage']);
+Route::post('/addimage', [ProblemController::class, 'addimage']);
 Route::post('/showimage', [ProblemController::class, 'showimage']);
