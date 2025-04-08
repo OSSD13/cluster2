@@ -63,23 +63,27 @@
         วันที่แจ้ง: {{ \Carbon\Carbon::parse($problem->created_at)->format('d/m/Y H:i') }}
     </div>
 
-    <!-- ปุ่ม -->
-    <div class="flex justify-end mt-6 space-x-2">
-        <form action="{{ url('/editproblem') }}" method="POST">
-            @csrf
-            <button type="submit" class="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                <i class="fa-solid fa-pen-to-square"></i> แก้ไข
-            </button>
-        </form>
+  <!-- Container ปุ่ม -->
+<div class="flex justify-end mt-6 space-x-2">
+    {{-- ปุ่มแก้ไข --}}
+    <form action="{{ url('/editproblem/' . $problem->prob_id) }}" method="GET">
+      @csrf
+      <button type="submit"
+              class="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 inline-flex items-center">
+        <i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข
+      </button>
+    </form>
 
-        <form action="{{ url('home') }}" method="POST" onsubmit="return confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?');">
-            @csrf
-            <button type="submit" class="p-2 bg-red-500 text-white rounded hover:bg-red-600">
-                <i class="fa-solid fa-trash"></i> ลบ
-            </button>
-        </form>
-    </div>
-</div>
+    {{-- ปุ่มลบ --}}
+    <form action="{{ url('home') }}" method="POST" onsubmit="return confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?');">
+      @csrf
+      <button type="submit"
+              class="p-2 bg-red-500 text-white rounded hover:bg-red-600 inline-flex items-center">
+        <i class="fa-solid fa-trash mr-1"></i> ลบ
+      </button>
+    </form>
+  </div>
+
 
 @endsection
 

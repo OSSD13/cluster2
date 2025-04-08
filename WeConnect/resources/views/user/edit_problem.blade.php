@@ -1,4 +1,5 @@
 @extends('layouts.layout_user')
+@section('content')
 
 <!DOCTYPE html>
 <html lang="th">
@@ -33,78 +34,68 @@
     </style>
   </head>
 
-  <body class="bg-gray-100">
-    @extends('content')
-    <!-- ฟอร์มแจ้งปัญหา -->
-    <h1 class="text-2xl font-semibold mt-4 text-left px-6">แก้ไขข้อมูล</h1>
-    <div class="p-4">
-        <!-- ชื่อชุมชน -->
-        <label class="block mt-2 text-sm">ชื่อของชุมชน</label>
-        <input type="text" name= "community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
+  <h1 class="text-2xl font-semibold mt-4 text-left px-6">แก้ไขข้อมูล</h1>
+  <div class="p-4 bg-white rounded-lg shadow mt-4">
+    <form action="{{ route('problem.update', $problem->prob_id) }}"
+          method="POST"
+          enctype="multipart/form-data">
+      @csrf
+      @method('PUT')
 
-        <!-- ที่อยู่ -->
-        <label class="block mt-4 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
-         <!-- ช่องที่อยู่เพิ่มเติม -->
-         <input id="sub_district" name="sub_district" type="text" placeholder="ตำบล" class="mt-2 w-full border p-2 rounded">
-          <input id="district" name="district" type="text" placeholder="อำเภอ" class="mt-2 w-full border p-2 rounded">
-          <input id="province" name="province" type="text" placeholder="จังหวัด" class="mt-2 w-full border p-2 rounded">
-           <input id="postcode" name="postcode" type="text" placeholder="รหัสไปรษณีย์" class="mt-2 w-full border p-2 rounded">
+    {{-- ชื่อชุมชน --}}
+    <label class="block mt-2 text-sm">ชื่อของชุมชน <span class="text-red-500">*</span></label>
+    <input type="text" name="community_name" required
+           class="w-full p-2 border rounded"
+           placeholder="กรอกชื่อชุมชน"
+           value="{{ old('community_name', $problem->community_name) }}">
+    @error('community_name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
 
-        <!-- ปัญหาที่พบ -->
-        <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
-        <input type="text" name ="issues" class="w-full p-2 border rounded bg-gray-100" value="#ไฟฟ้า">
+    {{-- ที่อยู่ --}}
+    <label class="block mt-4 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
+    <div class="space-y-2">
+      <input type="text" name="sub_district" required placeholder="ตำบล"
+             class="w-full p-2 border rounded"
+             value="{{ old('sub_district', $problem->sub_district) }}">
+      @error('sub_district') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
 
-        <!-- รายละเอียดเพิ่มเติม -->
-        <label class="block mt-4 mt-2 text-sm">รายละเอียดเพิ่มเติม</label>
-        <textarea name ="description" class="w-full p-2 border rounded"></textarea>
+      <input type="text" name="district" required placeholder="อำเภอ"
+             class="w-full p-2 border rounded"
+             value="{{ old('district', $problem->district) }}">
+      @error('district') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
 
+      <input type="text" name="province" required placeholder="จังหวัด"
+             class="w-full p-2 border rounded"
+             value="{{ old('province', $problem->province) }}">
+      @error('province') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
 
-        <!-- ปุ่ม ยืนยัน -->
-        <div class="flex justify-center mt-6">
-            <button type ="submit" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
-                 ยืนยันข้อมูล
-            </button>
-        </div>
+      <input type="text" name="postcode" required placeholder="รหัสไปรษณีย์"
+             class="w-full p-2 border rounded"
+             value="{{ old('postcode', $problem->post_code) }}">
+      @error('postcode') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
     </div>
-</form>
-    <script>
-        function openGoogleMaps() {
-            let address = document.getElementById("location").value;
-            let url = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(address);
-            window.open(url, "_blank");
-        }
 
-        function initAutocomplete() {
-            let input = document.getElementById("location");
-            let autocomplete = new google.maps.places.Autocomplete(input, {
-                types: ['geocode'],
-                componentRestrictions: { country: "TH" }
-            });
-        }
+    {{-- ปัญหาที่พบ --}}
+    <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
+    <input type="text" name="issues" required
+           class="w-full p-2 border rounded bg-gray-100"
+           value="{{ old('issues', $problem->problem_type) }}">
+    @error('issues') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
 
-        function toggleMenu() {
-            let menu = document.getElementById("menu");
-            menu.classList.toggle("hidden");
-        }
+    {{-- รายละเอียดเพิ่มเติม --}}
+    <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม</label>
+    <textarea name="description"
+              class="w-full p-2 border rounded"
+              rows="4">{{ old('description', $problem->detail) }}</textarea>
+    @error('description') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
 
-        window.onload = initAutocomplete;
-
-        document.getElementById('imageInput').addEventListener('change', function(event) {
-            const preview = document.getElementById('preview');
-            preview.innerHTML = '';
-
-            Array.from(event.target.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = "w-16 h-16 object-cover rounded-md";
-                    preview.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            });
-        });
-    </script>
-</body>
+    {{-- ปุ่มยืนยัน --}}
+    <div class="flex justify-center mt-6">
+      <button type="submit"
+              class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+        บันทึกข้อมูล
+      </button>
+    </div>
+  </form>
+</div>
 @endsection
 </html>
