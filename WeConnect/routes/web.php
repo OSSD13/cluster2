@@ -19,13 +19,17 @@ Route::get('/usermanage', [UserController::class, 'index']);
 Route::get('/adduser', [UserController::class, 'viewAddUser']);
 Route::post('/adduser', [UserController::class, 'addUser']);
 
-Route::get('/adddata', [ProblemController::class, 'adddata'])->name('adddata');
-Route::post('/adddata', [ProblemController::class, 'adddata']);
+// Route::get('/adddata', [ProblemController::class, 'adddata'])->name('adddata');
+// Route::post('/adddata', [ProblemController::class, 'adddata']);
 
 
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
 Route::get('/home', [ProblemController::class, 'index'])->name('home');
 Route::post('/home', [ProblemController::class, 'home']);
+
+Route::get('/problemdetail/{prob_id}', [ProblemController::class, 'show'])->name('problem.show');
+
+
 
 Route::get('/problemdetail', function () {
     return view('user.problem_detail');
@@ -39,6 +43,9 @@ Route::get('/addproblem',function (){
 });
 
 Route::get('/editproblem',function (){
+    return view('user.edit_problem');
+});
+Route::post('/editproblem',function (){
     return view('user.edit_problem');
 });
 
@@ -62,7 +69,17 @@ Route::get('/maps',function(){
     return view('user.open_map');
 });
 
+Route::get('/maps', [ProblemController::class, 'showMap'])->name('user.open_map.view');
+
+
 Route::get('/edituser',function(){
     return view('admin.edit_user');
 });
 
+Route::get('/addmap',function (){
+    return view('user.add_map');
+});
+// Route::get('/addproblem', [ProblemController::class, 'addForm']);
+// Route::post('/addproblem', [ProblemController::class, 'submit']);
+// Route::get('/editproblem/{id}', [ProblemController::class, 'editForm']);
+// Route::post('/editproblem/{id}', [ProblemController::class, 'updateForm']);

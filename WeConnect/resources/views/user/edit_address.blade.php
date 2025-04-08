@@ -1,3 +1,6 @@
+@extends('layouts.layout_user')
+
+
 <!DOCTYPE html>
 <html lang="th">
     <head>
@@ -30,25 +33,7 @@
         </style>
       </head>
 <body class="bg-gray-100">
-    <!-- Header -->
-    <nav class="bg-orange-500 text-white p-5 flex items-center">
-        <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
-            <span class="mr-2">☰</span>
-            <h1 class="text-xl font-bold">WeConnect</h1>
-        </button>
-    </nav>
-
- <!-- เมนูซ่อน -->
-    <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-        {{-- <div id="menu" class="hidden bg-white shadow-md absolute h-screen top-15 left-0 w-64 p-4"> --}}
-            <ul class="space-y-2">
-                <li><a href="#" class="block text-gray-700"> Home</a></li>
-                <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
-                <li><a href="#" class="block text-gray-700"> Form</a></li>
-                <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-            </ul>
-        </div>
-
+    @section('content')
     <!-- ฟอร์มแจ้งปัญหา -->
     <h1 class="text-2xl font-semibold mt-4 text-left px-6">ที่อยู่</h1>
     <div class="p-4">
@@ -115,7 +100,7 @@
             });
         });
     </script>
-
+@endsection
 </body>
 
 </html>

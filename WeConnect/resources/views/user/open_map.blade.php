@@ -1,3 +1,6 @@
+@extends('layouts.layout_user')
+
+
 <!DOCTYPE html>
 
 <head>
@@ -17,15 +20,9 @@
 </style>
 
 <body>
-    @extends('layouts.layout_user')
     @section('content')
-
-
     <div id="map" class="w-full h-screen fixed">
-
-
     </div>
-
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         var map = L.map('map').setView(["13.283361132009668", "100.92358591147209"], 13); // กรุงเทพฯ

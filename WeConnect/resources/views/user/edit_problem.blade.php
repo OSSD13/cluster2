@@ -1,4 +1,5 @@
-@extends('layouts.empmenu')
+@extends('layouts.layout_user')
+
 <!DOCTYPE html>
 <html lang="th">
 
@@ -32,25 +33,8 @@
     </style>
   </head>
 
-<body class="bg-gray-100">
-    <!-- Header -->
-    <nav class="bg-orange-500 text-white p-5 flex items-center">
-        <button onclick="toggleMenu()" class="text-white text-2xl flex items-center">
-            <span class="mr-2">☰</span>
-            <h1 class="text-xl font-bold">WeConnect</h1>
-        </button>
-    </nav>
-    <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-        <form action="{{ url('ProblemDetail') }}" method="POST" class="p-4">
-            @csrf
-            <ul class="space-y-2">
-                <li><a href="#" class="block text-gray-700"> Home</a></li>
-                <li><a href="#" class="block text-gray-700"> Map</a></li>
-                <li><a href="#" class="block text-gray-700"> Form</a></li>
-                <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-            </ul>
-        </div>
-
+  <body class="bg-gray-100">
+    @extends('content')
     <!-- ฟอร์มแจ้งปัญหา -->
     <h1 class="text-2xl font-semibold mt-4 text-left px-6">แก้ไขข้อมูล</h1>
     <div class="p-4">
@@ -59,11 +43,12 @@
         <input type="text" name= "community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
 
         <!-- ที่อยู่ -->
-        <label class="block mt-4 mt-2 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
-        <div class="flex items-center border p-2 rounded">
-            <input type="text" name ="location" id="location" class="w-full border-none focus:ring-0">
-            <button class="ml-2">➤</button>
-        </div>
+        <label class="block mt-4 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
+         <!-- ช่องที่อยู่เพิ่มเติม -->
+         <input id="sub_district" name="sub_district" type="text" placeholder="ตำบล" class="mt-2 w-full border p-2 rounded">
+          <input id="district" name="district" type="text" placeholder="อำเภอ" class="mt-2 w-full border p-2 rounded">
+          <input id="province" name="province" type="text" placeholder="จังหวัด" class="mt-2 w-full border p-2 rounded">
+           <input id="postcode" name="postcode" type="text" placeholder="รหัสไปรษณีย์" class="mt-2 w-full border p-2 rounded">
 
         <!-- ปัญหาที่พบ -->
         <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
@@ -73,13 +58,13 @@
         <label class="block mt-4 mt-2 text-sm">รายละเอียดเพิ่มเติม</label>
         <textarea name ="description" class="w-full p-2 border rounded"></textarea>
 
+
         <!-- ปุ่ม ยืนยัน -->
         <div class="flex justify-center mt-6">
             <button type ="submit" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
                  ยืนยันข้อมูล
             </button>
         </div>
-    </form>
     </div>
 </form>
     <script>
@@ -121,4 +106,5 @@
         });
     </script>
 </body>
+@endsection
 </html>

@@ -1,158 +1,158 @@
 @extends('layouts.layout_user')
-<!DOCTYPE html>
-<html lang="th">
 
+@section('content')
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WeConnect - แจ้งปัญหา</title>
+  <title>WeConnect - รายละเอียดปัญหา</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Kanit (TH) & Outfit (EN) -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Outfit&display=swap" rel="stylesheet" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- Google Maps API -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     body {
       font-family: 'Kanit', 'Outfit', sans-serif;
     }
-
     :lang(en) {
       font-family: 'Outfit', sans-serif;
     }
   </style>
 </head>
-<form action="{{url('/editdata')}}" method="POST">
-    @csrf
-<body class="bg-gray-100">
-  @section('content')
 
-  <!-- ฟอร์มแจ้งปัญหา -->
-  <h1 class="text-2xl font-semibold mt-4 text-center">รายละเอียดปัญหา</h1>
-  <div class="p-4">
-    <label class="block mt-2 text-sm">ชื่อของชุมชน</label>
-    <input type="text" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน" />
+<h1 class="text-2xl font-semibold mt-4 text-left px-6">รายละเอียดปัญหา</h1>
 
-    <label class="block mt-2 text-sm">ที่อยู่</label>
-    <div class="flex border rounded items-center">
-      <input id="location" type="text" class="w-full p-2 border-none focus:ring-0" placeholder="กรอกที่อยู่หรือเลือกจากแผนที่" />
-      <button onclick="openGoogleMaps()" class="p-2 bg-gray-200">📍</button>
+<div class="p-4">
+    <!-- ชื่อชุมชน -->
+    <label class="block mt-2 text-sm text-gray-700">📍 ชื่อของชุมชน</label>
+    <input type="text" class="w-full p-2 border rounded" value="{{ $problem->community_name }}" readonly>
+
+    <!-- ที่อยู่ -->
+    <label class="block mt-4 text-sm text-gray-700">📌 ที่อยู่</label>
+    <input type="text" class="w-full p-2 border rounded" readonly
+        value="ตำบล {{ $problem->sub_district }}, อำเภอ {{ $problem->district }}, จังหวัด {{ $problem->province }}, {{ $problem->post_code }}">
+
+    <!-- ปัญหาที่พบ -->
+    <label class="block mt-4 text-sm text-gray-700">⚠️ ปัญหาที่พบ</label>
+    <div class="tags-input-wrapper w-full p-2 border rounded">
+        <span class="inline-block bg-gray-200 px-3 py-1 rounded-full text-gray-800">#{{ $problem->problem_type ?? 'ไม่ระบุ' }}</span>
     </div>
 
-    <label class="block mt-2 text-sm">ปัญหา</label>
-    <div class="flex gap-2">
-      <span class="px-3 py-1 bg-gray-200 text-gray-800 rounded-full">ไฟฟ้า</span>
+    <!-- รายละเอียดเพิ่มเติม -->
+    <label class="block mt-4 text-sm text-gray-700">📝 รายละเอียดเพิ่มเติม</label>
+    <textarea class="w-full p-2 border rounded" readonly>{{ $problem->detail }}</textarea>
+
+    <!-- รูปภาพ -->
+    <label class="block mt-4 text-sm text-gray-700">🖼️ รูปภาพเพิ่มเติม</label>
+    @if($problem->image_path)
+        <img src="{{ asset('storage/' . $problem->image_path) }}" alt="รูปภาพปัญหา" class="w-48 h-48 object-cover rounded mt-2">
+    @else
+        <p class="text-gray-500 mt-1">ไม่มีรูปภาพ</p>
+    @endif
+
+    <!-- เพิ่มโดย + วันที่ -->
+    <div class="text-sm text-gray-500 mt-6 border-t pt-4">
+        เพิ่มโดย: นายxxx xxxxxx <br>
+        วันที่แจ้ง: {{ \Carbon\Carbon::parse($problem->created_at)->format('d/m/Y H:i') }}
     </div>
 
-    <label class="block mt-2 text-sm">รายละเอียดปัญหา</label>
-    <textarea class="w-full p-2 border rounded"></textarea>
+    <!-- ปุ่ม -->
+    <div class="flex justify-end mt-6 space-x-2">
+        <form action="{{ url('/editproblem') }}" method="POST">
+            @csrf
+            <button type="submit" class="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                <i class="fa-solid fa-pen-to-square"></i> แก้ไข
+            </button>
+        </form>
 
-    <label class="block mt-2 text-sm">รูปภาพ</label>
-    <div class="flex gap-2 items-center">
-      <input type="file" id="imageInput" accept="image/*" class="p-2 border rounded" />
-      <div id="preview" class="flex gap-2"></div>
+        <form action="{{ url('home') }}" method="POST" onsubmit="return confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?');">
+            @csrf
+            <button type="submit" class="p-2 bg-red-500 text-white rounded hover:bg-red-600">
+                <i class="fa-solid fa-trash"></i> ลบ
+            </button>
+        </form>
+    </div>
+</div>
+
+@endsection
+
+
+
+{{-- <body class="bg-gray-100">
+  <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
+    <h1 class="text-2xl font-bold mb-4 text-center">รายละเอียดปัญหา</h1>
+
+    <!-- ชื่อชุมชน -->
+    <div class="mb-4">
+      <label class="block text-sm text-gray-700">📍 ชื่อของชุมชน</label>
+      <p class="mt-1 text-gray-800">{{ $problem->community_name }}</p>
     </div>
 
-    <form action="{{url('/EditData')}}" method="POST">
-      @csrf
-      <div class="flex justify-end mt-4 space-x-2">
-        <button type="submit" class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
-          <i class="fa-solid fa-pen-to-square" style="color: black"></i>
+    <!-- ที่อยู่ -->
+    <div class="mb-4">
+      <label class="block text-sm text-gray-700">📌 ที่อยู่</label>
+      <p class="mt-1 text-gray-800">
+        ตำบล {{ $problem->sub_district }},
+        อำเภอ {{ $problem->district }},
+        จังหวัด {{ $problem->province }},
+        {{ $problem->post_code }}
+      </p>
+    </div>
+
+    <!-- ปัญหา -->
+    <div class="mb-4">
+      <label class="block text-sm text-gray-700">⚠️ ปัญหา</label>
+      <span class="inline-block bg-gray-200 px-3 py-1 rounded-full text-gray-800 mt-1">ไฟฟ้า</span>
+    </div>
+
+    <!-- รายละเอียดปัญหา -->
+    <div class="mb-4">
+      <label class="block text-sm text-gray-700">📝 รายละเอียดปัญหา</label>
+      <p class="mt-1 text-gray-800">{{ $problem->detail }}</p>
+    </div>
+
+    <!-- รูปภาพ -->
+    <div class="mb-4">
+      <label class="block text-sm text-gray-700">🖼️ รูปภาพ</label>
+      @if($problem->image_path)
+        <img src="{{ asset('storage/' . $problem->image_path) }}" alt="รูปภาพปัญหา" class="w-48 h-48 object-cover rounded mt-2">
+      @else
+        <p class="text-gray-500 mt-1">ไม่มีรูปภาพ</p>
+      @endif
+    </div>
+
+    <!-- เพิ่มโดย + วันที่ -->
+    <div class="text-sm text-gray-500 mt-6 border-t pt-4">
+      เพิ่มโดย: นายxxx xxxxxx <br>
+      วันที่แจ้ง: {{ \Carbon\Carbon::parse($problem->created_at)->format('d/m/Y H:i') }}
+    </div>
+
+    <form action="{{url('/editproblem')}}" method="POST">
+        @csrf
+        <div class="flex justify-end mt-4 space-x-2">
+          <button type="submit" class="p-2 bg-white-500 text-white rounded" style="font-size: 24px">
+            <i class="fa-solid fa-pen-to-square" style="color: black"></i>
+          </button>
+      </form>
+
+      <form action="{{ url('home') }}" method="POST" onsubmit="return confirmDelete()">
+        <!-- ปุ่มลบ -->
+        <button type="submit" onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
+          <i class="fa-solid fa-trash"></i>
         </button>
-    </form>
+      </form>
 
-    <form action="{{ url('Home') }}" method="POST" onsubmit="return confirmDelete()">
-      <!-- ปุ่มลบ -->
-      <button type="submit" onclick="confirmDelete()" class="p-2 px-5 bg-red-500 text-white rounded">
-        <i class="fa-solid fa-trash"></i>
-      </button>
+
 
   </div>
-  </div>
-
-  <script>
-    function openGoogleMaps() {
-      let address = document.getElementById("location").value;
-      let url = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(address);
-      window.open(url, "_blank");
-    }
-
-    function initAutocomplete() {
-      let input = document.getElementById("location");
-      let autocomplete = new google.maps.places.Autocomplete(input, {
-        types: ['geocode'],
-        componentRestrictions: {
-          country: "TH"
-        }
-      });
-    }
-
-    function toggleMenu() {
-      let menu = document.getElementById("menu");
-      menu.classList.toggle("hidden");
-    }
-
-    window.onload = initAutocomplete;
-  </script>
-
-  <script>
-    document.getElementById('imageInput').addEventListener('change', function(event) {
-      const preview = document.getElementById('preview');
-      preview.innerHTML = ''; // เคลียร์ก่อน
-
-      Array.from(event.target.files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.className = "w-16 h-16 object-cover rounded-md";
-          preview.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      });
-    });
-  </script>
-
-  <script>
-    function confirmDelete() {
-      Swal.fire({
-        icon: 'error',
-        title: 'ลบรายการนี้หรือไม่',
-        showCancelButton: true,
-        confirmButtonText: 'ตกลง',
-        cancelButtonText: 'ยกเลิก',
-        confirmButtonColor: '#22c55e', // เขียว
-        cancelButtonColor: '#9ca3af', // เทา
-        customClass: {
-          title: 'text-red-500 text-lg'
-        }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // แสดงแจ้งเตือนว่าลบเรียบร้อย
-          Swal.fire({
-            icon: 'success',
-            title: 'ข้อมูลของคุณถูกลบแล้ว',
-            confirmButtonText: 'กลับหน้าหลัก',
-            confirmButtonColor: '#0ea5e9',
-          }).then(() => {
-            // กลับหน้าหลักหรือรีโหลดก็ได้
-            window.location.href = 'index.html'; // เปลี่ยนตามที่ต้องการ
-          });
-        }
-      });
-    }
-  </script>
-  @endsection
 </body>
 
 </html>
+@endsection --}}
