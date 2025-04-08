@@ -1,4 +1,4 @@
-@extends('layouts.empmenu')
+@extends('layouts.layout_user')
 <!DOCTYPE html>
 <html lang="th">
 
@@ -9,7 +9,7 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
- 
+
     <!-- Google Fonts: Kanit (TH) & Outfit (EN) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -52,8 +52,25 @@
         </div>
 
         <!-- ปัญหาที่พบ -->
-        <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
-        <input type="text" name ="issues" class="w-full p-2 border rounded bg-gray-100" value="#ไฟฟ้า">
+<label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
+<div class="tags-input-wrapper w-full p-2 border rounded relative">
+    <ul id="tags" class="w-full">
+        <input type="text" id="tag-input" class="w-full" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter">
+    </ul>
+    <button onclick="openTagModal()" class="absolute right-2 top-2 bg-blue-500 text-white px-2 py-1 rounded">+</button>
+</div>
+
+<!-- Modal สำหรับเพิ่มแท็กใหม่ -->
+<div id="tagModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+        <h2 class="text-lg font-semibold mb-4">เพิ่มแท็กใหม่</h2>
+        <input type="text" id="newTagInput" class="w-full p-2 border rounded mb-4" placeholder="กรอกแท็กที่ต้องการเพิ่ม">
+        <div class="flex justify-end gap-2">
+            <button onclick="closeTagModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ยกเลิก</button>
+            <button onclick="addTagFromModal()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">เพิ่ม</button>
+        </div>
+    </div>
+</div>
 
         <!-- รายละเอียดเพิ่มเติม -->
         <label class="block mt-4 mt-2 text-sm">รายละเอียดเพิ่มเติม</label>
