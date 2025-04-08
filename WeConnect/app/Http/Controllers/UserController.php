@@ -32,18 +32,70 @@ class UserController extends Controller
         return view('admin.manage_user', compact('users'));
     }
 
-    public function viewEditUser($id)
+    // public function viewEditUser($id)
+    // {
+    //     $user = User::find($id);
+    //     return view('admin.edit_user', compact('users'));
+    // }
+
+    public function search(Request $request)
     {
-        $user = User::findOrFail($id);
-        return view('admin.user_edit', compact('user'));
+        $search = $request->input('search');
+
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                })
+                    ->orderByRaw("
+                CASE
+                    WHEN name LIKE ? THEN 0
+                    WHEN email LIKE ? THEN 1
+                    ELSE 2
+                END
+            ", ["{$search}%", "{$search}%"]);
+            })
+            ->get();
+
+        return view('admin.manage_user', compact('users'));
     }
 
     public function delete($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $user = User::find($id);
 
-        return redirect()->route('users.index')->with('success', 'ผู้ใช้ถูกลบเรียบร้อยแล้ว');
+        if ($user) {
+            $user->delete();
+            return redirect('/usermanage')->with('success', 'User deleted successfully.');
+        }
+
+        return redirect('/usermanage')->with('error', 'User not found.');
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // กรณีมีการแก้ไขรหัสผ่าน
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect('/usermanage')->with('success', 'User updated successfully.');
+    }
+
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id); // ดึงข้อมูลผู้ใช้
+        return view('admin.edit_user', compact('user')); // ส่งไปที่ view
     }
 }
+
+
 

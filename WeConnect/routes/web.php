@@ -51,8 +51,16 @@ Route::get('/dashboard', function () {
     return view('manager.dashboard');
 });
 
+Route::get('/graph', function () {
+    return view('manager.dataanalytics');
+});
+
 Route::get('/editaddress', function () {
     return view('user.edit_address');
+});
+
+Route::get('/edituser', function() {
+    return view('admin.edit_user');
 });
 
 Route::get('/maps', function () {
@@ -63,8 +71,14 @@ Route::get('/maps', function () {
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-Route::get('/edituser/{id}', [UserController::class, 'viewEditUser'])->name('admin.user_edit');
+// Route::get('/edituser/{id}', [UserController::class, 'viewEditUser'])->name('admin.user_edit');
 
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 
-Route::delete('/users/{id}', [UserController::class, 'delete'])->name('users.delete');
+Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+
+Route::get('/users', [UserController::class, 'search'])->name('admin.manage_user');
+
+Route::get('/edituser/{id}', [UserController::class, 'editUser'])->name('admin.edit_user');
+
+Route::put('/updateuser/{id}', [UserController::class, 'updateUser'])->name('user.update');

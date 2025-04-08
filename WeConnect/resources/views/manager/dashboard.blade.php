@@ -13,20 +13,10 @@
 
 <body class="bg-gray-100">
     @section('content')
-    <!-- เมนูซ่อน -->
-    <div id="menu" class="hidden fixed top-15 left-0 h-full w-64 p-4 bg-white shadow-lg ">
-        {{-- <div id="menu" class="hidden bg-white shadow-md absolute h-screen top-15 left-0 w-64 p-4"> --}}
-        <ul class="space-y-2">
-            <li><a href="#" class="block text-gray-700"> Home</a></li>
-            <li><a href="#" class="block text-gray-700" onclick="openGoogleMaps()"> Map</a></li>
-            <li><a href="#" class="block text-gray-700"> Form</a></li>
-            <li><a href="#" class="block text-gray-700 pt-30"> Log out</a></li>
-        </ul>
-    </div>
 
     <!-- Dashboard -->
-    <h1 class="text-2xl font-semibold mt-4 text-left px-6">Dashboard</h1>
-    <div class="p-4">
+    <h1 class="text-3xl font-bold mb-4"> Dashboard</h1>
+    <div class="p-2">
         <!-- mm-dd-yyyy -->
         <label class="block mt-2 text-sm">From</label>
 
