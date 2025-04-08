@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <body>
-    <form action="{{ url('/addimage') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ url('addimage') }}" method="post" enctype="multipart/form-data">
         @csrf
         <label class="block mt-2 text-sm">รูปภาพ</label>
         <div class="flex gap-2 items-center">
@@ -12,11 +12,9 @@
         <button type="submit">submit</button>
     </form>
 
-    <form action="{{ url('/showimage') }}">
+    <form action="{{ url('/showimage') }}" method="post">
         @csrf
         <button type="submit">show</button>
     </form>
-
-    <img src="{{ asset('storage/app/public/' . 'images/9Aa5GgRcJT77U8zuMJSqnEAcsYINcJ7MhKzz7a9Y.png') }}" alt="รูปภาพ" width="200">
 
 </body>

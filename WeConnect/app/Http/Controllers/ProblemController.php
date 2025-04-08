@@ -99,6 +99,8 @@ class ProblemController extends Controller
     }
 
     public function showimage() {
-        $path = Image::all();
+        $path = Image::find('1');
+        $data['path'] = $path;
+        return view('test_problem', $data);
     }
 }
