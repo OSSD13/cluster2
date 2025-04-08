@@ -34,27 +34,13 @@
     </div>
 
     <!-- ปัญหาที่พบ -->
-<label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
-<div class="tags-input-wrapper w-full p-2 border rounded relative">
-    <ul id="tags">
-        <input type="text" id="tag-input" list="tagSuggestions" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter">
-        <datalist id="tagSuggestions"></datalist>
-
-    </ul>
-    <button onclick="openTagModal()" class="absolute right-2 top-2 bg-blue-500 text-white px-2 py-1 rounded">+</button>
-</div>
-
-<!-- Modal สำหรับเพิ่มแท็กใหม่ -->
-<div id="tagModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-        <h2 class="text-lg font-semibold mb-4">เพิ่มแท็กใหม่</h2>
-        <input type="text" id="newTagInput" class="w-full p-2 border rounded mb-4" placeholder="กรอกแท็กที่ต้องการเพิ่ม">
-        <div class="flex justify-end gap-2">
-            <button onclick="closeTagModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ยกเลิก</button>
-            <button onclick="addTagFromModal()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">เพิ่ม</button>
-        </div>
+    <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
+    <div class="tags-input-wrapper w-full p-2 border rounded relative">
+        <ul id="tags">
+            <input type="text" id="tag-input" list="tagSuggestions" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter เพื่อเพิ่ม">
+            <datalist id="tagSuggestions"></datalist>
+        </ul>
     </div>
-</div>
 
     <!-- รายละเอียดเพิ่มเติม -->
     <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม</label>
@@ -127,36 +113,21 @@
 </style>
 
 <script>
- // ประกาศตัวแปรแบบ global
+// ประกาศตัวแปรแบบ global
 let tagsList = [];
+let allowedTags = []; // สำหรับเก็บแท็กที่มีอยู่ในระบบ
 const maxTags = 10000;
 
-// สร้างรายการแท็กที่อนุญาตให้ใช้ได้ในช่องหลัก (จาก datalist)
-const allowedTags = [
-    "น้ำประปาไม่ไหล",
-    "ไฟฟ้าดับ",
-    "ขยะไม่เก็บ",
-    "ถนนพัง",
-    "น้ำท่วม",
-    "เสียงดังรบกวน"
-];
-
 // ฟังก์ชันสำหรับจัดการกับแท็ก
-function createTag(tagValue, fromModal = false) {
+function createTag(tagValue) {
     const tags = document.getElementById('tags');
     const tagInput = document.getElementById('tag-input');
 
     if (!tagValue) return;
 
-    // ตัดช่องว่างและไม่เพิ่ม # ข้างหน้า (เพื่อตรวจสอบกับ allowedTags ได้ถูกต้อง)
+    // ตัดช่องว่าง
     tagValue = tagValue.trim();
     if (tagValue === '') return;
-
-    // ถ้าไม่ได้มาจาก Modal ต้องตรวจสอบว่าแท็กอยู่ในรายการที่อนุญาตหรือไม่
-    if (!fromModal && !allowedTags.includes(tagValue)) {
-        alert("ไม่พบแท็กที่คุณเลือกในระบบ กรุณาเพิ่มแท็กใหม่");
-        return;
-    }
 
     // ตรวจสอบว่าแท็กซ้ำหรือไม่
     const formattedTag = "#" + tagValue;
@@ -196,59 +167,60 @@ function removeTag(element, tag) {
     element.remove();
 }
 
-function openTagModal() {
-    document.getElementById("tagModal").classList.remove("hidden");
+// ฟังก์ชันเพิ่มแท็กใหม่ (ทั้งแท็กที่มีอยู่หรือสร้างใหม่)
+function handleTagInput(tagValue) {
+    if (!tagValue) return;
 
-    // ล้างค่า input เดิม
-    const modalInput = document.getElementById("newTagInput");
-    modalInput.value = "";
-    modalInput.focus();
-}
+    // ตรวจสอบว่าแท็กนี้มีอยู่แล้วในระบบหรือไม่
+    if (allowedTags.includes(tagValue)) {
+        // ถ้ามีอยู่แล้ว เพิ่มแท็กได้เลย
+        createTag(tagValue);
+    } else {
+        // ถ้ายังไม่มี ส่งข้อมูลไปบันทึกแท็กใหม่ที่ backend ก่อน
+        fetch("{{ route('tags.store') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ tag_name: tagValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // เพิ่มแท็กเข้า list ที่อนุญาต
+                allowedTags.push(tagValue);
 
-function closeTagModal() {
-    document.getElementById("newTagInput").value = "";
-    document.getElementById("tagModal").classList.add("hidden");
-}
+                // เพิ่มแท็กใน datalist
+                const datalist = document.getElementById("tagSuggestions");
+                const option = document.createElement("option");
+                option.value = tagValue;
+                datalist.appendChild(option);
 
-function addTagFromModal() {
-    const tagInputValue = document.getElementById("newTagInput").value.trim();
-
-    if (!tagInputValue) return;
-
-    fetch("{{ route('tags.store') }}", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ tag_name: tagInputValue })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            allowedTags.push(tagInputValue); // เพิ่มแท็กเข้า list ที่อนุญาต
-            if (createTag(tagInputValue, true)) {
-                closeTagModal();
-            }
-        } else {
-            if (data.message === 'แท็กนี้มีอยู่แล้ว') {
-                alert("แท็กนี้มีอยู่ในระบบแล้ว กรุณาเลือกแท็กอื่น");
+                // สร้างแท็กและแสดงในรายการ
+                createTag(tagValue);
             } else {
-                alert("ไม่สามารถเพิ่มแท็กได้");
+                if (data.message === 'แท็กนี้มีอยู่แล้ว') {
+                    // กรณีนี้ไม่ควรเกิดขึ้นแล้ว แต่เผื่อไว้
+                    createTag(tagValue);
+                } else {
+                    alert("ไม่สามารถเพิ่มแท็กได้: " + data.message);
+                }
             }
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("เกิดข้อผิดพลาดในการเพิ่มแท็ก");
-    });
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("เกิดข้อผิดพลาดในการเพิ่มแท็ก");
+        });
+    }
 }
-
 
 // ฟังก์ชันที่จะทำงานเมื่อ DOM โหลดเสร็จ
 document.addEventListener('DOMContentLoaded', function() {
+
+
     const tagInput = document.getElementById('tag-input');
-    
+
     // โหลดแท็กจาก backend แล้วเพิ่มใน datalist + allowedTags
     fetch("{{ route('tags.fetch') }}")
     .then(response => response.json())
@@ -270,34 +242,11 @@ document.addEventListener('DOMContentLoaded', function() {
     tagInput.addEventListener('keyup', function(e) {
         if (e.key === 'Enter') {
             const tagValue = this.value.trim();
-            createTag(tagValue, false); // fromModal = false
-        }
-    });
-
-    // Event listener สำหรับการเปลี่ยนค่าใน input เพื่อตรวจสอบว่าเป็นค่าที่อยู่ใน datalist หรือไม่
-    tagInput.addEventListener('change', function() {
-        const tagValue = this.value.trim();
-        if (tagValue && !allowedTags.includes(tagValue)) {
-            alert("กรุณาเลือกแท็กจากรายการที่กำหนดเท่านั้น");
-            this.value = '';
-        }
-    });
-
-    // เพิ่ม event listener ให้กับปุ่มในหน้า modal
-    const addTagButton = document.querySelector('[onclick="addTagFromModal()"]');
-    if (addTagButton) {
-        addTagButton.addEventListener('click', addTagFromModal);
-    }
-
-    // เพิ่ม event listener สำหรับการกด Enter ใน modal
-    const newTagInput = document.getElementById('newTagInput');
-    if (newTagInput) {
-        newTagInput.addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                addTagFromModal();
+            if (tagValue) {
+                handleTagInput(tagValue);
             }
-        });
-    }
+        }
+    });
 
     // จัดการกับรูปภาพที่อัปโหลด
     const imageInput = document.getElementById('imageInput');
