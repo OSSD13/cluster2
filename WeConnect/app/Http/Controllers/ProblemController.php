@@ -96,6 +96,7 @@ class ProblemController extends Controller
         $image -> save();
 
         print_r($path);
+        return view('test_addproblem');
     }
 
     public function showimage() {
