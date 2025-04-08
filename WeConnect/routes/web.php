@@ -3,7 +3,7 @@
  * @Author: Nattapong Kamma Icezazarun@gmail.com
  * @Date: 2025-03-13 11:12:25
  * @LastEditors: Nattapong Kamma Icezazarun@gmail.com
- * @LastEditTime: 2025-04-08 13:49:03
+ * @LastEditTime: 2025-04-08 15:09:16
  * @FilePath: \cluster2\WeConnect\routes\web.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -87,11 +87,10 @@ Route::get('/edituser',function(){
 Route::get('/addmap',function (){
     return view('user.add_map');
 });
-// Route::get('/addproblem', [ProblemController::class, 'addForm']);
-// Route::post('/addproblem', [ProblemController::class, 'submit']);
-// Route::get('/editproblem/{id}', [ProblemController::class, 'editForm']);
-// Route::post('/editproblem/{id}', [ProblemController::class, 'updateForm']);
-// แสดงฟอร์มแก้ไข
+
+Route::get('/home/search', [ProblemController::class, 'search'])->name('home.search');
+
+
 Route::get('/editproblem/{prob_id}', [ProblemController::class, 'edit'])->name('problem.edit');
 Route::put('/editproblem/{prob_id}', [ProblemController::class, 'update'])->name('problem.update');
 

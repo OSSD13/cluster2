@@ -73,13 +73,19 @@
              value="{{ old('postcode', $problem->post_code) }}">
       @error('postcode') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
     </div>
-
-    {{-- ปัญหาที่พบ --}}
-    <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
-    <input type="text" name="issues" required
-           class="w-full p-2 border rounded bg-gray-100"
-           value="{{ old('issues', $problem->problem_type) }}">
-    @error('issues') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+{{-- ปัญหาที่พบ --}}
+<label for="tag_id" class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
+<select name="tag_id" id="tag_id" required class="w-full p-2 border rounded bg-gray-100">
+    <option value="">-- เลือกประเภทปัญหา --</option>
+    @foreach($tags as $tag)
+        <option value="{{ $tag->tag_id }}" {{ $tag->tag_id == $problem->tag_id ? 'selected' : '' }}>
+            {{ $tag->tag_name }}
+        </option>
+    @endforeach
+</select>
+@error('tag_id')
+    <p class="text-red-500 text-sm">{{ $message }}</p>
+@enderror
 
     {{-- รายละเอียดเพิ่มเติม --}}
     <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม</label>

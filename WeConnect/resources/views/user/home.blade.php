@@ -16,32 +16,40 @@
 
     <div class="flex justify-between items-center px-6 mt-4">
         <h1 class="text-2xl font-semibold">Home</h1>
-        <input type="text" placeholder="🔍 ค้นหา" class="border px-3 py-1 rounded w-60" />
+        <form action="{{ route('home.search') }}" method="GET" class="flex items-center">
+            <input type="text" name="tag" placeholder="🔍 ค้นหาจากประเภทปัญหา" class="border px-3 py-1 rounded w-60" />
+            <button type="submit" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded">
+                ค้นหา
+            </button>
+        </form>
     </div>
+
 
     <div id="problem-section" class="max-w-3xl mx-auto px-4 mt-6 space-y-4">
         @foreach($problems as $problem)
-        <a href="{{ url('/problemdetail', $problem->prob_id) }}" class="block">
-            <div class="bg-white p-4 rounded-xl shadow">
-                <p class="text-sm text-gray-500">
-                    {{ \Carbon\Carbon::parse($problem->created_at)->format('d/m/Y H:i') }}
-                </p>
-                <p class="font-semibold mt-1">เพิ่มโดย : นายxxx xxxxxx</p>
-                <p class="mt-1">
-                    📍 <strong>สถานที่</strong> : {{ $problem->community_name }}
-                    ตำบล {{ $problem->sub_district }}
-                    อำเภอ {{ $problem->district }}
-                    จังหวัด {{ $problem->province }}
-                    {{ $problem->post_code }}
-                </p>
-                <p class="mt-1">
-                    ⚠️ <strong>ปัญหา</strong> :
-                    <span class="bg-gray-200 px-2 py-1 rounded">ไฟฟ้า</span>
-                </p>
-                <p class="mt-1">{{ $problem->detail }}</p>
-            </div>
-        </a>
-        @endforeach
+    <a href="{{ url('/problemdetail', $problem->prob_id) }}" class="block">
+        <div class="bg-white p-4 rounded-xl shadow">
+            <p class="text-sm text-gray-500">
+                {{ \Carbon\Carbon::parse($problem->created_at)->format('d/m/Y H:i') }}
+            </p>
+            <p class="font-semibold mt-1">เพิ่มโดย : นายxxx xxxxxx</p>
+            <p class="mt-1">
+                📍 <strong>สถานที่</strong> : {{ $problem->community_name }}
+                ตำบล {{ $problem->sub_district }}
+                อำเภอ {{ $problem->district }}
+                จังหวัด {{ $problem->province }}
+                {{ $problem->post_code }}
+            </p>
+            <p class="mt-1">
+                ⚠️ <strong>ปัญหา</strong> :
+                <span class="bg-gray-200 px-2 py-1 rounded">
+                    {{ $problem->tag->tag_name ?? '-' }}
+                </span>
+            </p>
+            <p class="mt-1">{{ $problem->detail }}</p>
+        </div>
+    </a>
+@endforeach
     </div>
     <!-- ปุ่ม เพิ่มข้อมูล -->
     <div class="fixed bottom-6 right-6">

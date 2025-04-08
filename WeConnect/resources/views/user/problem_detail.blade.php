@@ -42,7 +42,9 @@
     <!-- ปัญหาที่พบ -->
     <label class="block mt-4 text-sm text-gray-700">⚠️ ปัญหาที่พบ</label>
     <div class="tags-input-wrapper w-full p-2 border rounded">
-        <span class="inline-block bg-gray-200 px-3 py-1 rounded-full text-gray-800">#{{ $problem->problem_type ?? 'ไม่ระบุ' }}</span>
+        <span class="inline-block bg-gray-200 px-3 py-1 rounded-full text-gray-800">
+            #{{ $problem->tag->tag_name ?? 'ไม่ระบุ' }}
+        </span>
     </div>
 
     <!-- รายละเอียดเพิ่มเติม -->

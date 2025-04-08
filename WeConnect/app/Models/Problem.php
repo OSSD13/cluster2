@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Problem extends Model
 {
-    //
-    protected $primaryKey = 'prob_id'; // 👈 เพิ่มบรรทัดนี้
+    protected $primaryKey = 'prob_id';
 
     protected $table = 'problems';
+
     protected $fillable = [
         'community_name',
         'detail',
@@ -21,4 +21,10 @@ class Problem extends Model
         'latitude',
         'longitude'
     ];
+
+    // ✅ เพิ่มความสัมพันธ์
+    public function tag()
+    {
+        return $this->belongsTo(Tag::class, 'tag_id', 'tag_id');
+    }
 }

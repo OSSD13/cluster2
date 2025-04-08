@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Problem;
 use Illuminate\Http\Request;
+use App\Models\Tag;
+
 
 class ProblemController extends Controller
 {
@@ -92,9 +94,11 @@ class ProblemController extends Controller
 
 public function edit($id)
 {
-    $problem = Problem::where('prob_id', $id)->firstOrFail();
-    return view('user.edit_problem', compact('problem'));
+    $problem = Problem::findOrFail($id);
+    $tags = Tag::all(); // ดึง tag ทั้งหมด
+    return view('user.edit_problem', compact('problem', 'tags'));
 }
+
 
 // ประมวลผลอัพเดต
 public function update(Request $req, $id)
@@ -122,6 +126,17 @@ public function update(Request $req, $id)
     return redirect()
         ->route('problem.show', $id)
         ->with('success', 'แก้ไขข้อมูลเรียบร้อยแล้ว');
+}
+public function search(Request $request)
+{
+    $tag = $request->input('tag');
+
+    // ค้นหาปัญหาตาม tag
+    $problems = Problem::whereHas('tag', function($query) use ($tag) {
+        $query->where('tag_name', 'like', '%' . $tag . '%');
+    })->get();
+
+    return view('user.home', compact('problems'));
 }
 
 
