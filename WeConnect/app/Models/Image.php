@@ -9,4 +9,5 @@ class Image extends Model
     //
     protected $table = 'images';
     protected $fillable = ['img_path'];
+    public $timestamps = false;
 }

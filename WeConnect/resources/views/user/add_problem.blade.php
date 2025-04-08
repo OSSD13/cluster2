@@ -1,11 +1,12 @@
 @extends('layouts.layout_user')
 
 @section('content')
+
 <h1 class="text-2xl font-semibold mt-4 text-left px-6">เพิ่มข้อมูล</h1>
 <div class="p-4">
     <!-- ชื่อชุมชน -->
     <label class="block mt-2 text-sm">ชื่อของชุมชน</label>
-    <input type="text" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
+    <input type="text" id="community_name" name="community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
 
     <!-- วันที่ & ตำแหน่ง -->
     <div class="grid grid-cols-2 gap-4 mt-4">
@@ -13,14 +14,14 @@
             <label class="block mt-2 text-sm">วันที่ <span class="text-red-500">*</span></label>
             <div class="flex items-center border p-2 rounded">
                 <i class="fa-solid fa-calendar-days"></i>
-                <input type="date" class="w-full border-none focus:ring-0 ml-2">
+                <input type="date" id="add_date" name="add_date" class="w-full border-none focus:ring-0 ml-2">
             </div>
         </div>
         <div>
             <label class="block mt-2 text-sm">ตำแหน่ง <span class="text-red-500">*</span></label>
             <div class="flex items-center border p-2 rounded">
                 <i class="fa-solid fa-location-dot"></i>
-                <input id="location" type="text" class="w-full border-none focus:ring-0 ml-2" placeholder="เลือกตำแหน่งจากแผนที่">
+                <input id="location" name="location" type="text" class="w-full border-none focus:ring-0 ml-2" placeholder="เลือกตำแหน่งจากแผนที่">
                 <button onclick="openGoogleMaps()" class="ml-2">➤</button>
             </div>
         </div>
@@ -28,16 +29,6 @@
 
     <!-- ที่อยู่ -->
     <label class="block mt-4 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
-    <div class="relative">
-        {{-- <div class="flex items-center border p-2 rounded">
-            <input id="community_name" type="text" class="w-full border-none focus:ring-0" placeholder="พิมพ์ชื่อสถานที่...">
-            <button type="button" class="ml-2">➤</button>
-        </div> --}}
-
-        <!-- รายการแนะนำ -->
-        <ul id="suggestion-list" class="absolute z-10 bg-white border mt-1 w-full rounded shadow hidden"></ul>
-    </div>
-
     <!-- ช่องที่อยู่เพิ่มเติม -->
     <input id="sub_district" name="sub_district" type="text" placeholder="ตำบล" class="mt-2 w-full border p-2 rounded">
     <input id="district" name="district" type="text" placeholder="อำเภอ" class="mt-2 w-full border p-2 rounded">
@@ -45,25 +36,25 @@
     <input id="postcode" name="postcode" type="text" placeholder="รหัสไปรษณีย์" class="mt-2 w-full border p-2 rounded">
 
     <!-- ปัญหาที่พบ -->
-<label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
-<div class="tags-input-wrapper w-full p-2 border rounded relative">
-    <ul id="tags">
-        <input type="text" id="tag-input" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter">
-    </ul>
-    <button onclick="openTagModal()" class="absolute right-2 top-2 bg-blue-500 text-white px-2 py-1 rounded">+</button>
-</div>
+    <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
+    <div class="tags-input-wrapper w-full p-2 border rounded relative">
+        <ul id="tags">
+            <input type="text" id="tag-input" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter">
+        </ul>
+        <button onclick="openTagModal()" class="absolute right-2 top-2 bg-blue-500 text-white px-2 py-1 rounded">+</button>
+    </div>
 
-<!-- Modal สำหรับเพิ่มแท็กใหม่ -->
-<div id="tagModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-        <h2 class="text-lg font-semibold mb-4">เพิ่มแท็กใหม่</h2>
-        <input type="text" id="newTagInput" class="w-full p-2 border rounded mb-4" placeholder="กรอกแท็กที่ต้องการเพิ่ม">
-        <div class="flex justify-end gap-2">
-            <button onclick="closeTagModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ยกเลิก</button>
-            <button onclick="addTagFromModal()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">เพิ่ม</button>
+    <!-- Modal สำหรับเพิ่มแท็กใหม่ -->
+    <div id="tagModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h2 class="text-lg font-semibold mb-4">เพิ่มแท็กใหม่</h2>
+            <input type="text" id="newTagInput" class="w-full p-2 border rounded mb-4" placeholder="กรอกแท็กที่ต้องการเพิ่ม">
+            <div class="flex justify-end gap-2">
+                <button onclick="closeTagModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ยกเลิก</button>
+                <button onclick="addTagFromModal()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">เพิ่ม</button>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- รายละเอียดเพิ่มเติม -->
     <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม</label>
@@ -72,18 +63,9 @@
 
     <label class="block mt-2 text-sm">รูปภาพ</label>
     <div class="flex gap-2 items-center">
-    <button id="uploadButton" class="px-4 py-2 bg-blue-500 text-white rounded">เลือกไฟล์</button>
-    <input type="file" id="imageInput" accept="image/*" class="hidden" />
-    <div id="preview" class="flex gap-2"></div>
-    </div>
-    <p id="warningText" class="text-red-500 text-sm mt-2 hidden">สามารถอัปโหลดได้สูงสุด 2 รูปเท่านั้น</p>
-
-    <!-- Modal Popup -->
-    <div id="popupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-4 rounded shadow-md max-w-sm w-full text-center">
-        <p class="text-red-600 font-semibold">สามารถอัปโหลดได้สูงสุด 2 รูปเท่านั้น</p>
-        <button id="closeModal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">ตกลง</button>
-        </div>
+        <button id="uploadButton" class="px-4 py-2 bg-blue-500 text-white rounded">เลือกไฟล์</button>
+        <input type="file" id="imageInput" accept="image/*" class="hidden" />
+        <div id="preview" class="flex gap-2"></div>
     </div>
 
     <!-- ปุ่ม ยืนยัน -->
@@ -96,73 +78,66 @@
 <script>
     const uploadedImages = [];
 
-    document.getElementById('uploadButton').addEventListener('click', function () {
-      document.getElementById('imageInput').click();
+document.getElementById('uploadButton').addEventListener('click', function () {
+  document.getElementById('imageInput').click();
+});
+
+document.getElementById('imageInput').addEventListener('change', function(event) {
+    const newFiles = Array.from(event.target.files);
+    const warningText = document.getElementById('warningText');
+
+    // ไม่ต้องจำกัดจำนวนรูป
+    warningText.classList.add('hidden');
+
+    newFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            uploadedImages.push(e.target.result);
+            renderPreview();
+        };
+        reader.readAsDataURL(file);
     });
 
-    document.getElementById('imageInput').addEventListener('change', function(event) {
-        const newFiles = Array.from(event.target.files);
-        const warningText = document.getElementById('warningText');
+    event.target.value = '';
+});
 
-        if (uploadedImages.length + newFiles.length > 2) {
-            showModal();
-            warningText.classList.remove('hidden');
-            event.target.value = '';
-            return;
-        }
+function renderPreview() {
+    const preview = document.getElementById('preview');
+    preview.innerHTML = '';
 
-        warningText.classList.add('hidden'); // ซ่อนข้อความเตือนถ้าจำนวนรูปไม่เกิน
-        newFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedImages.push(e.target.result);
-                renderPreview();
-            };
-            reader.readAsDataURL(file);
-        });
+    uploadedImages.forEach((imgSrc, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = "relative";
 
-        event.target.value = '';
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        img.className = "w-16 h-16 object-cover rounded-md";
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = "✕";
+        removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
+        removeBtn.onclick = () => {
+            uploadedImages.splice(index, 1);
+            renderPreview();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(removeBtn);
+        preview.appendChild(wrapper);
     });
+}
 
-    function renderPreview() {
-        const preview = document.getElementById('preview');
-        preview.innerHTML = '';
+document.getElementById('closeModal').addEventListener('click', function () {
+  document.getElementById('popupModal').classList.add('hidden');
+});
 
-        uploadedImages.forEach((imgSrc, index) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = "relative";
-
-            const img = document.createElement('img');
-            img.src = imgSrc;
-            img.className = "w-16 h-16 object-cover rounded-md";
-
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = "✕";
-            removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
-            removeBtn.onclick = () => {
-                uploadedImages.splice(index, 1);
-                renderPreview();
-
-                // ซ่อนข้อความเตือนเมื่อจำนวนรูปน้อยกว่า 2
-                if (uploadedImages.length <= 2) {
-                    document.getElementById('warningText').classList.add('hidden');
-                }
-            };
-
-            wrapper.appendChild(img);
-            wrapper.appendChild(removeBtn);
-            preview.appendChild(wrapper);
-        });
-    }
-
-    function showModal() {
-      document.getElementById('popupModal').classList.remove('hidden');
-    }
-
-    document.getElementById('closeModal').addEventListener('click', function () {
-      document.getElementById('popupModal').classList.add('hidden');
+    $.Thailand({
+        $district: $("#sub_district"), // input ของตำบล
+        $amphoe: $("#district"), // input ของอำเภอ
+        $province: $("#province"), // input ของจังหวัด
+        $zipcode: $("#postcode") // input ของรหัสไปรษณีย์
     });
-    </script>
+</script>
 </div>
 @endsection
 
@@ -218,36 +193,26 @@
 </style>
 
 <script>
-    window.onload = function () {
-        if (localStorage.getItem('form_data')) {
+    window.onload = function() {
+        if (localStorage.getItem('form_data') || localStorage.getItem('latitude')) {
             const data = JSON.parse(localStorage.getItem('form_data'));
             document.getElementById('location').value = `latitude: ${localStorage.getItem('latitude')}, longitude: ${localStorage.getItem('longitude')}` || '';
         }
     }
 
     function saveFormToStorage() {
+        const data = {
+            title: document.getElementById('title').value,
+            description: document.getElementById('description').value
+        };
         
+        localStorage.setItem('form_data', JSON.stringify(data));
     }
 
     function openGoogleMaps() {
         let address = document.getElementById("location").value;
         let url = "/addmap";
         window.open(url, "_self");
-    }
-
-    function initAutocomplete() {
-        let input = document.getElementById("location");
-        let autocomplete = new google.maps.places.Autocomplete(input, {
-            types: ['geocode'],
-            componentRestrictions: {
-                country: "TH"
-            }
-        });
-    }
-
-    function toggleMenu() {
-        let menu = document.getElementById("menu");
-        menu.classList.toggle("hidden");
     }
 
     document.addEventListener('DOMContentLoaded', function() {

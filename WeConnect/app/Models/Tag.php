@@ -9,4 +9,5 @@ class Tag extends Model
     //
     protected $table = 'tags';
     protected $fillable = ['tag_name'];
+    public $timestamps = false;
 }

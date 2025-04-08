@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Problem;
 use Illuminate\Http\Request;
 
@@ -85,5 +86,19 @@ class ProblemController extends Controller
         // ดึงข้อมูลตำแหน่งจากฐานข้อมูล
         $locations = Problem::all(); // หรือจะใช้ where(), find(), all() แล้วแต่กรณี
         return view('user.open_map', ['locations' => $locations]);
+    }
+
+    public function addimage(Request $req) {
+        $path = $req->file('photo')->store('images', 'public');
+        $image = new Image();
+        $image -> img_path = $path;
+        $image -> prob_id = null;
+        $image -> save();
+
+        print_r($path);
+    }
+
+    public function showimage() {
+        $path = Image::all();
     }
 }

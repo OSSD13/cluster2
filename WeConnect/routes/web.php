@@ -51,6 +51,10 @@ Route::get('/testproblem',function (){
     return view('test_problem');
 });
 
+Route::get('/testaddproblem',function (){
+    return view('test_addproblem');
+});
+
 Route::get('/dashboard',function (){
     return view('manager.dashboard');
 });
@@ -65,3 +69,5 @@ Route::get('/edituser',function(){
     return view('admin.edit_user');
 });
 
+Route::post('/addimage', [ProblemController::class, 'addimage']);
+Route::post('/showimage', [ProblemController::class, 'showimage']);
