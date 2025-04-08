@@ -157,7 +157,7 @@
             </tr>
         </table>
 
-        <form action="{{ url('/login') }}" onsubmit="return login()" method="get">
+        <form action="{{ url('/login') }}" onsubmit="return login()" method="post">
             @csrf
 
             <label>Email</label>

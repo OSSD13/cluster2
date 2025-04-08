@@ -18,11 +18,11 @@ class LoginController extends Controller
         if($user != null && Hash::check($req->password, $user->password)) {
             $req->session()->put('user', $user);
             if ($user->role === 'Admin') {
-                return redirect('admin.manage_user');
+                return redirect('/manage_user');
             } else if ($user->role === 'Manager') {
-                return redirect('manager.dashboard');
+                return redirect('/dashboard');
             } else if ($user->role === 'User') {
-                return redirect('user.home');
+                return redirect('/home');
             }
         } else {
             $req->session()->flash('error', 'กรุณาตรวจสอบข้อมูลอีกครั้ง'); //แดงแต่รันได้ intelephense น่าจะรุ่นเก่ากว่า
