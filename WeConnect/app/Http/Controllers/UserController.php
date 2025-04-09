@@ -96,3 +96,6 @@ class UserController extends Controller
         return view('admin.edit_user', compact('user'));
     }
 }
+
+
+

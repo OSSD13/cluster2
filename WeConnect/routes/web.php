@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -55,9 +56,9 @@ Route::get('/testaddproblem', function () {
     return view('test_addproblem');
 });
 
-Route::get('/dashboard', function () {
-    return view('manager.dashboard');
-});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+// Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
 
 Route::get('/dataChart', function () {
     return view('manager.dataAnalytics_Chart');
@@ -117,4 +118,6 @@ Route::get(
     '/tags/fetch',
     [TagController::class, 'fetch']
 )->name('tags.fetch');
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 

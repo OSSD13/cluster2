@@ -1,6 +1,7 @@
 @extends('layouts.layout_admin')
 <!DOCTYPE html>
 <html>
+<head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -22,25 +23,27 @@
         </h1>
 
         <form action="{{ route('admin.manage_user') }}" method="GET" class="mb-4 flex items-center gap-2 ">
-            <div class="flex mx-auto">
+            <div class="flex mx-auto ">
                 <input type="text" name="search" placeholder="ค้นหาผู้ใช้" value="{{ request('search') }}"
-                    class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
+                    class="border border-gray-300 rounded  px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
                 <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded ml-2">ค้นหา</button>
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded ml-2 ">ค้นหา</button>
             </div>
         </form>
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-7">
-                <div class="card p-3 py-4">
+        <div class="row d-flex justify-content-center ">
+            <div class="  mx-auto w-auto">
+                <div class="card p-3 py-4" style="max-height: 350px; overflow-y: auto; ">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         @foreach ($users as $user)
-                            <div class="bg-white p-6 shadow-md rounded-xl">
+                            <div class="bg-white p-6 shadow-md rounded-xl flex flex-col h-auto">
                                 <h2 class="text-lg font-bold">{{ $user->name }}</h2>
                                 <p class="text-gray-600">{{ $user->email }}</p>
 
-                                <div class="flex space-x-3 mt-4 justify-end">
+                                <div class="flex-grow"></div>
+
+                                <div class="flex space-x-3 mt-4 justify-end mt-auto">
                                     <!-- Edit Button -->
-                                    <a href="{{ url('/edituser' . $user->id) }}"
+                                    <a href="{{ url('/edituser/' . $user->usr_id) }}"
                                         class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded">
                                         Edit
                                     </a>
@@ -62,8 +65,8 @@
     </div>
 
     <form action="{{ url('/adduser') }}" method="get">
-        <div class="flex justify-center mt-6">
-            <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+        <div class="flex justify-center">
+            <button class="bg-green-500 text-white px-6 p-2 rounded-full text-lg shadow-md hover:bg-green-600">
                 เพิ่มบัญชีผู้ใช้
             </button>
         </div>
