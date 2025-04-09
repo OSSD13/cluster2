@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\TagController;
 
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -83,3 +84,6 @@ Route::get('/admindashboard',function (){
 Route::get('/admindataAnalytics',function (){
     return view('admin.admin_dataAnalytics');
 });
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
