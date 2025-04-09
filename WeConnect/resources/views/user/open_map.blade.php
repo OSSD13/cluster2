@@ -78,8 +78,7 @@
     <script>
         let activeMarker = null;
 
-        @foreach ($locations as $loc)
-(function() {
+        @foreach ($locations as $loc) (function() {
     var marker = L.marker([{{ $loc->latitude }}, {{ $loc->longitude }}]).addTo(map);
     marker.on('click', function () {
         const content = document.getElementById('accordionContent');

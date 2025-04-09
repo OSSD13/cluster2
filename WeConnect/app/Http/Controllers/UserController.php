@@ -8,7 +8,8 @@ use App\Models\User;
 class UserController extends Controller
 {
 
-    function addUser(Request $req) {
+    function addUser(Request $req)
+    {
         $muser = new User();
         $muser->name = $req->name;
         $muser->email = $req->email;
@@ -20,34 +21,78 @@ class UserController extends Controller
         return view('admin.manage_user', compact('users'));
     }
 
-    function viewAddUser() {
+    function viewAddUser()
+    {
         return view('/admin.add_user');
     }
 
-    public function index() {
+    public function index()
+    {
         $users = User::all();
         return view('admin.manage_user', compact('users'));
     }
 
-    public function edit($id) {
-        $user = User::find($id);
-        return view('admin.edit_user', compact('user'));
+    // public function viewEditUser($id)
+    // {
+    //     $user = User::find($id);
+    //     return view('admin.edit_user', compact('users'));
+    // }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                })
+                    ->orderByRaw("
+                CASE
+                    WHEN name LIKE ? THEN 0
+                    WHEN email LIKE ? THEN 1
+                    ELSE 2
+                END
+            ", ["{$search}%", "{$search}%"]);
+            })
+            ->get();
+
+        return view('admin.manage_user', compact('users'));
     }
-    public function update(Request $request, $id) {
+
+    public function delete($id)
+    {
         $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+            return redirect('/usermanage')->with('success', 'User deleted successfully.');
+        }
+
+        return redirect('/usermanage')->with('error', 'User not found.');
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
-        $user->role = $request->role;
+
+        // กรณีมีการแก้ไขรหัสผ่าน
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
         $user->save();
 
-        return redirect()->route('admin.manage_user');
-    }
-    public function showUser($id){
-        $user = User::where('usr_id', $id)->first(); // ค้นหาผู้ใช้ที่มี 'id' เท่ากับ $id
-        return view('layouts.manage_user', compact('user'));
-
+        return redirect('/usermanage')->with('success', 'User updated successfully.');
     }
 
+    public function viewEditUser($id)
+    {
+        $user = User::where('usr_id', $id)->firstOrFail();
+        return view('admin.edit_user', compact('user'));
+    }
 }
-

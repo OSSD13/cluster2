@@ -4,6 +4,9 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon"
+        href="https://github.com/AudomsakalcoholicBoy/images/blob/main/LogoWeConnect.png?raw=true">
+    <title>WeConnect</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -154,7 +157,7 @@
             </tr>
         </table>
 
-        <form action="{{ url('/login') }}" onsubmit="return login()" method="post">
+        <form action="{{ route('login') }}" method="POST">
             @csrf
 
             <label>Email</label>

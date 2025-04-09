@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+    protected $primaryKey = 'usr_id';
 
     /**
      * The attributes that are mass assignable.
@@ -46,5 +47,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    protected $primaryKey = 'usr_id';
 }
