@@ -157,11 +157,7 @@
             </tr>
         </table>
 
-<<<<<<< HEAD
-        <form action="{{ url('/login') }}" method="post">
-=======
         <form action="{{ route('login') }}" method="POST">
->>>>>>> b3f26f8f7862b08511f747ef900598b1121c48dd
             @csrf
 
             @if(session('error'))

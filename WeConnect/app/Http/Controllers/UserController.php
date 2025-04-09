@@ -31,16 +31,12 @@ class UserController extends Controller
         $users = User::all();
         return view('admin.manage_user', compact('users'));
     }
-<<<<<<< HEAD
-}
-=======
 
     // public function viewEditUser($id)
     // {
     //     $user = User::find($id);
     //     return view('admin.edit_user', compact('users'));
     // }
->>>>>>> b3f26f8f7862b08511f747ef900598b1121c48dd
 
     public function search(Request $request)
     {

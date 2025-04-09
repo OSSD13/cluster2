@@ -18,11 +18,7 @@ class LoginController extends Controller
         if($user != null && Hash::check($req->password, $user->password)) {
             $req->session()->put('user', $user);
             if ($user->role === 'Admin') {
-<<<<<<< HEAD
                 return redirect('/adminhome');
-=======
-                return redirect('/manage_user');
->>>>>>> b3f26f8f7862b08511f747ef900598b1121c48dd
             } else if ($user->role === 'Manager') {
                 return redirect('/dashboard');
             } else if ($user->role === 'User') {
