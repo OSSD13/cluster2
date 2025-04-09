@@ -32,20 +32,35 @@ class ProblemController extends Controller
         return view('test_addproblem', ['req' => $data]);
     }
 
-    public function addForm(Request $req) {
-        $problem = new Problem();
-        $problem -> community_name = $req->input('community_name');
-        $problem -> detail = $req->input('detail');
-        $problem -> latitude = $req->input('latitude');
-        $problem -> longitude = $req->input('longitude');
-        $problem -> sub_district = $req->input('sub_district');
-        $problem -> district = $req->input('district');
-        $problem -> province = $req->input('province');
-        $problem -> post_code = $req->input('postcode');
-        $problem -> usr_id = null;
-        $problem -> save();
+    public function addForm(Request $request) {
+        // $problem = new Problem();
+        // $problem -> community_name = $req->input('community_name');
+        // $problem -> detail = $req->input('detail');
+        // $problem -> latitude = $req->input('latitude');
+        // $problem -> longitude = $req->input('longitude');
+        // $problem -> sub_district = $req->input('sub_district');
+        // $problem -> district = $req->input('district');
+        // $problem -> province = $req->input('province');
+        // $problem -> post_code = $req->input('postcode');
+        // $problem -> usr_id = null;
+        // $problem -> save();
+
+
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $path = $photo->store('images', 'public');
     
-        return redirect('/test_problem');
+                // ตัวอย่าง: บันทึก path ลง DB
+                // Image::create(['path' => $path]);
+    
+                echo 'อัปโหลดแล้ว: ' . $path . '<br>';
+            }
+        } else {
+            return 'ไม่มีไฟล์ส่งมา';
+        }
+    
+        //$problems = Problem::latest()->get(); // ดึงข้อมูลจากฐานข้อมูล
+        //return view('user.home', compact('problems')); // ส่งตัวแปรไปที่ View
     }
 
     // รับข้อมูลจากฟอร์ม

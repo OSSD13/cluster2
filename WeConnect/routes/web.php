@@ -24,6 +24,7 @@ Route::post('/adduser', [UserController::class, 'addUser']);
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
 Route::get('/home', [ProblemController::class, 'index'])->name('userhome');
 Route::post('/home', [ProblemController::class, 'home']);
+Route::post('/home', [ProblemController::class, 'addForm'])->name('home.add');
 Route::get('/home/search', [ProblemController::class, 'search'])->name('home.search');
 
 Route::get('/problemdetail', function () {
