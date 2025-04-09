@@ -37,8 +37,6 @@ Route::get('/addproblem',function (){
     return view('user.add_problem');
 });
 
-Route::post('/addproblem', [ProblemController::class, 'addForm']);
-
 Route::get('/editproblem',function (){
     return view('user.edit_problem');
 });
@@ -53,9 +51,11 @@ Route::get('/address',function (){
 
 Route::get('/testproblem',function (){
     return view('test_problem');
-})->name('testadd');
+});
 
-Route::post('/testproblem',  [ProblemController::class, 'addForm'])->name('testadd');
+Route::get('/testaddproblem',function (){
+    return view('test_addproblem');
+});
 
 Route::get('/dashboard',function (){
     return view('manager.dashboard');

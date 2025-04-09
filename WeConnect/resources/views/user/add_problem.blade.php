@@ -58,15 +58,6 @@
         <input type="file" id="imageInput" accept="image/*" class="hidden" />
         <div id="preview" class="flex gap-2"></div>
     </div>
-    <p id="warningText" class="text-red-500 text-sm mt-2 hidden">สามารถอัปโหลดได้สูงสุด 2 รูปเท่านั้น</p>
-
-    <!-- Modal Popup -->
-    <div id="popupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-4 rounded shadow-md max-w-sm w-full text-center">
-            <p class="text-red-600 font-semibold">สามารถอัปโหลดได้สูงสุด 2 รูปเท่านั้น</p>
-            <button id="closeModal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">ตกลง</button>
-        </div>
-    </div>
 
     <!-- ปุ่ม ยืนยัน -->
     <div class="flex justify-center mt-6">
@@ -76,58 +67,58 @@
     </div>
 </div>
 
-document.getElementById('uploadButton').addEventListener('click', function () {
-  document.getElementById('imageInput').click();
-});
-
-document.getElementById('imageInput').addEventListener('change', function(event) {
-    const newFiles = Array.from(event.target.files);
-    const warningText = document.getElementById('warningText');
-
-    // ไม่ต้องจำกัดจำนวนรูป
-    warningText.classList.add('hidden');
-
-    newFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            uploadedImages.push(e.target.result);
-            renderPreview();
-        };
-        reader.readAsDataURL(file);
+    document.getElementById('uploadButton').addEventListener('click', function() {
+        document.getElementById('imageInput').click();
     });
 
-    event.target.value = '';
-});
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        const newFiles = Array.from(event.target.files);
+        const warningText = document.getElementById('warningText');
 
-function renderPreview() {
-    const preview = document.getElementById('preview');
-    preview.innerHTML = '';
+        // ไม่ต้องจำกัดจำนวนรูป
+        warningText.classList.add('hidden');
 
-    uploadedImages.forEach((imgSrc, index) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = "relative";
+        newFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImages.push(e.target.result);
+                renderPreview();
+            };
+            reader.readAsDataURL(file);
+        });
 
-        const img = document.createElement('img');
-        img.src = imgSrc;
-        img.className = "w-16 h-16 object-cover rounded-md";
-
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = "✕";
-        removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
-        removeBtn.onclick = () => {
-            uploadedImages.splice(index, 1);
-            renderPreview();
-        };
-
-        wrapper.appendChild(img);
-        wrapper.appendChild(removeBtn);
-        preview.appendChild(wrapper);
+        event.target.value = '';
     });
-}
 
-document.getElementById('closeModal').addEventListener('click', function () {
-  document.getElementById('popupModal').classList.add('hidden');
-});
+    function renderPreview() {
+        const preview = document.getElementById('preview');
+        preview.innerHTML = '';
+
+        uploadedImages.forEach((imgSrc, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = "relative";
+
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = "w-16 h-16 object-cover rounded-md";
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = "✕";
+            removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
+            removeBtn.onclick = () => {
+                uploadedImages.splice(index, 1);
+                renderPreview();
+            };
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(removeBtn);
+            preview.appendChild(wrapper);
+        });
+    }
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('popupModal').classList.add('hidden');
+    });
 
     $.Thailand({
         $district: $("#sub_district"), // input ของตำบล
@@ -197,7 +188,6 @@ document.getElementById('closeModal').addEventListener('click', function () {
         outline: none;
         font-size: 14px;
     }
-
 </style>
 
 <script>
