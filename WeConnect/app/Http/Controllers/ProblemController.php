@@ -79,14 +79,5 @@ class ProblemController extends Controller
         $problems = Problem::latest()->get(); // ดึงข้อมูลจากฐานข้อมูล
         return view('user.home', compact('problems')); // ส่งตัวแปรไปที่ View
     }
-    public function show($id)
-{
-    // ใช้ prob_id แทน id
-    $problem = Problem::where('prob_id', $id)->firstOrFail();
-
-    // เรียกใช้ View ในโฟลเดอร์ problems
-    return view('user.problem_detail', compact('problem'));
-}
-
 
 }

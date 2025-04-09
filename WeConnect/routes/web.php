@@ -79,6 +79,14 @@ Route::get('/edituser',function(){
 Route::get('/addmap',function (){
     return view('user.add_map');
 });
+
+Route::get('/addmap',function (){
+    return view('user.add_map');
+});
+
+Route::get('/testdashboard',function (){
+    return view('test_dashboard');
+});
 // Route::get('/addproblem', [ProblemController::class, 'addForm']);
 // Route::post('/addproblem', [ProblemController::class, 'submit']);
 // Route::get('/editproblem/{id}', [ProblemController::class, 'editForm']);

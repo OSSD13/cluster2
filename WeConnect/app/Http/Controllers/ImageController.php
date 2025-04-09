@@ -8,7 +8,7 @@ class ImageController extends Controller
 {
     public function store(Request $request)
     {
-
+           
       $gallery = new GalleryImage();
 
       if($request->hasFile('image')) {
