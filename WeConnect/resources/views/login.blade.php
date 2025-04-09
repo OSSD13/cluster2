@@ -160,8 +160,14 @@
         <form action="{{ route('login') }}" method="POST">
             @csrf
 
+            @if(session('error'))
+            <div style="color: red; margin-bottom: 10px; text-align: center;">
+                {{ session('error') }}
+            </div>
+            @endif
+
             <label>Email</label>
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
 
             <label>Password</label>
             <input type="password" name="password" placeholder="Password" required>

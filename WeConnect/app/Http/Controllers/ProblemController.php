@@ -6,8 +6,7 @@ use App\Models\Image;
 use App\Models\Problem;
 use Illuminate\Http\Request;
 
-class ProblemController extends Controller
-{
+class ProblemController extends Controller{
     public function postFrom(Request $req) {
         $community_name = $req->input('community_name');
         $detail = $req->input('detail');
@@ -17,7 +16,7 @@ class ProblemController extends Controller
         $district = $req->input('district');
         $province = $req->input('province');
         $postcode = $req->input('postcode');
-    
+
         $data[] = [
             'community_name' => $community_name,
             'latitude' => $latitude,
@@ -28,7 +27,7 @@ class ProblemController extends Controller
             'province' => $province,
             'postcode' => $postcode
         ];
-    
+
         return view('test_addproblem', ['req' => $data]);
     }
 
