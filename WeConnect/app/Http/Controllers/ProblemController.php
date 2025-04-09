@@ -16,7 +16,7 @@ class ProblemController extends Controller
         $district = $req->input('district');
         $province = $req->input('province');
         $postcode = $req->input('postcode');
-    
+
         $data[] = [
             'community_name' => $community_name,
             'latitude' => $latitude,
@@ -27,7 +27,7 @@ class ProblemController extends Controller
             'province' => $province,
             'postcode' => $postcode
         ];
-    
+
         return view('test_addproblem', ['req' => $data]);
     }
 
@@ -43,7 +43,7 @@ class ProblemController extends Controller
         $problem -> post_code = $req->input('postcode');
         $problem -> usr_id = null;
         $problem -> save();
-    
+
         return redirect('/test_problem');
     }
 
@@ -79,4 +79,9 @@ class ProblemController extends Controller
         $problems = Problem::latest()->get(); // ดึงข้อมูลจากฐานข้อมูล
         return view('user.home', compact('problems')); // ส่งตัวแปรไปที่ View
     }
+    public function viewEditUser($id)
+{
+    $user = User::findOrFail($id);
+    return view('admin.edit_user', compact('user'));
+}
 }

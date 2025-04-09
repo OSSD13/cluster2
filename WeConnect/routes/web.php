@@ -59,7 +59,13 @@ Route::get('/maps',function(){
     return view('user.open_map');
 });
 
-Route::get('/edituser',function(){
-    return view('admin.edit_user');
-});
+Route::get('/edituser/{id}', [UserController::class, 'viewEditUser'])->name('user.editform');
 
+Route::put('/updateuser/{id}', [UserController::class, 'updateUser'])->name('user.update');
+
+//ฟังก์ชัน ลบผู้ใช้
+Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+
+//Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+//Route::get('/edituser/{id}', [UserController::class, 'viewEditUser'])->name('admin.user_edit');
