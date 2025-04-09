@@ -85,5 +85,4 @@ Route::get('/admindataAnalytics',function (){
     return view('admin.admin_dataAnalytics');
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
