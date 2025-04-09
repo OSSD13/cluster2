@@ -39,21 +39,9 @@
     <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
     <div class="tags-input-wrapper w-full p-2 border rounded relative">
         <ul id="tags">
-            <input type="text" id="tag-input" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter">
+            <input type="text" id="tag-input" list="tagSuggestions" spellcheck="false" placeholder="พิมพ์ปัญหาแล้วกด Enter เพื่อเพิ่ม">
+            <datalist id="tagSuggestions"></datalist>
         </ul>
-        <button onclick="openTagModal()" class="absolute right-2 top-2 bg-blue-500 text-white px-2 py-1 rounded">+</button>
-    </div>
-
-    <!-- Modal สำหรับเพิ่มแท็กใหม่ -->
-    <div id="tagModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-            <h2 class="text-lg font-semibold mb-4">เพิ่มแท็กใหม่</h2>
-            <input type="text" id="newTagInput" class="w-full p-2 border rounded mb-4" placeholder="กรอกแท็กที่ต้องการเพิ่ม">
-            <div class="flex justify-end gap-2">
-                <button onclick="closeTagModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">ยกเลิก</button>
-                <button onclick="addTagFromModal()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">เพิ่ม</button>
-            </div>
-        </div>
     </div>
 
     <!-- รายละเอียดเพิ่มเติม -->
@@ -78,58 +66,58 @@
 <script>
     const uploadedImages = [];
 
-document.getElementById('uploadButton').addEventListener('click', function () {
-  document.getElementById('imageInput').click();
-});
-
-document.getElementById('imageInput').addEventListener('change', function(event) {
-    const newFiles = Array.from(event.target.files);
-    const warningText = document.getElementById('warningText');
-
-    // ไม่ต้องจำกัดจำนวนรูป
-    warningText.classList.add('hidden');
-
-    newFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            uploadedImages.push(e.target.result);
-            renderPreview();
-        };
-        reader.readAsDataURL(file);
+    document.getElementById('uploadButton').addEventListener('click', function() {
+        document.getElementById('imageInput').click();
     });
 
-    event.target.value = '';
-});
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        const newFiles = Array.from(event.target.files);
+        const warningText = document.getElementById('warningText');
 
-function renderPreview() {
-    const preview = document.getElementById('preview');
-    preview.innerHTML = '';
+        // ไม่ต้องจำกัดจำนวนรูป
+        warningText.classList.add('hidden');
 
-    uploadedImages.forEach((imgSrc, index) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = "relative";
+        newFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImages.push(e.target.result);
+                renderPreview();
+            };
+            reader.readAsDataURL(file);
+        });
 
-        const img = document.createElement('img');
-        img.src = imgSrc;
-        img.className = "w-16 h-16 object-cover rounded-md";
-
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = "✕";
-        removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
-        removeBtn.onclick = () => {
-            uploadedImages.splice(index, 1);
-            renderPreview();
-        };
-
-        wrapper.appendChild(img);
-        wrapper.appendChild(removeBtn);
-        preview.appendChild(wrapper);
+        event.target.value = '';
     });
-}
 
-document.getElementById('closeModal').addEventListener('click', function () {
-  document.getElementById('popupModal').classList.add('hidden');
-});
+    function renderPreview() {
+        const preview = document.getElementById('preview');
+        preview.innerHTML = '';
+
+        uploadedImages.forEach((imgSrc, index) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = "relative";
+
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = "w-16 h-16 object-cover rounded-md";
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = "✕";
+            removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
+            removeBtn.onclick = () => {
+                uploadedImages.splice(index, 1);
+                renderPreview();
+            };
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(removeBtn);
+            preview.appendChild(wrapper);
+        });
+    }
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('popupModal').classList.add('hidden');
+    });
 
     $.Thailand({
         $district: $("#sub_district"), // input ของตำบล
@@ -205,7 +193,7 @@ document.getElementById('closeModal').addEventListener('click', function () {
             title: document.getElementById('title').value,
             description: document.getElementById('description').value
         };
-        
+
         localStorage.setItem('form_data', JSON.stringify(data));
     }
 
@@ -217,68 +205,136 @@ document.getElementById('closeModal').addEventListener('click', function () {
 
     document.addEventListener('DOMContentLoaded', function() {
         const tagInput = document.getElementById('tag-input');
-        const tags = document.getElementById('tags');
-        const maxTags = 10000;
-        let tagsList = [];
 
-        function createTag(tagValue) {
-            if (!tagValue.startsWith('#')) {
-                tagValue = '#' + tagValue;
-            }
-
-            const li = document.createElement('li');
-            const span = document.createElement('span');
-            span.className = 'remove-tag';
-            span.innerHTML = '×';
-
-            li.textContent = tagValue + ' ';
-            li.appendChild(span);
-
-            span.addEventListener('click', function() {
-                removeTag(li, tagValue);
+        // โหลดแท็กจาก backend แล้วเพิ่มใน datalist + allowedTags
+        fetch("{{ route('tags.fetch') }}")
+            .then(response => response.json())
+            .then(data => {
+                const datalist = document.getElementById("tagSuggestions");
+                datalist.innerHTML = '';
+                data.forEach(tag => {
+                    const option = document.createElement("option");
+                    option.value = tag;
+                    datalist.appendChild(option);
+                    allowedTags.push(tag); // อัปเดต allowedTags ด้วย
+                });
+            })
+            .catch(error => {
+                console.error("เกิดข้อผิดพลาดในการโหลดแท็ก:", error);
             });
 
-            tags.insertBefore(li, tagInput);
-            tagsList.push(tagValue);
-        }
-
-        function removeTag(element, tag) {
-            const index = tagsList.indexOf(tag);
-            if (index > -1) {
-                tagsList.splice(index, 1);
-            }
-            element.remove();
-        }
-
+        // Event listener สำหรับการกด Enter เพื่อเพิ่มแท็ก
         tagInput.addEventListener('keyup', function(e) {
             if (e.key === 'Enter') {
                 const tagValue = this.value.trim();
-                if (tagValue && !tagsList.includes('#' + tagValue) && !tagsList.includes(tagValue)) {
-                    if (tagsList.length < maxTags) {
-                        createTag(tagValue);
-                        this.value = '';
-                    }
+                if (tagValue) {
+                    handleTagInput(tagValue);
                 }
             }
         });
     });
 
-    function openTagModal() {
-        document.getElementById("tagModal").classList.remove("hidden");
+    // ประกาศตัวแปรแบบ global
+    let tagsList = [];
+    let allowedTags = []; // สำหรับเก็บแท็กที่มีอยู่ในระบบ
+    const maxTags = 10000;
+
+    // ฟังก์ชันสำหรับจัดการกับแท็ก
+    function createTag(tagValue) {
+        const tags = document.getElementById('tags');
+        const tagInput = document.getElementById('tag-input');
+
+        if (!tagValue) return;
+
+        // ตัดช่องว่าง
+        tagValue = tagValue.trim();
+        if (tagValue === '') return;
+
+        // ตรวจสอบว่าแท็กซ้ำหรือไม่
+        const formattedTag = "#" + tagValue;
+        if (tagsList.includes(formattedTag)) return;
+
+        // สร้าง element ใหม่สำหรับแท็ก
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        span.className = 'remove-tag';
+        span.innerHTML = '×';
+
+        li.textContent = formattedTag + ' ';
+        li.appendChild(span);
+
+        // เพิ่ม event listener สำหรับลบแท็ก
+        span.addEventListener('click', function() {
+            removeTag(li, formattedTag);
+        });
+
+        // เพิ่มแท็กเข้าไปใน DOM และ array
+        tags.insertBefore(li, tagInput);
+        tagsList.push(formattedTag);
+
+        // ล้างค่าในช่อง input
+        tagInput.value = '';
+
+        return true; // แสดงว่าเพิ่มแท็กสำเร็จ
     }
 
-    function closeTagModal() {
-        document.getElementById("newTagInput").value = "";
-        document.getElementById("tagModal").classList.add("hidden");
+    function removeTag(element, tag) {
+        // ลบแท็กออกจาก array
+        const index = tagsList.indexOf(tag);
+        if (index > -1) {
+            tagsList.splice(index, 1);
+        }
+        // ลบ element ออกจาก DOM
+        element.remove();
     }
 
-    function addTagFromModal() {
-        const tagInputValue = document.getElementById("newTagInput").value.trim();
-        if (tagInputValue && !tagsList.includes('#' + tagInputValue) && !tagsList.includes(tagInputValue)) {
-            if (tagsList.length < maxTags) {
-                createTag(tagInputValue);
-                closeTagModal();
-            }
+    // ฟังก์ชันเพิ่มแท็กใหม่ (ทั้งแท็กที่มีอยู่หรือสร้างใหม่)
+    function handleTagInput(tagValue) {
+        if (!tagValue) return;
+
+        // ตรวจสอบว่าแท็กนี้มีอยู่แล้วในระบบหรือไม่
+        if (allowedTags.includes(tagValue)) {
+            // ถ้ามีอยู่แล้ว เพิ่มแท็กได้เลย
+            createTag(tagValue);
+        } else {
+            // ถ้ายังไม่มี ส่งข้อมูลไปบันทึกแท็กใหม่ที่ backend ก่อน
+            fetch("{{ route('tags.store') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        tag_name: tagValue
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // เพิ่มแท็กเข้า list ที่อนุญาต
+                        allowedTags.push(tagValue);
+
+                        // เพิ่มแท็กใน datalist
+                        const datalist = document.getElementById("tagSuggestions");
+                        const option = document.createElement("option");
+                        option.value = tagValue;
+                        datalist.appendChild(option);
+
+                        // สร้างแท็กและแสดงในรายการ
+                        createTag(tagValue);
+                    } else {
+                        if (data.message === 'แท็กนี้มีอยู่แล้ว') {
+                            // กรณีนี้ไม่ควรเกิดขึ้นแล้ว แต่เผื่อไว้
+                            createTag(tagValue);
+                        } else {
+                            alert("ไม่สามารถเพิ่มแท็กได้: " + data.message);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("เกิดข้อผิดพลาดในการเพิ่มแท็ก");
+                });
         }
     }
 </script>
