@@ -9,6 +9,7 @@ class TagController extends Controller
 {
     public function store(Request $request)
 {
+    
     $request->validate([
         'tag_name' => 'required|string|max:255',
     ]);

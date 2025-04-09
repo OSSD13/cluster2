@@ -18,7 +18,7 @@ class LoginController extends Controller
         if($user != null && Hash::check($req->password, $user->password)) {
             $req->session()->put('user', $user);
             if ($user->role === 'Admin') {
-                return redirect('/adduser');
+                return redirect('/adminhome');
             } else if ($user->role === 'Manager') {
                 return redirect('/dashboard');
             } else if ($user->role === 'User') {
@@ -29,4 +29,10 @@ class LoginController extends Controller
             return redirect('/login');
         }
     }
+
+    function logout(Request $req) {
+        $req->session()->forget('user');
+        return redirect('/login');
+    }
+
 }
