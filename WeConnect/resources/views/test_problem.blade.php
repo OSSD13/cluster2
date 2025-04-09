@@ -306,6 +306,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
+    <img src="{{ asset('storage/app/public/' . $data['path']->first()->img_path) }}" alt="รูปภาพ" width="200">
 </body>
 
 </html>

@@ -98,9 +98,10 @@ class ProblemController extends Controller{
         return view('test_addproblem');
     }
 
-    public function showimage() {
-        $path = Image::find('1');
+    public function showimage(Request $req) {
+        $path = Image::find($req);
         $data['path'] = $path;
-        return view('test_problem', $data);
+        dump($data);
+        return view('test_problem', ['data' => $data]);
     }
 }
