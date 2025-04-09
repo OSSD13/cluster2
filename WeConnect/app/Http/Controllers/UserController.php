@@ -90,12 +90,9 @@ class UserController extends Controller
         return redirect('/usermanage')->with('success', 'User updated successfully.');
     }
 
-    public function editUser($id)
+    public function viewEditUser($id)
     {
-        $user = User::findOrFail($id); // ดึงข้อมูลผู้ใช้
-        return view('admin.edit_user', compact('user')); // ส่งไปที่ view
+        $user = User::where('usr_id', $id)->firstOrFail();
+        return view('admin.edit_user', compact('user'));
     }
 }
-
-
-

@@ -59,11 +59,12 @@
         <input type="text" name= "community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
 
         <!-- ที่อยู่ -->
-        <label class="block mt-4 mt-2 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
-        <div class="flex items-center border p-2 rounded">
-            <input type="text" name ="location" id="location" class="w-full border-none focus:ring-0">
-            <button class="ml-2">➤</button>
-        </div>
+    <label class="block mt-4 text-sm">ที่อยู่ <span class="text-red-500">*</span></label>
+    <!-- ช่องที่อยู่เพิ่มเติม -->
+    <input id="sub_district" name="sub_district" type="text" placeholder="ตำบล" class="mt-2 w-full border p-2 rounded">
+    <input id="district" name="district" type="text" placeholder="อำเภอ" class="mt-2 w-full border p-2 rounded">
+    <input id="province" name="province" type="text" placeholder="จังหวัด" class="mt-2 w-full border p-2 rounded">
+    <input id="postcode" name="postcode" type="text" placeholder="รหัสไปรษณีย์" class="mt-2 w-full border p-2 rounded">
 
         <!-- ปัญหาที่พบ -->
         <label class="block mt-4 text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>

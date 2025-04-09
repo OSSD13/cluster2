@@ -6,7 +6,7 @@
 <main class="pt-4">
     <div class="container">
         <h2 class="text-black text-2xl font-semibold">แก้ไขบัญชีผู้ใช้งาน</h2>
-        <form action="{{ route('admin.user_update', $user->usr_id) }}" method="POST">
+        <form action="{{ route('user.update', $user->usr_id) }}" method="POST">
             @csrf
             @method('PUT')
 

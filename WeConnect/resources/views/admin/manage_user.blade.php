@@ -78,17 +78,22 @@
                 e.preventDefault();
 
                 Swal.fire({
-                    title: 'คุณแน่ใจหรือไม่?',
-                    text: "หากลบแล้วจะไม่สามารถกู้คืนได้!",
-                    icon: 'warning',
+                    title: 'ลบบัญชีนี้หรือไม่',
+                    icon: 'error',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'ใช่, ลบเลย!',
-                    cancelButtonText: 'ยกเลิก'
+                    cancelButtonColor: '#B9B9B9',
+                    confirmButtonColor: '#00BB1F',
+                    cancelButtonText: 'ยกเลิก',
+                    confirmButtonText: 'ตกลง'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         this.submit();
+
+                            Swal.fire({
+                                title: "บัญชีผู้ใช้ถูกลบแล้ว",
+                                icon: "success",
+                                draggable: true
+                            });
                     }
                 });
             });
