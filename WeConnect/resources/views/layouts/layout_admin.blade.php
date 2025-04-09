@@ -71,7 +71,7 @@
 
                 <div class="ml-3">
                     @if(session()->has('user'))
-                    <div class="text-sm text-left w-40 max-w-[160px] overflow-hidden">
+                    <div class="text-sm text-left w-40 max-w-[160px] overflow-hidden" style="size: 32px">
                         <div class="font-semibold truncate" title="{{ session('user')->name }}">
                             {{ session('user')->name }}
                         </div>
