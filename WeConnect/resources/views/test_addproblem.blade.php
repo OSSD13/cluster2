@@ -12,9 +12,9 @@
         <button type="submit">submit</button>
     </form>
 
-    <form action="{{ url('/showimage') }}" method="post">
+    <form action="{{ route('showimage') }}" method="post">
         @csrf
+        <input type="text" id="show" name="show"></input>
         <button type="submit">show</button>
     </form>
-
 </body>

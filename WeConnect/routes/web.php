@@ -68,8 +68,8 @@ Route::get('/editaddress',function (){
 Route::get('/maps', [ProblemController::class, 'showMap'])->name('user.open_map.view');
 
 
-Route::post('/addimage', [ProblemController::class, 'addimage']);
-Route::post('/showimage', [ProblemController::class, 'showimage']);
+Route::post('/addimage', [ProblemController::class, 'addimage'])->name('addimage');
+Route::post('/showimage', [ProblemController::class, 'showimage'])->name('showimage');
 
 // Route::get('/edituser/{id}', [UserController::class, 'viewEditUser']);
 
