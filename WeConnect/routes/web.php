@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/cluster2/login', [LoginController::class, 'index'])->name('login');
+Route::post('/cluster2/login', [LoginController::class, 'login'])->name('login');
 
 Route::get('/usermanage', [UserController::class, 'index']);
 Route::get('/adduser', [UserController::class, 'viewAddUser']);
