@@ -45,7 +45,7 @@ class ProblemController extends Controller
         $problem -> usr_id = null;
         $problem -> save();
     
-        return redirect('/test_problem');
+        return redirect()->route('testadd');
     }
 
     // รับข้อมูลจากฟอร์ม

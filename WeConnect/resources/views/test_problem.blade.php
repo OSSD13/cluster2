@@ -242,7 +242,7 @@
 
 <body>
 
-    <form action="{{ url('/addproblem') }}" method="post">
+    <form action="{{ route('testadd') }}" method="post">
         @csrf
         <input id="community_name" name="community_name" type="text" class="txt" placeholder="ชื่อชุมชน">
         <textarea id="detail" name="detail" placeholder="รายละเอียดเพิ่มเติม"></textarea>
@@ -306,7 +306,6 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <img src="{{ asset('storage/app/public/' . $data['path']->first()->img_path) }}" alt="รูปภาพ" width="200">
 </body>
 
 </html>
