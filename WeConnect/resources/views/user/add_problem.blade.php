@@ -7,26 +7,27 @@
     <form id="formID" action="{{ route('home.add') }}" method="POST" enctype="multipart/form-data" onkeydown="return event.key !== 'Enter';">
         @csrf
         <!-- ชื่อชุมชน -->
-        <label class="block mt-2 text-sm">ชื่อของชุมชน</label>
-        <input type="text" id="community_name" name="community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
+        <label class="block mt-2 text-sm">ตำแหน่ง</label>
+        <div class="flex items-center border p-2 rounded">
+            <i class="fa-solid fa-location-dot"></i>
+            <input id="latitude" name="latitude" type="text" hidden>
+            <input id="longitude" name="longitude" type="text" hidden>
+            <input id="location" name="location" type="text" class="w-full border-none focus:ring-0 ml-2" placeholder="เลือกตำแหน่งจากแผนที่">
+            <button type="button" onclick="openGoogleMaps()" class="ml-2">➤</button>
+        </div>
 
         <!-- วันที่ & ตำแหน่ง -->
         <div class="grid grid-cols-2 gap-4 mt-4">
+            <div>
+                <label class="block mt-2 text-sm">ชื่อชุมชน<span class="text-red-500">*</span></label>
+                <input type="text" id="community_name" name="community_name" class="w-full p-2 border rounded" placeholder="กรอกชื่อชุมชน">
+            </div>
+
             <div>
                 <label class="block mt-2 text-sm">วันที่ <span class="text-red-500">*</span></label>
                 <div class="flex items-center border p-2 rounded">
                     <i class="fa-solid fa-calendar-days"></i>
                     <input type="date" id="add_date" name="add_date" class="w-full border-none focus:ring-0 ml-2">
-                </div>
-            </div>
-            <div>
-                <label class="block mt-2 text-sm">ตำแหน่ง <span class="text-red-500">*</span></label>
-                <div class="flex items-center border p-2 rounded">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <input id="latitude" name="latitude" type="text" hidden>
-                    <input id="longitude" name="longitude" type="text" hidden>
-                    <input id="location" name="location" type="text" class="w-full border-none focus:ring-0 ml-2" placeholder="เลือกตำแหน่งจากแผนที่">
-                    <button type="button" onclick="openGoogleMaps()" class="ml-2">➤</button>
                 </div>
             </div>
         </div>
