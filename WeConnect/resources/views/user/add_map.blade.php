@@ -31,7 +31,7 @@
 <input id="latitude" name="latitude" type="text" hidden>
 <input id="longitude" name="longitude" type="text" hidden>
 
-<div class="fixed inset-x-0 bottom-0 w-full max-w-xs mx-auto p-4 rounded-2xl z-40">
+<div class="fixed inset-x-0 bottom-0 w-full max-w-xs mx-auto p-4 rounded-2xl z-10">
     <div class="flex justify-center items-center mt-6">
         <button onclick=saveToStorage() class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
             ยืนยันตำแหน่ง
