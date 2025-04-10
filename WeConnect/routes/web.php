@@ -91,3 +91,15 @@ Route::post('/tags',
 [TagController::class, 'store'])->name('tags.store');
 Route::get('/tags/fetch',
 [TagController::class, 'fetch'])->name('tags.fetch');
+
+
+Route::get('/searchdata',function(){
+    return view('manager.searchdata');
+});
+// Route::get('/dashboard-data', [DashboardController::class, 'getChartData']);
+
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::get('/dongz', function () {
+    return view('manager.dongz_todsob');
+});

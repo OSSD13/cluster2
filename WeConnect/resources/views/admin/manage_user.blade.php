@@ -21,57 +21,12 @@
         </svg>
     </h1>
 
-<<<<<<< HEAD
-<div class="container">
-    <div class="text-center mb-4">
-        <h1 class="text-2xl font-semibold mt-4 text-center px-6">User Manage<i class="fas fa-user-edit"></i></h1>
-    </div>
-
-    {{-- Table --}}
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle text-center">
-            <thead class="table-light">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th style="min-width: 120px;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($users as $user)
-                <tr>
-                    <td class="text-nowrap">{{ $user->name }}</td>
-                    <td class="text-nowrap">{{ $user->email }}</td>
-                    <td>
-                        <div class="d-flex flex-wrap gap-1 justify-content-center">
-                            <a href="{{ url('/admin.user/{id}/edit'.$user->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{  url('/adduser') }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    {{-- Add User Button --}}
-    <form action="{{  url('/adduser') }}" method="get">
-        <div class="flex justify-center mt-6">
-            <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
-                เพิ่มบัญชีผู้ใช้
-            </button>
-=======
     <form action="{{ route('admin.manage_user') }}" method="GET" class="mb-4 flex items-center gap-2 ">
         <div class="flex mx-auto">
             <input type="text" name="search" placeholder="ค้นหาผู้ใช้" value="{{ request('search') }}"
                 class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ">
             <button type="submit"
                 class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded ml-2">ค้นหา</button>
->>>>>>> 390197afd6b4ffda29b827902caf08e18d3d0c15
         </div>
     </form>
     <div class="row d-flex justify-content-center">
@@ -106,9 +61,6 @@
     </div>
 </div>
 
-<<<<<<< HEAD
-@endsection
-=======
 <form action="{{ url('/adduser') }}" method="get">
     <div class="flex justify-center mt-6">
         <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
@@ -143,4 +95,3 @@
         });
     });
 </script>
->>>>>>> 390197afd6b4ffda29b827902caf08e18d3d0c15

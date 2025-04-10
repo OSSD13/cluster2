@@ -70,7 +70,7 @@
             </svg>
             <div class="ml-3">
                 <p class="font-medium">
-                    {{ $user->name }}
+                    Username
                 </p>
                 <p class="text-gray-500 text-sm">Email</p>
             </div>

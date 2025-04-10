@@ -22,7 +22,7 @@
          *              zip.js <https://github.com/gildas-lormeau/zip.js> (optional: for zip database_type only)
          *              typeahead.js <https://twitter.github.io/typeahead.js/>
          *              JQL.js <https://github.com/earthchie/JQL.js>
-         **/
+         **/m
         $.Thailand = function(e) {
             "use strict";
             e = $.extend({}, $.Thailand.defaults, e);
