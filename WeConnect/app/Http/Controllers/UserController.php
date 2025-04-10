@@ -58,9 +58,11 @@ class UserController extends Controller
             })
             ->get();
 
-        return view('admin.manage_user', compact('users'));
-    }
-
+            return view('admin.manage_user', [
+                'users' => $users,
+                'searching' => !empty($search)
+            ]);
+        }
     public function delete($id)
     {
         $user = User::find($id);

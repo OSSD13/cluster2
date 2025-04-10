@@ -25,10 +25,10 @@
                 <label for="email" class="block text-xl mb-1">Email <span class="text-red-500">*</span></label>
                 <input type="email" class="text-gray-500 w-full px-4 py-2 border rounded-md"  value="{{ $user->email }}" name="email" required>
             </div>
-            <label for="password" class="block text-xl mb-1">Password <span class="text-red-500">*</span></label>
+            <label for="password" class="block text-xl mb-1">Password</label>
             <div class="mb-4 relative ">
                 <!-- Input Field -->
-                <input type="password" class="w-full px-4 py-2 border rounded-md pr-10" id="password" name="password" required>
+                <input type="password" class="w-full px-4 py-2 border rounded-md pr-10" id="password" name="password" >
 
                 <!-- Eye Icon -->
                 <span class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl" id="toggle-password">👁️</span>
