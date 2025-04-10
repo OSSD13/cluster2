@@ -1,13 +1,20 @@
-<?php // foreach ($req as $index => $val) { ?>
-    <!-- <tr class="align-middle">
-        <td>{{ $val['latitude'] }}</td>
-        <td>{{ $val['longitude'] }}</td>
-        <td>{{ $val['sub_district'] }}</td>
-        <td>{{ $val['district'] }}</td>
-        <td>{{ $val['province'] }}</td>
-        <td>{{ $val['community_name'] }}</td>
-        <td>{{ $val['detail'] }}</td>
-    </tr> -->
+<!DOCTYPE html>
 
-    <h1>head</h1>
-<?php // } ?>
+<body>
+    <form action="{{ route('addimage') }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <label class="block mt-2 text-sm">รูปภาพ</label>
+        <div class="flex gap-2 items-center">
+            <input type="file" id="photo" name="photo" />
+            <div id="preview" class="flex gap-2"></div>
+        </div>
+
+        <button type="submit">submit</button>
+    </form>
+
+    <form action="{{ url('/showimage') }}" method="post">
+        @csrf
+        <button type="submit">show</button>
+    </form>
+
+</body>

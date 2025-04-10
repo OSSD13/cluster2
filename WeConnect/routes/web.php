@@ -3,6 +3,8 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -11,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('login');
 // });
 
-Route::get('/', [LoginController::class, 'index']);
-Route::get('/login', [LoginController::class, 'index']);
-Route::post('/login', [LoginController::class, 'login']);
+Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::get('/usermanage', [UserController::class, 'index']);
 Route::get('/adduser', [UserController::class, 'viewAddUser']);
@@ -24,8 +26,9 @@ Route::post('/adduser', [UserController::class, 'addUser']);
 
 
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
-Route::get('/home', [ProblemController::class, 'index'])->name('home');
+Route::get('/home', [ProblemController::class, 'index'])->name('userhome');
 Route::post('/home', [ProblemController::class, 'home']);
+Route::get('/home/search', [ProblemController::class, 'search'])->name('home.search');
 
 Route::get('/problemdetail/{prob_id}', [ProblemController::class, 'show'])->name('problem.show');
 
@@ -49,6 +52,10 @@ Route::post('/editproblem',function (){
     return view('user.edit_problem');
 });
 
+Route::get('/addmap',function (){
+    return view('user.add_map');
+});
+
 Route::get('/address',function (){
     return view('user.add_address');
 });
@@ -57,37 +64,45 @@ Route::get('/testproblem',function (){
     return view('test_problem');
 });
 
-Route::get('/dashboard',function (){
-    return view('manager.dashboard');
+Route::get('/testaddproblem',function (){
+    return view('test_addproblem');
 });
+
+// Route::get('/dashboard',function (){
+//     return view('manager.dashboard');
+// });
+// หน้า dashboard หลัก
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
+Route::get('/dashboard', [DashboardController::class, 'countProblem'])->name('dashboard');
 
 Route::get('/editaddress',function (){
     return view('user.edit_address');
 });
 
-Route::get('/maps',function(){
-    return view('user.open_map');
-});
-
 Route::get('/maps', [ProblemController::class, 'showMap'])->name('user.open_map.view');
 
 
-Route::get('/edituser',function(){
-    return view('admin.edit_user');
-});
+Route::post('/addimage', [ProblemController::class, 'addimage']);
+Route::post('/showimage', [ProblemController::class, 'showimage']);
 
-Route::get('/addmap',function (){
-    return view('user.add_map');
-});
+// Route::get('/edituser/{id}', [UserController::class, 'viewEditUser']);
 
-Route::get('/addmap',function (){
-    return view('user.add_map');
-});
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-Route::get('/testdashboard',function (){
-    return view('test_dashboard');
-});
-// Route::get('/addproblem', [ProblemController::class, 'addForm']);
-// Route::post('/addproblem', [ProblemController::class, 'submit']);
-// Route::get('/editproblem/{id}', [ProblemController::class, 'editForm']);
-// Route::post('/editproblem/{id}', [ProblemController::class, 'updateForm']);
+// Route::get('/edituser/{id}', [UserController::class, 'viewEditUser'])->name('admin.user_edit');
+
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+
+Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+
+Route::get('/users', [UserController::class, 'search'])->name('admin.manage_user');
+
+Route::get('/edituser/{id}', [UserController::class, 'viewEditUser'])->name('admin.edit_user');
+
+Route::put('/updateuser/{id}', [UserController::class, 'updateUser'])->name('user.update');
+
+Route::post('/tags',
+[TagController::class, 'store'])->name('tags.store');
+Route::get('/tags/fetch',
+[TagController::class, 'fetch'])->name('tags.fetch');
