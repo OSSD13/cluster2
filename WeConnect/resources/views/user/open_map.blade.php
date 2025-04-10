@@ -61,7 +61,11 @@
             </span>
         </div>
 
+<<<<<<< HEAD
         <div id="accordionContent" class="max-h-0 overflow-hidden transition-all duration-300 bg-white rounded-b-2xl overflow-y-auto ">
+=======
+        <div id="accordionContent" class="max-h-0 overflow-hidden transition-all duration-300 bg-white rounded-b-2xl overflow-y-auto">
+>>>>>>> 3c55fde53288f8a734583651173b990c414ae3ea
             <div class="p-2 ">
                 <p class="flex text-gray-700 ">
                     ไม่มีข้อมูล กรุณาเลือกตำแหน่งที่ต้องการ
