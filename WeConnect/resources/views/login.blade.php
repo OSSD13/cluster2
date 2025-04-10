@@ -148,7 +148,7 @@
         <table>
             <tr>
                 <td class="logo">
-                    <img src="https://github.com/Namtan26/image/blob/main/image%2042.png?raw=true" alt="WeConnect Logo">
+                    <img src="https://github.com/AudomsakalcoholicBoy/images/blob/main/LogoWeConnect.png?raw=true" alt="WeConnect Logo">
                 </td>
                 <td class="text">
                     <h1>WeConnect</h1>

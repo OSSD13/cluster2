@@ -35,7 +35,7 @@ return new class extends Migration
         Schema::create('problems_has_tags', function (Blueprint $table) {
             $table->unsignedBigInteger('prob_id')->nullable();
             $table->unsignedBigInteger('tag_id')->nullable();
-            
+
             $table->foreign('prob_id')->references('prob_id')->on('problems')->onDelete('set null');
             $table->foreign('tag_id')->references('tag_id')->on('tags')->onDelete('set null');
         });
@@ -59,6 +59,7 @@ return new class extends Migration
         Schema::dropIfExists('problems_has_tags');
         Schema::dropIfExists('images');
     }
+    
 };
 
 ?>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\Tag;
 use App\Models\Problem;
 use Illuminate\Http\Request;
 
@@ -32,19 +33,33 @@ class ProblemController extends Controller{
     }
 
     public function addForm(Request $req) {
-        $problem = new Problem();
-        $problem -> community_name = $req->input('community_name');
-        $problem -> detail = $req->input('detail');
-        $problem -> latitude = $req->input('latitude');
-        $problem -> longitude = $req->input('longitude');
-        $problem -> sub_district = $req->input('sub_district');
-        $problem -> district = $req->input('district');
-        $problem -> province = $req->input('province');
-        $problem -> post_code = $req->input('postcode');
-        $problem -> usr_id = null;
-        $problem -> save();
+        // $problem = new Problem();
+        // $problem -> community_name = $req->input('community_name');
+        // $problem -> detail = $req->input('detail');
+        // $problem -> latitude = $req->input('latitude');
+        // $problem -> longitude = $req->input('longitude');
+        // $problem -> sub_district = $req->input('sub_district');
+        // $problem -> district = $req->input('district');
+        // $problem -> province = $req->input('province');
+        // $problem -> post_code = $req->input('postcode');
+        // $problem -> usr_id = null;
+        // $problem -> save();
+        $tags = explode(',', $req->input('tags'));
 
-        return redirect('/test_problem');
+        foreach ($tags as $tagName) {
+            $tagName = trim($tagName);
+            if ($tagName === '') continue;
+
+            // ตรวจสอบและบันทึก
+            Tag::firstOrCreate(['tag_name' => $tagName]);
+        }
+
+        // บันทึกข้อมูลอื่น ๆ ตามที่คุณมี เช่น ชื่อชุมชน ฯลฯ
+
+        return redirect()->back()->with('success', 'บันทึกสำเร็จ');
+
+
+        // return redirect('/test_problem');
     }
 
     // รับข้อมูลจากฟอร์ม

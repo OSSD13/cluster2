@@ -11,4 +11,5 @@ class Tag extends Model
     public $timestamps = false; // ถ้าไม่มี created_at / updated_at
 
     protected $fillable = ['tag_name'];
+
 }

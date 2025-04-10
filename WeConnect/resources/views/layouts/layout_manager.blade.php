@@ -65,9 +65,9 @@
 
     <div id="sidebar" class="fixed top-16 w-64 h-[calc(100%-4rem)] bg-gray-100 transform -translate-x-full transition-transform duration-300 z-40 flex flex-col">
         <div class="p-4 flex items-center border-b">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0 flex-none">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0 flex-none">>>
                 <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clip-rule="evenodd" />
-            </svg>
+              </svg>
 
             <div class="ml-3">
                 @if(session()->has('user'))
@@ -96,7 +96,7 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="/" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
+                    <a href="/dataAnalytics" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path fill-rule="evenodd" d="M2.25 13.5a8.25 8.25 0 0 1 8.25-8.25.75.75 0 0 1 .75.75v6.75H18a.75.75 0 0 1 .75.75 8.25 8.25 0 0 1-16.5 0Z" clip-rule="evenodd" />
                             <path fill-rule="evenodd" d="M12.75 3a.75.75 0 0 1 .75-.75 8.25 8.25 0 0 1 8.25 8.25.75.75 0 0 1-.75.75h-7.5a.75.75 0 0 1-.75-.75V3Z" clip-rule="evenodd" />
@@ -118,7 +118,7 @@
     </div>
 
     <main class="pt-4">
-        @yield('manager_content')
+        @yield('content')
     </main>
 
     <script>

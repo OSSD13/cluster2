@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProblemController;
@@ -24,22 +23,24 @@ Route::post('/adduser', [UserController::class, 'addUser']);
 // Route::get('/', [HomeController::class, 'index']); // เส้นนี้สำคัญสุด
 Route::get('/home', [ProblemController::class, 'index'])->name('userhome');
 Route::post('/home', [ProblemController::class, 'home']);
+Route::post('/home', [ProblemController::class, 'addForm'])->name('home.add');
 Route::get('/home/search', [ProblemController::class, 'search'])->name('home.search');
 
-Route::get('/problemdetail', function () {
-    return view('user.problem_detail');
-});
+Route::get('/problemdetail/{prob_id}', [ProblemController::class, 'show'])->name('problem.show');
 Route::post('/problemdetail',function (){
     return view('user.problem_detail');
 });
+Route::get('/editproblem/{prob_id}', [ProblemController::class, 'edit'])->name('problem.edit');
+Route::put('/editproblem/{prob_id}', [ProblemController::class, 'update'])->name('problem.update');
 
 Route::get('/addproblem',function (){
     return view('user.add_problem');
 });
 
-Route::get('/editproblem',function (){
-    return view('user.edit_problem');
-});
+Route::post('/addproblem', [ProblemController::class, 'addForm']);
+
+Route::delete('/deleteproblem/{id}', [ProblemController::class, 'delete'])->name('problem.delete');
+
 
 Route::get('/addmap',function (){
     return view('user.add_map');
@@ -87,7 +88,6 @@ Route::get('/edituser/{id}', [UserController::class, 'viewEditUser'])->name('adm
 
 Route::put('/updateuser/{id}', [UserController::class, 'updateUser'])->name('user.update');
 
-
 Route::post('/tags',
 [TagController::class, 'store'])->name('tags.store');
 Route::get('/tags/fetch',
@@ -111,3 +111,6 @@ Route::get('/admindataAnalytics',function (){
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::get('/dataAnalytics',function (){
+    return view('manager.dataanalytics');
+});
