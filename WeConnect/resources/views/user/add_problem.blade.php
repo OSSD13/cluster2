@@ -4,7 +4,7 @@
 
 <h1 class="text-2xl font-semibold mt-4 text-left px-6">เพิ่มข้อมูล</h1>
 <div class="p-4">
-    <form action="{{ route('home.add') }}" method="POST">
+    <form id="formID" action="{{ route('home.add') }}" method="POST" enctype="multipart/form-data" onkeydown="return event.key !== 'Enter';">
         @csrf
         <!-- ชื่อชุมชน -->
         <label class="block mt-2 text-sm">ชื่อของชุมชน</label>
@@ -23,6 +23,8 @@
                 <label class="block mt-2 text-sm">ตำแหน่ง <span class="text-red-500">*</span></label>
                 <div class="flex items-center border p-2 rounded">
                     <i class="fa-solid fa-location-dot"></i>
+                    <input id="latitude" name="latitude" type="text" hidden>
+                    <input id="longitude" name="longitude" type="text" hidden>
                     <input id="location" name="location" type="text" class="w-full border-none focus:ring-0 ml-2" placeholder="เลือกตำแหน่งจากแผนที่">
                     <button type="button" onclick="openGoogleMaps()" class="ml-2">➤</button>
                 </div>
@@ -38,6 +40,7 @@
         <input id="postcode" name="postcode" type="text" placeholder="รหัสไปรษณีย์" class="mt-2 w-full border p-2 rounded">
 
         <!-- ปัญหาที่พบ -->
+        <input type="hidden" id="tags-hidden" name="tags">
         <div class="relative mt-4">
             <label class="block text-sm">ปัญหาที่พบ <span class="text-red-500">*</span></label>
             <div class="tags-input-wrapper w-full border rounded p-2 bg-white">
@@ -52,86 +55,18 @@
 
         <!-- รายละเอียดเพิ่มเติม -->
         <label class="block mt-4 text-sm">รายละเอียดเพิ่มเติม</label>
-        <textarea class="w-full p-2 border rounded"></textarea>
-
-
-        <label class="block mt-2 text-sm">รูปภาพ</label>
-        <div class="flex gap-2 items-center">
-            <button id="uploadButton" type="button" class="px-4 py-2 bg-blue-500 text-white rounded">เลือกไฟล์</button>
-            <input type="file" id="imageInput" name="photos[]" accept="image/*" class="hidden" />
-            <div id="preview" class="flex gap-2"></div>
-        </div>
-        <p id="warningText" class="text-red-500 text-sm mt-2 hidden"></p>
+        <textarea id="detail" name="detail" class="w-full p-2 border rounded"></textarea>
 
         <!-- ปุ่ม ยืนยัน -->
         <div class="flex justify-center mt-6">
-            <button class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600"
-                onclick="picture()">
+            <button id="submitBtn" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
                 ยืนยันข้อมูล
             </button>
         </div>
     </form>
 </div>
+
 <script>
-    const uploadedImages = [];
-
-    document.getElementById('uploadButton').addEventListener('click', function() {
-        document.getElementById('imageInput').click();
-    });
-
-    document.getElementById('imageInput').addEventListener('change', function(event) {
-        const newFiles = Array.from(event.target.files);
-        const warningText = document.getElementById('warningText');
-
-        // ไม่ต้องจำกัดจำนวนรูป
-        warningText.classList.add('hidden');
-
-        newFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedImages.push(e.target.result);
-                renderPreview();
-            };
-            reader.readAsDataURL(file);
-        });
-
-        event.target.value = '';
-    });
-
-    function renderPreview() {
-        const preview = document.getElementById('preview');
-        preview.innerHTML = '';
-
-        uploadedImages.forEach((imgSrc, index) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = "relative";
-
-            const img = document.createElement('img');
-            img.src = imgSrc;
-            img.className = "w-16 h-16 object-cover rounded-md";
-
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = "✕";
-            removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center";
-            removeBtn.onclick = () => {
-                uploadedImages.splice(index, 1);
-                renderPreview();
-            };
-
-            wrapper.appendChild(img);
-            wrapper.appendChild(removeBtn);
-            preview.appendChild(wrapper);
-        });
-    }
-
-    function picture() {
-        localStorage.setItem('images', uploadedImages);
-    }
-
-    document.getElementById('closeModal').addEventListener('click', function() {
-        document.getElementById('popupModal').classList.add('hidden');
-    });
-
     $.Thailand({
         $district: $("#sub_district"), // input ของตำบล
         $amphoe: $("#district"), // input ของอำเภอ
@@ -209,6 +144,8 @@
         if (localStorage.getItem('form_data') || localStorage.getItem('latitude')) {
             const data = JSON.parse(localStorage.getItem('form_data'));
             document.getElementById('location').value = `latitude: ${localStorage.getItem('latitude')}, longitude: ${localStorage.getItem('longitude')}` || '';
+            document.getElementById('latitude').value = localStorage.getItem('latitude')
+            document.getElementById('longitude').value = localStorage.getItem('longitude')
         }
     }
 
@@ -223,10 +160,11 @@
 
     function openGoogleMaps() {
         let address = document.getElementById("location").value;
-        let url = "/addmap";
+        let url = "{{ route('addmap') }}";
         window.open(url, "_self");
     }
 
+    //แท๊ก
     // ประกาศตัวแปรแบบ global
     let tagsList = [];
     let allowedTags = [];
@@ -333,25 +271,48 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        // ประกาศตัวแปรหลัก
+
+        const form = document.getElementById("formID");
+        const hiddenInput = document.getElementById("tags-hidden");
+
+        if (form && hiddenInput) {
+        form.addEventListener('submit', function () {
+            hiddenInput.value = tagsList.join(',');
+            });
+        }
+
         const tagInput = document.getElementById('tag-input');
         const autoList = document.getElementById('autocomplete-list');
         const tagsContainer = document.getElementById('tags');
+
+        let tagsList = []; // เก็บแท็กที่ถูกเลือกไปแล้ว
+        let allowedTags = []; // แท็กที่มีในระบบ
+        let tagSuggestions = []; // สำหรับแสดงใน autocomplete
 
         // โหลดแท็กจาก backend
         fetch("{{ route('tags.fetch') }}")
             .then(response => response.json())
             .then(data => {
-                tagSuggestions.push(...data);
-                allowedTags.push(...data);
+                allowedTags = [...data];
+                tagSuggestions = [...data];
+            })
+            .catch(err => {
+                console.error("Failed to load tags:", err);
             });
 
-        // สร้างแท็ก
+        // ฟังก์ชันสร้างแท็ก
         function createTag(tagValue) {
-            if (!tagValue) return;
+            if (!tagValue) return false;
+
+            // ตัดช่องว่างและตรวจสอบว่าว่างหรือไม่
             tagValue = tagValue.trim();
+            if (tagValue === '') return false;
 
-            if (tagsList.includes(tagValue)) return; // ไม่ใส่ # ตรงนี้
+            // ตรวจสอบแท็กซ้ำ
+            if (tagsList.includes(tagValue)) return false;
 
+            // สร้าง element สำหรับแท็ก
             const li = document.createElement('li');
             const span = document.createElement('span');
             span.className = 'remove-tag';
@@ -360,63 +321,71 @@
             li.textContent = "#" + tagValue + ' ';
             li.appendChild(span);
 
+            // เพิ่ม event listener สำหรับลบแท็ก
             span.addEventListener('click', function() {
                 removeTag(li, tagValue);
             });
 
+            // เพิ่มแท็กเข้า DOM และ array
             tagsContainer.insertBefore(li, tagInput);
-            tagsList.push(tagValue); // เก็บแบบไม่มี # เพื่อให้เปรียบเทียบง่าย
+            tagsList.push(tagValue);
+
+            // ล้างค่าในช่อง input
             tagInput.value = '';
-            autoList.classList.add('hidden');
+
+            return true;
         }
 
-
+        // ฟังก์ชันลบแท็ก
         function removeTag(element, tag) {
             const index = tagsList.indexOf(tag);
-            if (index > -1) tagsList.splice(index, 1);
+            if (index > -1) {
+                tagsList.splice(index, 1);
+            }
             element.remove();
         }
 
+        // ฟังก์ชันจัดการการเพิ่มแท็ก
         function handleTagInput(tagValue) {
-            tagValue = tagValue.trim();
             if (!tagValue) return;
-
-            if (tagsList.includes(tagValue)) return; // ป้องกันซ้ำก่อน
+            tagValue = tagValue.trim();
+            if (tagValue === '') return;
 
             if (allowedTags.includes(tagValue)) {
                 createTag(tagValue);
             } else {
-                fetch("{{ route('tags.store') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            tag_name: tagValue
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            allowedTags.push(tagValue);
-                            tagSuggestions.push(tagValue);
-                            createTag(tagValue);
-                        } else if (data.message === 'แท็กนี้มีอยู่แล้ว') {
-                            createTag(tagValue); // ป้องกัน fallback ซ้ำ
-                        } else {
-                            alert("ไม่สามารถเพิ่มแท็กได้: " + data.message);
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Error:", err);
-                        alert("เกิดข้อผิดพลาดในการเพิ่มแท็ก");
-                    });
+                createTag(tagValue)
             }
+            /*}else {
+                // ส่งข้อมูลไปบันทึกแท็กใหม่
+                fetch("{{ route('tags.store') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({ tag_name: tagValue })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        allowedTags.push(tagValue);
+                        tagSuggestions.push(tagValue);
+                        createTag(tagValue);
+                    } else if (data.message === 'แท็กนี้มีอยู่แล้ว') {
+                        createTag(tagValue);
+                    } else {
+                        alert("ไม่สามารถเพิ่มแท็กได้: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("เกิดข้อผิดพลาดในการเพิ่มแท็ก");
+                });
+            }*/
         }
 
-
-        // Autocomplete
+        // จัดการ Autocomplete
         tagInput.addEventListener('input', function() {
             const value = this.value.toLowerCase();
             autoList.innerHTML = '';
@@ -426,7 +395,10 @@
                 return;
             }
 
-            const filtered = tagSuggestions.filter(tag => tag.toLowerCase().includes(value));
+            const filtered = tagSuggestions.filter(tag =>
+                tag.toLowerCase().includes(value)
+            );
+
             if (filtered.length === 0) {
                 autoList.classList.add('hidden');
                 return;
@@ -435,43 +407,63 @@
             filtered.forEach(tag => {
                 const item = document.createElement('li');
                 item.textContent = tag;
-                item.addEventListener('click', () => {
-                    handleTagInput(tag);
+
+                // แก้ไขจุดนี้: ใช้ function แบบ declaration เพื่อจัดการกับ 'this'
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // สำคัญ: ใช้ค่า tag ที่ถูกเลือกจาก autocomplete โดยตรง
+                    // ไม่ใช้ค่าจาก tagInput.value
+                    createTag(tag);
+
+                    // เคลียร์ input และซ่อน autocomplete list
+                    tagInput.value = '';
                     autoList.classList.add('hidden');
+
+                    // ให้ focus กลับไปที่ input เพื่อสะดวกในการเพิ่มแท็กต่อไป
+                    tagInput.focus();
                 });
+
                 autoList.appendChild(item);
             });
 
             autoList.classList.remove('hidden');
         });
 
-        // Event listener สำหรับการกด Enter เพื่อเพิ่มแท็ก (เดสก์ท็อป)
+        // Event listeners for keyboard input
         tagInput.addEventListener('keyup', function(e) {
             if (e.key === 'Enter') {
                 const tagValue = this.value.trim();
                 if (tagValue) {
-                    e.preventDefault(); // ป้องกัน form ส่งถ้าอยู่ใน <form>
+                    e.preventDefault();
                     handleTagInput(tagValue);
+                    autoList.classList.add('hidden');
                 }
+            } else if (e.key === 'Escape') {
+                // ซ่อน autocomplete เมื่อกด Escape
+                autoList.classList.add('hidden');
             }
         });
 
-        // Event listener สำหรับผู้ใช้มือถือ (กด "Done" บนคีย์บอร์ดมือถือ)
-        tagInput.addEventListener('change', function() {
-            const tagValue = this.value.trim();
-            if (tagValue) {
-                handleTagInput(tagValue);
+        // ซ่อน autocomplete เมื่อคลิกที่อื่น
+        document.addEventListener('click', function(e) {
+            if (e.target !== tagInput && !autoList.contains(e.target)) {
+                autoList.classList.add('hidden');
             }
         });
 
-        // สำรองไว้ในกรณีที่บางอุปกรณ์มือถือใช้ blur
+        // สำหรับอุปกรณ์มือถือ
         tagInput.addEventListener('blur', function() {
-            const tagValue = this.value.trim();
-            if (tagValue) {
-                handleTagInput(tagValue);
-            }
+            // หน่วงเวลาเล็กน้อยเพื่อให้การคลิกบน autocomplete item ทำงานก่อน
+            setTimeout(() => {
+                if (!autoList.contains(document.activeElement)) {
+                    autoList.classList.add('hidden');
+                }
+            }, 100);
         });
     });
+    //จบ
 
     function initAutocomplete() {
         let input = document.getElementById("location");
@@ -491,4 +483,11 @@
             menu.classList.toggle("hidden");
         }
     }
+
+
+    document.getElementById("formID").addEventListener('submit', function() {
+        const hiddenInput = document.getElementById("tags-hidden");
+        hiddenInput.value = tagsList.join(',');
+    });
+
 </script>

@@ -1,10 +1,11 @@
 @extends('layouts.layout_admin')
 <!DOCTYPE html>
 <html>
+
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 @section('content')
@@ -31,42 +32,52 @@
             </div>
         </form>
         <div class="row d-flex justify-content-center ">
+
             <div class="  mx-auto w-auto">
-                <div class="card p-3 py-4" style="max-height: 350px; overflow-y: auto; ">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        @foreach ($users as $user)
-                            <div class="bg-white p-6 shadow-md rounded-xl flex flex-col h-auto">
-                                <h2 class="text-lg font-bold">{{ $user->name }}</h2>
-                                <p class="text-gray-600">{{ $user->email }}</p>
+                @forelse ($users as $user)
+                @empty
+                    @if ($searching)
+                        <p class="mx-auto text-red-500 text-2xl" >-ไม่พบบัญชีผู้ใช้-</p>
+                    @endif
+                @endforelse
+                @if ($users->isNotEmpty())
+                    <div class="card p-3 py-4" style="max-height: 350px; overflow-y: auto; ">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
-                                <div class="flex-grow"></div>
+                            @foreach ($users as $user)
+                                <div class="bg-white p-6 shadow-md rounded-xl flex flex-col h-auto">
+                                    <h2 class="text-lg font-bold">{{ $user->name }}</h2>
+                                    <p class="text-gray-600">{{ $user->email }}</p>
 
-                                <div class="flex space-x-3 mt-4 justify-end mt-auto">
-                                    <!-- Edit Button -->
-                                    <a href="{{ url('/edituser/' . $user->usr_id) }}"
-                                        class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded">
-                                        Edit
-                                    </a>
-                                    <!-- Delete Button -->
-                                    <form action="{{ route('user.delete', $user->usr_id) }}" method="POST"
-                                        class="delete-form d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            style="min-width: 80px;">Delete</button>
-                                    </form>
+                                    <div class="flex-grow"></div>
+
+                                    <div class="flex space-x-3 mt-4 justify-end mt-auto">
+                                        <!-- Edit Button -->
+                                        <a href="{{ url('/edituser/' . $user->usr_id) }}"
+                                            class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded">
+                                            Edit
+                                        </a>
+                                        <!-- Delete Button -->
+                                        <form action="{{ route('user.delete', $user->usr_id) }}" method="POST"
+                                            class="delete-form d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                style="min-width: 80px;">Delete</button>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </div>
 
     <form action="{{ url('/adduser') }}" method="get">
-        <div class="flex justify-center">
-            <button class="bg-green-500 text-white px-6 p-2 rounded-full text-lg shadow-md hover:bg-green-600">
+        <div class="flex justify-center pt-2">
+            <button class="bg-green-500 text-white px-6 p-2 rounded-md text-lg shadow-md hover:bg-green-600">
                 เพิ่มบัญชีผู้ใช้
             </button>
         </div>
@@ -92,11 +103,11 @@
                     if (result.isConfirmed) {
                         this.submit();
 
-                            Swal.fire({
-                                title: "บัญชีผู้ใช้ถูกลบแล้ว",
-                                icon: "success",
-                                draggable: true
-                            });
+                        Swal.fire({
+                            title: "บัญชีผู้ใช้ถูกลบแล้ว",
+                            icon: "success",
+                            draggable: true
+                        });
                     }
                 });
             });
