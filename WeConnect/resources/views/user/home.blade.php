@@ -1,4 +1,4 @@
-@extends('layouts.layout_user')
+@extends('layouts.layout')
 
 
 @section('content')
@@ -134,13 +134,19 @@
 
     <!-- ปุ่ม เพิ่มข้อมูล -->
     <div class="fixed bottom-6 right-6">
-        <a href="{{ url('addproblem') }}" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
+        <a onclick=clearLocalStorage() href="{{ url('addproblem') }}" class="bg-green-500 text-white px-6 py-2 rounded-full text-lg shadow-md hover:bg-green-600">
 
             เพิ่มข้อมูล
         </a>
     </div>
 
+    <script>
+    function clearLocalStorage() {
+            localStorage.clear();
+        }
+    </script>
 </body>
 
 </html>
 @endsection
+

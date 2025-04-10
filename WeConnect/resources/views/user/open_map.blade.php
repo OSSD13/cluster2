@@ -22,7 +22,7 @@
 </style>
 
 <body>
-    @extends('layouts.layout_user')
+    @extends('layouts.layout')
     @section('content')
 
     <div id="map" class="w-full h-screen fixed">

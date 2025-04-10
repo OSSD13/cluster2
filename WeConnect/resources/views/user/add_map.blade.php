@@ -1,4 +1,4 @@
-@extends('layouts.layout_user')
+@extends('layouts.layout')
 
 <head>
     <meta charset="UTF-8">
@@ -79,7 +79,7 @@
         localStorage.setItem('latitude', document.getElementById('latitude').value);
         localStorage.setItem('longitude', document.getElementById('longitude').value);
 
-        let url = "/addproblem";
+        let url = "{{route('addproblem')}}";
         window.open(url, "_self");
     }
 </script>

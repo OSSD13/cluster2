@@ -8,19 +8,21 @@ use App\Models\User;
 
 class LoginController extends Controller
 {
-    function index(){
+    function index()
+    {
         return view('login');
     }
 
-    function login(Request $req) {
+    function login(Request $req)
+    {
         $user = User::where('email', $req->email)->first();
 
-        if($user != null && Hash::check($req->password, $user->password)) {
+        if ($user != null && Hash::check($req->password, $user->password)) {
             $req->session()->put('user', $user);
             if ($user->role === 'Admin') {
-                return redirect('/manage_user');
+                return redirect()->route('usermanage');
             } else if ($user->role === 'Manager') {
-                return redirect('/dashboard');
+                return redirect()->route('dashboard');
             } else if ($user->role === 'User') {
                 return redirect()->route('userhome');
             }
@@ -28,5 +30,12 @@ class LoginController extends Controller
             $req->session()->flash('error', 'กรุณาตรวจสอบข้อมูลอีกครั้ง'); //แดงแต่รันได้ intelephense น่าจะรุ่นเก่ากว่า
             return redirect('login');
         }
+    }
+
+    function logout()
+    {
+        session()->forget('user');
+        session()->flush();
+        return redirect('/login');
     }
 }

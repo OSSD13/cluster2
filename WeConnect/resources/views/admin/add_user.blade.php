@@ -1,4 +1,4 @@
-@extends('layouts.layout_admin')
+@extends('layouts.layout')
 
 @section('content')
 <main class="pt-4">

@@ -10,8 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js"></script>
+    <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js"></script>
+    <link rel="stylesheet" href="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css">
+    <script type="text/javascript" src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
 
     <style>
         body {
@@ -77,14 +82,14 @@
 
             <div class="ml-3">
                 @if (session()->has('user'))
-                    <div class="text-sm text-left w-40 max-w-[160px] overflow-hidden">
-                        <div class="font-semibold truncate" title="{{ session('user')->name }}">
-                            {{ session('user')->name }}
-                        </div>
-                        <div class="truncate text-gray-500" title="{{ session('user')->email }}">
-                            {{ session('user')->email }}
-                        </div>
+                <div class="text-sm text-left w-40 max-w-[160px] overflow-hidden">
+                    <div class="font-semibold truncate" title="{{ session('user')->name }}">
+                        {{ session('user')->name }}
                     </div>
+                    <div class="truncate text-gray-500" title="{{ session('user')->email }}">
+                        {{ session('user')->email }}
+                    </div>
+                </div>
                 @endif
             </div>
 
@@ -92,8 +97,9 @@
 
         <nav class="p-4 flex-grow">
             <ul>
+                @if (session('user') -> role === 'User' || session('user') -> role === 'Admin' || session('user') -> role === 'Manager')
                 <li class="mb-2">
-                    <a href="{{route('adminhome')}}" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
+                    <a href="{{route('userhome')}}" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path
                                 d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
@@ -104,7 +110,7 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="/adminmaps" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
+                    <a href="{{ url('/maps') }}" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path fill-rule="evenodd"
                                 d="M8.161 2.58a1.875 1.875 0 0 1 1.678 0l4.993 2.498c.106.052.23.052.336 0l3.869-1.935A1.875 1.875 0 0 1 21.75 4.82v12.485c0 .71-.401 1.36-1.037 1.677l-4.875 2.437a1.875 1.875 0 0 1-1.676 0l-4.994-2.497a.375.375 0 0 0-.336 0l-3.868 1.935A1.875 1.875 0 0 1 2.25 19.18V6.695c0-.71.401-1.36 1.036-1.677l4.875-2.437ZM9 6a.75.75 0 0 1 .75.75V15a.75.75 0 0 1-1.5 0V6.75A.75.75 0 0 1 9 6Zm6.75 3a.75.75 0 0 0-1.5 0v8.25a.75.75 0 0 0 1.5 0V9Z"
@@ -114,7 +120,7 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="/adminform" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
+                    <a onclick="clearLocalStorage()" href="{{ url('/addproblem') }}" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path
                                 d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
@@ -122,8 +128,11 @@
                         <span class="menu">Form</span>
                     </a>
                 </li>
+                @endif
+
+                @if (session('user') -> role === 'Admin' || session('user') -> role === 'Manager')
                 <li class="mb-2">
-                    <a href="/admindashboard" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
+                    <a href="{{ route('dashboard') }}" class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path fill-rule="evenodd"
                                 d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm4.5 7.5a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0v-2.25a.75.75 0 0 1 .75-.75Zm3.75-1.5a.75.75 0 0 0-1.5 0v4.5a.75.75 0 0 0 1.5 0V12Zm2.25-3a.75.75 0 0 1 .75.75v6.75a.75.75 0 0 1-1.5 0V9.75A.75.75 0 0 1 13.5 9Zm3.75-1.5a.75.75 0 0 0-1.5 0v9a.75.75 0 0 0 1.5 0v-9Z"
@@ -145,6 +154,9 @@
                         <span class="menu">Data Analytics</span>
                     </a>
                 </li>
+                @endif
+
+                @if (session('user') -> role === 'Admin')
                 <li class="mb-2">
                     <a href="{{ url('/usermanage') }}"
                         class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
@@ -155,8 +167,10 @@
                         <span class="menu">User Manage</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </nav>
+
         <div class="p-4 border-t">
             <a href="javascript:void(0);" onclick="confirmLogout()"
                 class="flex items-center p-2 text-gray-700 hover:bg-gray-200 rounded">
@@ -206,7 +220,13 @@
                 }
             });
         }
+
+        function clearLocalStorage() {
+            localStorage.clear();
+        }
     </script>
+
+    @yield('scripts')
 </body>
 
 </html>
