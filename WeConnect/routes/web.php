@@ -7,6 +7,7 @@ use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TagController;
 use App\Http\Middleware\CheckLogin;
+use App\Http\Controllers\DataAnalyticsController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -82,9 +83,21 @@ Route::middleware([CheckLogin::class])->group(function () {
 
 
 // หน้า dashboard หลัก
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
-Route::get('/dashboard', [DashboardController::class, 'countProblem'])->name('dashboard');
+Route::middleware([CheckLogin::class])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
+    Route::get('/dashboard', [DashboardController::class, 'countProblem'])->name('dashboard');
+
+    Route::get('/searchdata',function(){
+        return view('manager.searchdata');
+    })->name('dataanalytics');
+    
+    Route::post('/dataanalytics', [DataAnalyticsController::class, 'analyze']);
+    Route::get('/data-analytics', [DataAnalyticsController::class, 'analyze']);
+    Route::get('/analytics-data', [DataAnalyticsController::class, 'getAnalyticsData']);
+
+    Route::post('/manager/dataanalytics', [DataAnalyticsController::class, 'show'])->name('manager.analytics.show');
+});
 
 Route::get('/editaddress', function () {
     return view('user.edit_address');

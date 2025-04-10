@@ -115,15 +115,30 @@ class ProblemController extends Controller
 
     public function edit($id)
     {
-        $problem = Problem::findOrFail($id);
-        $tags = Tag::all(); // ดึง tag ทั้งหมด
-        return view('user.edit_problem', compact('problem', 'tags'));
-    }
+        // Use where() instead of find() to match by prob_id
+        $problem = Problem::where('prob_id', $id)->first();
 
+        // If no problem is found, handle it as needed (e.g., return an error or redirect)
+        if (!$problem) {
+            return redirect()->route('problem.index')->with('error', 'Problem not found.');
+        }
+
+        return view('user.edit_problem', compact('problem'));
+    }
 
     // ประมวลผลอัพเดต
     public function update(Request $req, $id)
     {
+        $req->validate([
+            'community_name' => 'required|string|max:255',
+            'sub_district'   => 'required|string|max:255',
+            'district'       => 'required|string|max:255',
+            'province'       => 'required|string|max:255',
+            'postcode'       => 'required|string|max:10',
+            'tags'           => 'required|array',
+            'tags.*'         => 'string',
+            'description'    => 'nullable|string',
+        ]);
 
         $problem = Problem::where('prob_id', $id)->firstOrFail();
         $problem->community_name = $req->community_name;
@@ -131,9 +146,19 @@ class ProblemController extends Controller
         $problem->district       = $req->district;
         $problem->province       = $req->province;
         $problem->post_code      = $req->postcode;
-        $problem->tag_id         = $req->tag_id; // ← ตรงนี้ใช้ tag_id แทน
         $problem->detail         = $req->description;
         $problem->save();
+
+        // Sync tags in the pivot table
+        $tagNames = $req->input('tags');  // This will give you the tags array from the form
+        $tagIds = [];
+
+        foreach ($tagNames as $name) {
+            $tag = Tag::firstOrCreate(['tag_name' => $name]);
+            $tagIds[] = $tag->tag_id;
+        }
+
+        $problem->tags()->sync($tagIds);
 
         return redirect()
             ->route('problem.show', $id)

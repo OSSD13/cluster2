@@ -144,15 +144,17 @@
         if (localStorage.getItem('form_data') || localStorage.getItem('latitude')) {
             const data = JSON.parse(localStorage.getItem('form_data'));
             document.getElementById('location').value = `latitude: ${localStorage.getItem('latitude')}, longitude: ${localStorage.getItem('longitude')}` || '';
-            document.getElementById('latitude').value = localStorage.getItem('latitude')
-            document.getElementById('longitude').value = localStorage.getItem('longitude')
+            document.getElementById('latitude').value = localStorage.getItem('latitude');
+            document.getElementById('longitude').value = localStorage.getItem('longitude');
+            document.getElementById('community_name').value = data.community_name;
+            document.getElementById('add_date').value = data.add_date;
         }
     }
 
     function saveFormToStorage() {
         const data = {
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value
+            community_name: document.getElementById('community_name').value,
+            add_date: document.getElementById('add_date').value,
         };
 
         localStorage.setItem('form_data', JSON.stringify(data));
@@ -272,16 +274,8 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         // ประกาศตัวแปรหลัก
-
         const form = document.getElementById("formID");
         const hiddenInput = document.getElementById("tags-hidden");
-
-        if (form && hiddenInput) {
-        form.addEventListener('submit', function () {
-            hiddenInput.value = tagsList.join(',');
-            });
-        }
-
         const tagInput = document.getElementById('tag-input');
         const autoList = document.getElementById('autocomplete-list');
         const tagsContainer = document.getElementById('tags');
@@ -289,6 +283,13 @@
         let tagsList = []; // เก็บแท็กที่ถูกเลือกไปแล้ว
         let allowedTags = []; // แท็กที่มีในระบบ
         let tagSuggestions = []; // สำหรับแสดงใน autocomplete
+        let currentFocus = -1; // สำหรับการใช้งานแป้นพิมพ์ในการเลือก
+
+        if (form && hiddenInput) {
+            form.addEventListener('submit', function() {
+                hiddenInput.value = tagsList.join(',');
+            });
+        }
 
         // โหลดแท็กจาก backend
         fetch("{{ route('tags.fetch') }}")
@@ -318,11 +319,23 @@
             span.className = 'remove-tag';
             span.textContent = '×';
 
+            // เพิ่ม padding เพื่อให้ง่ายต่อการกดบนอุปกรณ์สัมผัส
+            span.style.padding = "0 8px";
+
             li.textContent = "#" + tagValue + ' ';
             li.appendChild(span);
 
             // เพิ่ม event listener สำหรับลบแท็ก
-            span.addEventListener('click', function() {
+            span.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                removeTag(li, tagValue);
+            });
+
+            // เพิ่ม touch event สำหรับมือถือ
+            span.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 removeTag(li, tagValue);
             });
 
@@ -354,40 +367,13 @@
             if (allowedTags.includes(tagValue)) {
                 createTag(tagValue);
             } else {
-                createTag(tagValue)
+                createTag(tagValue);
             }
-            /*}else {
-                // ส่งข้อมูลไปบันทึกแท็กใหม่
-                fetch("{{ route('tags.store') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({ tag_name: tagValue })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        allowedTags.push(tagValue);
-                        tagSuggestions.push(tagValue);
-                        createTag(tagValue);
-                    } else if (data.message === 'แท็กนี้มีอยู่แล้ว') {
-                        createTag(tagValue);
-                    } else {
-                        alert("ไม่สามารถเพิ่มแท็กได้: " + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("เกิดข้อผิดพลาดในการเพิ่มแท็ก");
-                });
-            }*/
         }
 
-        // จัดการ Autocomplete
-        tagInput.addEventListener('input', function() {
-            const value = this.value.toLowerCase();
+        // แสดง autocomplete
+        function showAutocomplete() {
+            const value = tagInput.value.toLowerCase();
             autoList.innerHTML = '';
 
             if (!value) {
@@ -404,45 +390,129 @@
                 return;
             }
 
-            filtered.forEach(tag => {
+            filtered.forEach((tag, index) => {
                 const item = document.createElement('li');
+                // เพิ่ม padding ให้มากขึ้นสำหรับการแตะบนมือถือ
+                item.style.padding = "12px 16px";
                 item.textContent = tag;
 
-                // แก้ไขจุดนี้: ใช้ function แบบ declaration เพื่อจัดการกับ 'this'
+                // หากใช้งานบนมือถือ จะเพิ่ม touch event
+                item.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    selectTag(tag);
+                });
+
+                // สำหรับการคลิกด้วยเมาส์
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    selectTag(tag);
+                });
 
-                    // สำคัญ: ใช้ค่า tag ที่ถูกเลือกจาก autocomplete โดยตรง
-                    // ไม่ใช้ค่าจาก tagInput.value
-                    createTag(tag);
+                // เพิ่ม hover effect ที่ชัดเจนกว่าเดิม
+                item.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#e5e7eb';
+                    currentFocus = index;
+                });
 
-                    // เคลียร์ input และซ่อน autocomplete list
-                    tagInput.value = '';
-                    autoList.classList.add('hidden');
-
-                    // ให้ focus กลับไปที่ input เพื่อสะดวกในการเพิ่มแท็กต่อไป
-                    tagInput.focus();
+                item.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = '';
                 });
 
                 autoList.appendChild(item);
             });
 
             autoList.classList.remove('hidden');
-        });
+        }
+
+        // ฟังก์ชันสำหรับเลือกแท็กจาก autocomplete
+        function selectTag(tag) {
+            createTag(tag);
+            tagInput.value = '';
+            autoList.classList.add('hidden');
+            tagInput.focus();
+        }
 
         // Event listeners for keyboard input
+        tagInput.addEventListener('input', showAutocomplete);
+
         tagInput.addEventListener('keyup', function(e) {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 const tagValue = this.value.trim();
                 if (tagValue) {
-                    e.preventDefault();
                     handleTagInput(tagValue);
                     autoList.classList.add('hidden');
                 }
             } else if (e.key === 'Escape') {
                 // ซ่อน autocomplete เมื่อกด Escape
                 autoList.classList.add('hidden');
+            } else if (e.key === 'ArrowDown') {
+                // เลื่อนลงในรายการ autocomplete
+                currentFocus++;
+                addActive();
+            } else if (e.key === 'ArrowUp') {
+                // เลื่อนขึ้นในรายการ autocomplete
+                currentFocus--;
+                addActive();
+            } else if (e.key === 'Tab') {
+                if (currentFocus > -1) {
+                    // เลือกแท็กที่กำลัง active
+                    if (autoList.children[currentFocus]) {
+                        e.preventDefault();
+                        autoList.children[currentFocus].click();
+                    }
+                }
+            }
+        });
+
+        // เพิ่มคลาส active ให้กับรายการที่เลือก
+        function addActive() {
+            if (!autoList) return false;
+            const items = autoList.getElementsByTagName('li');
+            if (!items.length) return false;
+
+            // ล้าง active จากทุกรายการ
+            for (let i = 0; i < items.length; i++) {
+                items[i].style.backgroundColor = '';
+            }
+
+            // ตรวจสอบขอบเขต
+            if (currentFocus >= items.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (items.length - 1);
+
+            // เพิ่ม active class
+            items[currentFocus].style.backgroundColor = '#e5e7eb';
+        }
+
+        // แก้ไขปัญหา focus บนมือถือ
+        tagInput.addEventListener('focus', function() {
+            if (this.value) {
+                showAutocomplete();
+            }
+        });
+
+        // ปรับปรุงการจัดการ blur event
+        tagInput.addEventListener('blur', function(e) {
+            // ให้เวลา click event ทำงานก่อน
+            setTimeout(() => {
+                // ถ้าไม่ได้คลิกที่ autocomplete
+                if (!autoList.contains(document.activeElement)) {
+                    autoList.classList.add('hidden');
+
+                    // ถ้ามีข้อความใน input ตอน blur ให้เพิ่มเป็นแท็ก
+                    const tagValue = this.value.trim();
+                    if (tagValue) {
+                        handleTagInput(tagValue);
+                    }
+                }
+            }, 200);
+        });
+
+        // สำหรับอุปกรณ์ทัชสกรีน
+        tagInput.addEventListener('touchend', function() {
+            if (this.value) {
+                showAutocomplete();
             }
         });
 
@@ -450,19 +520,75 @@
         document.addEventListener('click', function(e) {
             if (e.target !== tagInput && !autoList.contains(e.target)) {
                 autoList.classList.add('hidden');
+
+                // หากมีข้อความใน input และคลิกที่อื่น ให้เพิ่มเป็นแท็ก
+                const tagValue = tagInput.value.trim();
+                if (tagValue) {
+                    handleTagInput(tagValue);
+                }
             }
         });
 
-        // สำหรับอุปกรณ์มือถือ
-        tagInput.addEventListener('blur', function() {
-            // หน่วงเวลาเล็กน้อยเพื่อให้การคลิกบน autocomplete item ทำงานก่อน
-            setTimeout(() => {
-                if (!autoList.contains(document.activeElement)) {
-                    autoList.classList.add('hidden');
+        // เพิ่ม touch event สำหรับมือถือ
+        document.addEventListener('touchstart', function(e) {
+            // ตรวจสอบว่าการแตะอยู่นอกพื้นที่ของ input และ autocomplete
+            if (e.target !== tagInput && !autoList.contains(e.target)) {
+                // หากการแตะอยู่นอกพื้นที่ ซ่อน autocomplete
+                autoList.classList.add('hidden');
+
+                // หากมีข้อความใน input และแตะที่อื่น ให้เพิ่มเป็นแท็ก
+                const tagValue = tagInput.value.trim();
+                if (tagValue) {
+                    handleTagInput(tagValue);
                 }
-            }, 100);
+            }
+        }, {
+            passive: false
         });
+
+        // ปรับแต่ง CSS สำหรับการใช้งานบนมือถือ
+        if (window.innerWidth <= 768) {
+            // เพิ่มขนาดและระยะห่างให้ใหญ่ขึ้นสำหรับการใช้งานบนมือถือ
+            const style = document.createElement('style');
+            style.textContent = `
+            #tags li {
+                padding: 8px 12px;
+                margin: 5px;
+                font-size: 16px;
+            }
+            #tags .remove-tag {
+                padding: 0 8px;
+                font-size: 18px;
+            }
+            #tag-input {
+                padding: 8px;
+                font-size: 16px;
+                min-height: 40px;
+            }
+            #autocomplete-list li {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+        `;
+            document.head.appendChild(style);
+        }
     });
+
+    // รวมฟังก์ชัน Global
+    window.addTag = function(tagValue) {
+        const tagInput = document.getElementById('tag-input');
+        tagInput.value = tagValue;
+
+        // สร้าง event ประเภท input เพื่อทริกเกอร์การทำงานของฟังก์ชัน autocomplete
+        const event = new Event('input', {
+            bubbles: true,
+            cancelable: true,
+        });
+        tagInput.dispatchEvent(event);
+
+        // กระตุ้น focus ที่ input
+        tagInput.focus();
+    };
     //จบ
 
     function initAutocomplete() {
@@ -489,5 +615,4 @@
         const hiddenInput = document.getElementById("tags-hidden");
         hiddenInput.value = tagsList.join(',');
     });
-
 </script>
